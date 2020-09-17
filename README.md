@@ -6,6 +6,5 @@
 
 -----
 
-  1. 从http://sourceforge.net/projects/mysql-python下载MySQLdb
-  2. 安装virtualenv开发环境
-  3. pip install flask
+  1. 安装virtualenv开发环境
+  2. pip install flask
