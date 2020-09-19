@@ -4,12 +4,13 @@ import sqlite3
 conn = sqlite3.connect("users.db")
 c = conn.cursor()
 c.execute('''CREATE TABLE user(
-                 id INTERGER PRIMARY KEY,
-                 name VARCHAR(255),
-                 grade INTERGER,
+                 id INTERGER,
+                 username VARCHAR(255),
+                 password VARCHAR(255),
                  class INTERGER,
-                 volTime DECIMAL
+                 permission SMALLINT
               )''')
+c.execute("INSERT INTO user VALUES(?,?,?,?,?)",(0,"asdasdasd","asdasdasd",202001,1))
 conn.commit()
 c.close()
 conn.close()
