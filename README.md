@@ -21,5 +21,5 @@
   ```
   4. 启动
   ```
-  python -m flask run
+  python main.py
   ```
