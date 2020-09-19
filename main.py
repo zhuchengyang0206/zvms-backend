@@ -2,7 +2,7 @@ from flask import Flask
 import sqlite3
 
 # SQL init
-conn = sqlite3.connect('users')
+conn = sqlite3.connect('users.db')
 c = conn.cursor()
 
 # Flask init
