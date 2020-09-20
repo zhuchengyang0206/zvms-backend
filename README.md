@@ -15,6 +15,10 @@
   ```
   pip install flask
   ```
+  Postscript: 如果上一条指令不能使用，请使用下面这一条
+  ```
+  pip install -i https://pypi.tuna.tsinghua.edu.cn/simple --trusted-host pypi.tuna.tsinghua.edu.cn flask
+  ```
   3. 设置环境变量
   ```
   set FLASK_APP=main.py
