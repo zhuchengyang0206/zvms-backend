@@ -9,7 +9,7 @@
   1. 启用virtualenv开发环境(Windows)
   ```
   py -3 -m venv venv
-  venv\Scripts\accd tivate
+  venv\Scripts\activate
   ```
   2. 安装Flask
   ```
@@ -19,11 +19,7 @@
   ```
   pip install -i https://pypi.tuna.tsinghua.edu.cn/simple --trusted-host pypi.tuna.tsinghua.edu.cn flask
   ```
-  3. 设置环境变量
-  ```
-  set FLASK_APP=main.py
-  ```
-  4. 启动
+  3. 启动
   ```
   python main.py
   ```
