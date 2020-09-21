@@ -34,8 +34,6 @@ def login():
             session['username'] = respdata['username']
             session['class'] = respdata['class']
             session['permission'] = respdata['permission']
-            # 这里只是把登录信息给了客户端
-            # 还需要几个SESSION的相关操作来在服务器储存用户信息
 
         elif len(r) > 1:  # 不然就是出现了两条一样的记录，此时为了安全考虑不能登录
             respdata['message'] = "用户重复！请向管理员寻求帮助！"
