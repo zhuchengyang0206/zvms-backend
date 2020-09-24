@@ -61,6 +61,7 @@ nothing
         {"id":20200103, "name":"王可以", "inside":5, "outside":8, "large":0},
         {"id":20200104, "name":"王不行", "inside":1, "outside":4, "large":16},
         {"id":20200105, "name":"王彳亍", "inside":5, "outside":0, "large":8}
+        // inside表示校内义工，outside表示校外义工，large表示大型活动义工
     ]
 }
 ```
