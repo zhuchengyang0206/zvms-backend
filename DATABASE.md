@@ -19,7 +19,9 @@ password | VARCHAR(255) | 储存密码 | aababababab | 记得加密，方式待�
 -|-|-|-|-
 stuId | INTERGER | 储存学生的学号 | 20200101 | 不需要自动递增， 唯一， 理论上八位即可
 stuName | VARCHAR(64) | 储存学生的名字 | 王彳亍 | 长度不知道要多少，凭感觉来:-D
-volTime | INTERGER | 储存学生的义工时间 | 0 | 避免浮点运算，在数据库中以分钟为单位
+volTimeInside | INTERGER | 储存学生的义工时间 | 0 | 避免浮点运算，在数据库中以分钟为单位
+volTimeOutside | INTERGER | 储存学生的义工时间 | 0 | 以分钟为单位
+volTimeLarge | INTERGER | 储存学生的义工时间 | 0 | 以分钟为单位
 
 ## volunteer
 
@@ -30,7 +32,9 @@ volTime | INTERGER | 储存学生的义工时间 | 0 | 避免浮点运算，在�
 volId | INTERGER | 义工活动的唯一确定编号 | 1 | 其实这个自动递增倒也无所谓
 name | VARCHAR(256) | 义工活动的名称 | 喂孔子+拜锦鲤 | 长度不知道要多少，凭感觉来:-D
 time | VARCHAR(256) | 义工活动的时间 | 2020.9.24 | 长度不知道要多少，凭感觉来:-D
-volTime | INTERGER | 每个人将获得的义工时间 | 0 | 以分钟为单位，如果后期要改成每个人分配不同的时间的话在下一个表中加一栏`volTime`就好
+volTimeInside | INTERGER | 每个人将获得的义工时间 | 0 | 以分钟为单位，如果后期要改成每个人分配不同的时间的话在下一个表中加一栏`volTime`就好
+volTimeOutside | INTERGER | 每个人将获得的义工时间 | 0 | 以分钟为单位
+volTimeLarge | INTERGER | 每个人将获得的义工时间 | 0 | 以分钟为单位
 
 ## stu_vol
 

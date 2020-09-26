@@ -1,5 +1,5 @@
 import sqlite3
-
+import socket
 class DBcontrol(object):
     def __init__(self):
         self.conn = sqlite3.connect('./zvms.db')
