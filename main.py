@@ -1,5 +1,4 @@
 from flask import Flask,session
-import _thread
 import database
 from login import Login
 from logout import Logout
@@ -17,5 +16,4 @@ def index():
    pass
 
 if __name__ == '__main__':
-    _thread.start_new_thread(database.run())
     app.run()
