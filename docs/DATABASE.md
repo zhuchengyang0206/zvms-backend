@@ -32,9 +32,12 @@ volTimeLarge | INTERGER | 储存学生的义工时间 | 0 | 以分钟为单位
 volId | INTERGER | 义工活动的唯一确定编号 | 1 | 其实这个自动递增倒也无所谓
 name | VARCHAR(256) | 义工活动的名称 | 喂孔子+拜锦鲤 | 长度不知道要多少，凭感觉来:-D
 time | VARCHAR(256) | 义工活动的时间 | 2020.9.24 | 长度不知道要多少，凭感觉来:-D
-volTimeInside | INTERGER | 每个人将获得的义工时间 | 0 | 以分钟为单位，如果后期要改成每个人分配不同的时间的话在下一个表中加一栏`volTime`就好
-volTimeOutside | INTERGER | 每个人将获得的义工时间 | 0 | 以分钟为单位
-volTimeLarge | INTERGER | 每个人将获得的义工时间 | 0 | 以分钟为单位
+description | VARCHAR(1024) | 义工活动的描述 | blablablabla | 长度不知道要多少，凭感觉来:-D
+status | SMALLINT | 义工活动的状态 | 0 | `0`表示已经结束，`1`表示还没开始，`2`表示正在进行
+class | INTERGER | 义工活动分配给哪个班级 | 202001 | 
+volTimeInside | INTERGER | 每个人预计将获得的义工时间 | 0 | 以分钟为单位
+volTimeOutside | INTERGER | 每个人预计将获得的义工时间 | 0 | 以分钟为单位
+volTimeLarge | INTERGER | 每个人预计将获得的义工时间 | 0 | 以分钟为单位
 
 ## stu_vol
 
@@ -44,3 +47,7 @@ volTimeLarge | INTERGER | 每个人将获得的义工时间 | 0 | 以分钟为�
 -|-|-|-|-
 volId | INTERGER | 义工活动的编号 | 1 | 表示`stuID`的学生参加了这个义工活动
 stuId | INTERGER | 学生的学号 | 20200101 | 表示这个学生参加了`volId`的义工活动
+status | SMALLINT | 审核状态 | 0 | `0`表示未通过，`1`表示通过，`2`表示审核中
+volTimeInside | INTERGER | 实际获得的义工时间 | 0 | 以分钟为单位
+volTimeOutside | INTERGER | 实际获得的义工时间 | 0 | 以分钟为单位
+volTimeLarge | INTERGER | 实际获得的义工时间 | 0 | 以分钟为单位
