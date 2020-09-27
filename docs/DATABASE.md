@@ -8,7 +8,7 @@
 userid | INTERGER | 储存用户的id | 202001 | 不需要自动递增， 唯一， 理论上六位即可
 username | VARCHAR(64) | 储存用户的名字 | 王彳亍 | 长度不知道要多少，凭感觉来:-D
 class | INTEGER | 储存用户拥有的班级id | 202001 | 理论长度其实也是六位就够
-permission | SMALLINT | 储存用户的身份权限 | 0 | 0:团支书 1: 教师 2: 义管会 3: 实践部 4: 系统 权限等级待定
+permission | SMALLINT | 储存用户的身份权限 | 0 | 1:团支书 2: 教师 3: 义管会 4: 系统 权限等级待定
 password | VARCHAR(255) | 储存密码 | aababababab | 记得加密，方式待定
 
 ## student
