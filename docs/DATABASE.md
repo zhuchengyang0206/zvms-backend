@@ -32,6 +32,7 @@ volTimeLarge | INTERGER | 储存学生的义工时间 | 0 | 以分钟为单位
 volId | INTERGER | 义工活动的唯一确定编号 | 1 | 其实这个自动递增倒也无所谓
 name | VARCHAR(256) | 义工活动的名称 | 喂孔子+拜锦鲤 | 长度不知道要多少，凭感觉来:-D
 time | VARCHAR(256) | 义工活动的时间 | 2020.9.24 | 长度不知道要多少，凭感觉来:-D
+stuMax | INTERGER | 义工活动的人数上限 | 10 | 
 description | VARCHAR(1024) | 义工活动的描述 | blablablabla | 长度不知道要多少，凭感觉来:-D
 status | SMALLINT | 义工活动的状态 | 0 | `0`表示已经结束，`1`表示还没开始，`2`表示正在进行
 class | INTERGER | 义工活动分配给哪个班级 | 202001 | 

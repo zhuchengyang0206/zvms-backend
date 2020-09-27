@@ -1,6 +1,5 @@
 # 初始化数据库并插入一条测试数据
 
-import sqlite3
 import database
 
 DB.execute('''CREATE TABLE user(
@@ -25,6 +24,7 @@ DB.execute('''CREATE TABLE volunteer(
                   volId INTERGER,
                   name VARCHAR(256),
                   time VARCHAR(256),
+                  stuMax INTERGER,
                   description VARCHAR(1024),
                   status SMALLINT,
                   class INTERGER,
