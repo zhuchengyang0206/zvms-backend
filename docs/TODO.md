@@ -18,7 +18,6 @@ nothing
 {
     "type":"SUCCESS",
     "message":"获取成功",
-    "total":5,
     "class":[
         {"id":202001, "name":"高一1班"},
         {"id":202011, "name":"蛟一1班"},
@@ -54,7 +53,6 @@ nothing
 {
     "type":"SUCCESS",
     "message":"获取成功",
-    "total":4,
     "student":[
         {"id":20200101, "name":"王可", "inside":1.5, "outside":2, "large":8},
         {"id":20200102, "name":"王不可", "inside":2.5, "outside":2, "large":8},
