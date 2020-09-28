@@ -18,7 +18,7 @@ nothing
 {
     "type":"SUCCESS",
     "message":"获取成功",
-    "total":4,
+    "total":5,
     "class":[
         {"id":202001, "name":"高一1班"},
         {"id":202011, "name":"蛟一1班"},
