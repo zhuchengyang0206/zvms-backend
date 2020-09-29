@@ -22,7 +22,7 @@
   3. 安装MySQL
   4. 安装MySQLdb
   ```
-  pip install MySQLdb
+  pip install mysql
   ```
   5. MySQL中注册用户
   ```
