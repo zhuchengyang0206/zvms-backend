@@ -22,7 +22,7 @@
   3. 安装MySQL
   4. 安装MySQLdb
   ```
-  pip install mysql
+  pip install -i https://pypi.tuna.tsinghua.edu.cn/simple --trusted-host pypi.tuna.tsinghua.edu.cn pymysql
   ```
   5. MySQL中注册用户
   ```
