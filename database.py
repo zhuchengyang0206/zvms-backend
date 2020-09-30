@@ -1,8 +1,8 @@
-import MySQLdb
+import pymysql
 
 class DBcontrol(object):
     def __init__(self):
-        self.conn = MySQLdb.connect(host="localhost",user="zvms",passwd="123456",db="zvms")
+        self.conn = pymysql.connect(host="localhost",user="zvms",password="123456",db="zvms")
         self.cur = self.conn.cursor()
     def __del__(self):
         self.cur.close()
