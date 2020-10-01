@@ -7,8 +7,10 @@ class DBcontrol(object):
     def __del__(self):
         self.cur.close()
         self.conn.close()
-    def execute(*args):
-        self.cur.execute(args)
+    def execute(a):
+        self.cur.execute(a)
+    def execute(a, b):
+        self.cur.execute(a, b)
     def commit():
         self.conn.commit()
     def fetchall():
