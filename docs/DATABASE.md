@@ -35,7 +35,6 @@ time | VARCHAR(256) | 义工活动的时间 | 2020.9.24 | 长度不知道要多�
 stuMax | INTERGER | 义工活动的人数上限 | 10 | 
 description | VARCHAR(1024) | 义工活动的描述 | blablablabla | 长度不知道要多少，凭感觉来:-D
 status | SMALLINT | 义工活动的状态 | 0 | `0`表示已经结束，`1`表示还没开始，`2`表示正在进行
-class | INTERGER | 义工活动分配给哪个班级 | 202001 | 
 volTimeInside | INTERGER | 每个人预计将获得的义工时间 | 0 | 以分钟为单位
 volTimeOutside | INTERGER | 每个人预计将获得的义工时间 | 0 | 以分钟为单位
 volTimeLarge | INTERGER | 每个人预计将获得的义工时间 | 0 | 以分钟为单位
@@ -52,3 +51,12 @@ status | SMALLINT | 审核状态 | 0 | `0`表示未通过，`1`表示通过，`2
 volTimeInside | INTERGER | 实际获得的义工时间 | 0 | 以分钟为单位
 volTimeOutside | INTERGER | 实际获得的义工时间 | 0 | 以分钟为单位
 volTimeLarge | INTERGER | 实际获得的义工时间 | 0 | 以分钟为单位
+
+## class_vol
+
+这个表存储义工活动分配给哪些班级
+
+项名 | 类型 | 简述 | 举例 | 其他
+-|-|-|-|-
+volId | INTERGER | 义工活动的编号 | 1 | 
+class | INTERGER | 班级的编号 | 202001 | 表示`volId`的义工活动，这个班级被允许参加
