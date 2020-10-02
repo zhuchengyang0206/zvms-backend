@@ -23,7 +23,7 @@ def login():
             row = r[0]
 
             respdata['type'] = "SUCCESS"
-            respdata['message'] = "登录成功"
+            respdata['message'] = "登陆成功"
             respdata['username'] = row[1]
             respdata['class'] = row[2]
             respdata['permission'] = row[3]
