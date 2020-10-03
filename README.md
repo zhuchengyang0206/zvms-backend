@@ -24,19 +24,20 @@
   ```
   pip install -i https://pypi.tuna.tsinghua.edu.cn/simple --trusted-host pypi.tuna.tsinghua.edu.cn pymysql
   ```
-  5. MySQL中注册用户
+  5. MySQL一系列操作
   ```
-  mysql> CREATE USER zvms BY 123456;
+  mysql> create user 'zvms'@'127.0.0.1' identified by '123456';
+  mysql> grant all on *.* to 'zvms'@'127.0.0.1';
+  mysql> ^Z
+  D:\MySQL\bin> mysql -h 127.0.0.1 -u zvms -p
+  Enter password: ******
+  mysql> create database zvms;
   ```
-  6. MySQL中注册数据库
-  ```
-  mysql> CREATE TABLE zvms;
-  ```
-  7. 启动初始化程序
+  6. 启动初始化程序
   ```
   python init.py
   ```
-  8. 启动程序
+  7. 启动程序
   ```
   python main.py
   ```
