@@ -27,7 +27,6 @@ DB.execute('''CREATE TABLE volunteer(
                   stuMax INTERGER,
                   description VARCHAR(1024),
                   status SMALLINT,
-                  class INTERGER,
                   volTimeInside INTERGER,
                   volTimeOutside INTERGER,
                   volTimeLarge INTERGER
@@ -43,5 +42,12 @@ DB.execute('''CREATE TABLE stu_vol(
                   volTimeLarge INTERGER
                )''')
 DB.execute("INSERT INTO stu_vol VALUES(?,?,?,?,?,?)",(1,20200101,0,0,0,0))
+
+DB.execute('''CREATE TABLE class_vol(
+                  volId INTERGER,
+                  class INTERGER
+               )''')
+
+DB.execute("INSERT INTO class_vol VALUES(?,?)",(1,202001))
 
 DB.commit()

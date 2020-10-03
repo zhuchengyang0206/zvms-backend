@@ -2,6 +2,8 @@ from flask import Flask,session
 import database
 from login import Login
 from logout import Logout
+from _class import Class
+from student import Student
 
 # Flask init
 app = Flask(__name__)
@@ -10,6 +12,8 @@ app.config["SECRET_KEY"] = "PaSsw0rD@1234!@#$"
 
 app.register_blueprint(Login) #登录
 app.register_blueprint(Logout) #登出
+app.register_blueprint(Class)
+app.register_blueprint(Student)
 
 @app.route('/')
 def index():

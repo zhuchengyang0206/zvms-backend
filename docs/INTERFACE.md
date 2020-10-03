@@ -61,9 +61,9 @@
 }
 ```
 
-## /stu
+## /student
 
-### /stu/volbook/\<stuId>
+### /student/volbook/\<stuId>
 
 #### output
 
@@ -72,10 +72,10 @@
     "type": "SUCCESS",
     "message": "获取成功",
     "rec": [
-        {"volId": 1, "inside": 0.5, "outside": 0, "large": 0},
-        {"volId": 3, "inside": 1.5, "outside": 0, "large": 0},
-        {"volId": 5, "inside": 0, "outside": 0, "large": 2},
-        {"volId": 6, "inside": 0, "outside": 2, "large": 0},
+        {"volId": 1, "inside": 0.5, "outside": 0, "large": 0, "status": 1},
+        {"volId": 3, "inside": 1.5, "outside": 0, "large": 0, "status": 1},
+        {"volId": 5, "inside": 0, "outside": 0, "large": 2, "status": 1},
+        {"volId": 6, "inside": 0, "outside": 2, "large": 0, "status": 1},
     ]
 }
 ```
