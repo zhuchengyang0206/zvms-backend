@@ -1,20 +1,27 @@
 import pymysql
 
-class DBcontrol(object):
-    def __init__(self):
-        self.conn = pymysql.connect(host="localhost",user="zvms",password="123456",db="zvms")
-        self.cur = self.conn.cursor()
-    def __del__(self):
-        self.cur.close()
-        self.conn.close()
-    def execute(a):
-        self.cur.execute(a)
-    def execute(a, b):
-        self.cur.execute(a, b)
-    def commit():
-        self.conn.commit()
-    def fetchall():
-        res = self.cur.fetchall()
-        return res
+conn = 1
+cur = 1
 
-DB = DBcontrol()
+def init():
+    global conn, cur
+    conn = pymysql.connect(host = "localhost",
+                           user = "zvms",
+                           password = "123456",
+                           db = "zvms")
+    cur = conn.cursor()
+
+def close():
+    global conn, cur
+    cur.close()
+    conn.close()
+def execute(a):
+    global conn, cur
+    cur.execute(a)
+def commit():
+    global conn, cur
+    conn.commit()
+def fetchall():
+    global conn, cur
+    res = cur.fetchall()
+    return res
