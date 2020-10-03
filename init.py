@@ -2,8 +2,6 @@
 
 import database as DB
 
-# @zcy,是INTEGER,不是INTERGER,你全部拼错了！！！害的我调了10min
-
 # 数据库中所有条目都使用3个小写英文字母缩写（原来的实在太长了），意义见DATABASE.md
 
 DB.execute('''CREATE TABLE user(
