@@ -72,10 +72,10 @@
     "type": "SUCCESS",
     "message": "获取成功",
     "rec": [
-        {"volId": 1, "inside": 30, "outside": 0, "large": 0, "status": 1},
-        {"volId": 3, "inside": 90, "outside": 0, "large": 0, "status": 1},
-        {"volId": 5, "inside": 0, "outside": 0, "large": 120, "status": 1},
-        {"volId": 6, "inside": 0, "outside": 120, "large": 0, "status": 1},
+        {"volId": 1, "inside": 0.5, "outside": 0, "large": 0, "status": 1},
+        {"volId": 3, "inside": 1.5, "outside": 0, "large": 0, "status": 1},
+        {"volId": 5, "inside": 0, "outside": 0, "large": 2, "status": 1},
+        {"volId": 6, "inside": 0, "outside": 2, "large": 0, "status": 1},
     ]
 }
 ```
@@ -110,11 +110,11 @@
     "type": "SUCCESS",
     "message": "获取成功",
     "student": [
-        {"id": 20200101, "name": "王可", "inside": 90, "outside": 120, "large": 480},
-        {"id": 20200102, "name": "王不可", "inside": 150, "outside": 120, "large": 480},
-        {"id": 20200103, "name": "王可以", "inside": 300, "outside": 480, "large": 0},
-        {"id": 20200104, "name": "王不行", "inside": 60, "outside": 240, "large": 960},
-        {"id": 20200105, "name": "王彳亍", "inside": 300, "outside": 0, "large": 480}
+        {"id": 20200101, "name": "王可", "inside": 1.5, "outside": 2, "large": 8},
+        {"id": 20200102, "name": "王不可", "inside": 2.5, "outside": 2, "large": 8},
+        {"id": 20200103, "name": "王可以", "inside": 5, "outside": 8, "large": 0},
+        {"id": 20200104, "name": "王不行", "inside": 1, "outside": 4, "large": 16},
+        {"id": 20200105, "name": "王彳亍", "inside": 5, "outside": 0, "large": 8}
         // inside表示校内义工，outside表示校外义工，large表示大型活动义工
     ]
 }
