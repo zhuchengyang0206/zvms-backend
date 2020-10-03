@@ -7,12 +7,21 @@ def close():
     global conn,cur
     cur.close()
     conn.close()
+
 def execute(a):
     global cur
-    cur.execute(a)
+    try:
+        cur.execute(a)
+    except:
+        conn.rollback()
+
 def commit():
     global conn
-    conn.commit()
+    try:
+        conn.commit()
+    except:
+        conn.rollback()
+
 def fetchall():
     res = cur.fetchall()
     return res
