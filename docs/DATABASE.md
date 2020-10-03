@@ -43,20 +43,20 @@ vtl |volunteering time large | INTEGER | 每个人预计将获得的义工时间
 
 这个表存储学生和义工之间的关系
 
-项名 | 类型 | 简述 | 举例 | 其他
--|-|-|-|-
-volId | INTEGER | 义工活动的编号 | 1 | 表示`stuID`的学生参加了这个义工活动
-stuId | INTEGER | 学生的学号 | 20200101 | 表示这个学生参加了`volId`的义工活动
-status | SMALLINT | 审核状态 | 0 | `0`表示未通过，`1`表示通过，`2`表示审核中
-volTimeInside | INTEGER | 实际获得的义工时间 | 0 | 以分钟为单位
-volTimeOutside | INTEGER | 实际获得的义工时间 | 0 | 以分钟为单位
-volTimeLarge | INTEGER | 实际获得的义工时间 | 0 | 以分钟为单位
+项名 |备注 | 类型 | 简述 | 举例 | 其他
+-|-|-|-|-|-
+vid |volunteering identity | INTEGER | 义工活动的编号 | 1 | 表示`sid`的学生参加了这个义工活动 
+sid |student identity | INTEGER | 学生的学号 | 20200101 | 表示这个学生参加了`vid`的义工活动 
+stt |status | SMALLINT | 审核状态 | 0 | `0`表示未通过，`1`表示通过，`2`表示审核中
+vti |volunteering time inside | INTEGER | 实际获得的义工时间 | 0 | 以分钟为单位
+vto |volunteering time outside | INTEGER | 实际获得的义工时间 | 0 | 以分钟为单位
+vtl |volunteering time large | INTEGER | 实际获得的义工时间 | 0 | 以分钟为单位
 
 ## class_vol
 
 这个表存储义工活动分配给哪些班级
 
-项名 | 类型 | 简述 | 举例 | 其他
--|-|-|-|-
-volId | INTEGER | 义工活动的编号 | 1 | 
-class | INTEGER | 班级的编号 | 202001 | 表示`volId`的义工活动，这个班级被允许参加
+项名 |备注 | 类型 | 简述 | 举例 | 其他
+-|-|-|-|-|-
+vid |volunteering identity | INTEGER | 义工活动的编号 | 1 | 
+cls |class | INTEGER | 班级的编号 | 202001 | 表示`vid`的义工活动，这个班级被允许参加 
