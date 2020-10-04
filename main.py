@@ -1,4 +1,5 @@
 from flask import Flask,session
+from flask_cors import CORS
 import database
 from login import Login
 from logout import Logout
@@ -14,6 +15,7 @@ app.register_blueprint(Login) #登录
 app.register_blueprint(Logout) #登出
 app.register_blueprint(Class)
 app.register_blueprint(Student)
+CORS(app,supports_credentials=True)
 
 @app.route('/')
 def index():
