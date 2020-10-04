@@ -11,7 +11,7 @@ def login():
     if request.method == 'POST':  # 只有POST请求才是符合规范的
         #json_data = json.loads(
         #    request.get_data().decode("utf-8"))  # 读取POST传入的JSON数据
-        print(request.get_data())
+        print(request.get_data().decode("utf-8"))
         print('----------')
         return "233333"
 #        respdata = {'type': 'ERROR', 'message': '未知错误!'}  # 定义默认返回值
