@@ -1,6 +1,6 @@
-import pymysql
+from pymysql import connect, cursors
 
-conn = pymysql.connect(host="127.0.0.1",user="zvms",password="123456",db="zvms")
+conn = connect(host="127.0.0.1",user="zvms",password="123456",db="zvms")
 cur = conn.cursor()
 
 def close():
