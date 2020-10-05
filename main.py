@@ -17,9 +17,9 @@ app.register_blueprint(Class)
 app.register_blueprint(Student)
 CORS(app,supports_credentials=True)
 
-@app.route('/')
-def index():
-   pass
+@app.route('/',methods=['POST','GET'])
+def main():
+   return "123"
 
 if __name__ == '__main__':
     app.run()
