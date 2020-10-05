@@ -9,8 +9,9 @@ def close():
     conn.close()
 
 def execute(a):
-    global cur
+    global cur, conn
     try:
+        print(a)
         cur.execute(a)
     except:
         conn.rollback()
@@ -23,5 +24,5 @@ def commit():
         conn.rollback()
 
 def fetchall():
-    res = cur.fetchall()
-    return res
+    global cur
+    return cur.fetchall()
