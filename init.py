@@ -11,8 +11,7 @@ DB.execute('''CREATE TABLE user(
                   pms SMALLINT,
                   pwd CHAR(255)
                );''')
-DB.execute("INSERT INTO user(uid,unm,cls,pms,pwd) \
-    VALUES(%s,%s,%s,%s,%s);"%(20200101,"admin",202001,1,"123456"))
+DB.execute("INSERT INTO user(uid,unm,cls,pms,pwd) VALUES(%s,'%s',%s,%s,'%s');"%(20200101,"admin",202001,1,"123456"))
 
 DB.execute('''CREATE TABLE student(
                   sid INTEGER,
@@ -21,8 +20,7 @@ DB.execute('''CREATE TABLE student(
                   vto INTEGER,
                   vtl INTEGER
                );''')
-DB.execute("INSERT INTO student(sid,snm,vti,vto,vtl) \
-    VALUES(%s,%s,%s,%s,%s);"%(20200101,"王彳亍",0,0,0))
+DB.execute("INSERT INTO student(sid,snm,vti,vto,vtl) VALUES(%s,'%s',%s,%s,%s);"%(20200101,"王彳亍",0,0,0))
 
 DB.execute('''CREATE TABLE volunteer(
                   vid INTEGER,
@@ -35,8 +33,7 @@ DB.execute('''CREATE TABLE volunteer(
                   vto INTEGER,
                   vtl INTEGER
                );''')
-DB.execute("INSERT INTO volunteer(vid,vnm,vtm,smx,des,stt,vti,vto,vtl) \
-    VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s);"%(1,"喂孔子+拜锦鲤","2020.9.24","blablablabla",0,202001,0,0,0))
+DB.execute("INSERT INTO volunteer(vid,vnm,vtm,smx,des,stt,vti,vto,vtl) VALUES(%s,'%s','%s','%s',%s,%s,%s,%s,%s);"%(1,"喂孔子+拜锦鲤","2020.9.24","blablablabla",0,202001,0,0,0))
 
 DB.execute('''CREATE TABLE stu_vol(
                   vid INTEGER,
@@ -46,15 +43,13 @@ DB.execute('''CREATE TABLE stu_vol(
                   vto INTEGER,
                   vtl INTEGER
                );''')
-DB.execute("INSERT INTO stu_vol(vid,sid,stt,vti,vto,vtl) \
-    VALUES(%s,%s,%s,%s,%s,%s);"%(1,20200101,0,0,0,0))
+DB.execute("INSERT INTO stu_vol(vid,sid,stt,vti,vto,vtl) VALUES(%s,%s,%s,%s,%s,%s);"%(1,20200101,0,0,0,0))
 
 DB.execute('''CREATE TABLE class_vol(
                   vid INTEGER,
                   cls INTEGER
                );''')
 
-DB.execute("INSERT INTO class_vol(vid,cls) \
-    VALUES(%s,%s);"%(1,202001))
+DB.execute("INSERT INTO class_vol(vid,cls) VALUES(%s,%s);"%(1,202001))
 
 DB.commit()
