@@ -36,7 +36,6 @@ def login():
 
         elif len(r) > 1:  # 不然就是出现了两条一样的记录，此时为了安全考虑不能登录
             respdata['message'] = "用户重复！请向管理员寻求帮助！"
-        print("return: ",json.dumps(respdata))
         return json.dumps(respdata)  # 传回json数据
     else:  # 如果不是POST请求那就返回个寂寞
         return ""

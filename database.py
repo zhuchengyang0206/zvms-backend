@@ -11,7 +11,6 @@ def close():
 def execute(a):
     global cur, conn
     try:
-        print(a)
         cur.execute(a)
     except:
         conn.rollback()
