@@ -36,7 +36,7 @@
 
 ``` json
 {
-    "type": "FAIL",
+    "type": "ERROR",
     "message": "用户ID或密码错误！"
 }
 ```
@@ -129,10 +129,10 @@
     "type": "SUCCESS",
     "message": "获取成功",
     "volunteer": [
-        {"id": 1, "name": "义工活动1", "time": "2020.10.1" , "status": 1, "stuMax": 20},
-        {"id": 2, "name": "义工活动2", "time": "2020.10.2" , "status": 1, "stuMax": 2},
-        {"id": 3, "name": "义工活动3", "time": "2020.10.3" , "status": 0, "stuMax": 5},
-        {"id": 4, "name": "义工活动4", "time": "2020.10.4" , "status": 2, "stuMax": 10}
+        {"id": 1, "name": "义工活动1", "time": "2020.10.1" , "description": "打扫新华书店", "status": 1, "stuMax": 20},
+        {"id": 2, "name": "义工活动2", "time": "2020.10.2" , "description": "新华书店打扫", "status": 1, "stuMax": 2},
+        {"id": 3, "name": "义工活动3", "time": "2020.10.3" , "description": "华新书店打扫", "status": 0, "stuMax": 5},
+        {"id": 4, "name": "义工活动4", "time": "2020.10.4" , "description": "打扫华新书店", "status": 2, "stuMax": 10}
     ]
 }
 ```
@@ -148,10 +148,10 @@
     "type": "SUCCESS",
     "message": "获取成功",
     "volunteer": [
-        {"id": 1, "name": "义工活动1", "time": "2020.10.1" , "status": 1, "stuMax": 20},
-        {"id": 2, "name": "义工活动2", "time": "2020.10.2" , "status": 1, "stuMax": 2},
-        {"id": 3, "name": "义工活动3", "time": "2020.10.3" , "status": 0, "stuMax": 5},
-        {"id": 4, "name": "义工活动4", "time": "2020.10.4" , "status": 2, "stuMax": 10}
+        {"id": 1, "name": "义工活动1", "description": "新华打扫书店", "time": "2020.10.1" , "status": 1, "stuMax": 20},
+        {"id": 2, "name": "义工活动2", "description": "打扫新华书店", "time": "2020.10.2" , "status": 1, "stuMax": 2},
+        {"id": 3, "name": "义工活动3", "description": "打新华打新华", "time": "2020.10.3" , "status": 0, "stuMax": 5},
+        {"id": 4, "name": "义工活动4", "description": "扫书店扫书店", "time": "2020.10.4" , "status": 2, "stuMax": 10}
     ]
 }
 ```
@@ -218,7 +218,7 @@
 
 ```` json
 {
-    "type": "FAIL",
+    "type": "ERROR",
     "message": "人数超限"
 }
 ````
