@@ -20,3 +20,19 @@ def getVolunteerList():
         return json.dumps(respdata)
     else:
         return ""
+
+@Volunteer.route('/volunteer/<volId>', methods = ['POST', 'GET'])
+def getVolunteer(volId):
+    if request.method == 'POST':
+        json_data = json.loads(
+            request.get_data().decode("utf-8"))
+        respdata = {'type': 'ERROR', 'message': '未知错误'}
+        input_type = json_data.get("type")
+        if input_type == "FETCH":
+            
+        elif input_type == "SIGNUP":
+            
+        else:
+            respdata['message'] = '请求类型错误'
+    else:
+        return ""
