@@ -38,6 +38,7 @@ stt |status | SMALLINT | 义工活动的状态 | 0 | `0`表示已经结束，`1`
 vti |volunteering time inside | INTEGER | 每个人预计将获得的义工时间 | 0 | 以分钟为单位
 vto |volunteering time outside | INTEGER | 每个人预计将获得的义工时间 | 0 | 以分钟为单位
 vtl |volunteering time large | INTEGER | 每个人预计将获得的义工时间 | 0 | 以分钟为单位
+hid |volunteer holder\'s id | INTEGER | 义工发布者的`id` | 20200101 | 
 
 ## stu_vol
 
