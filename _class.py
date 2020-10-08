@@ -30,10 +30,10 @@ def getClassList():
     if request.method == 'POST':  # 只有POST请求才是符合规范的
         respdata = {'type': 'ERROR', 'message': '未知错误!'}  # 定义默认返回值
         if session['permission'] > 1:
-            DB.execute(
+            database.execute(
                 "SELECT userid FROM user WHERE userid > %d" % (thisYear * 100 - 200))
             # 获取数据库返回的所有行
-            r = DB.fetchall()
+            r = database.fetchall()
             if len(r) == 0:  # 如果没有对应的记录
                 respdata['message'] = "数据库信息错误！"
             else:
@@ -54,10 +54,10 @@ def getStudentList(classid):
     if request.method == 'POST':
         respdata = {'type': 'ERROR', 'message': '未知错误!'}  # 定义默认返回值
         if session["permission"] > 1 or classid == session["class"]:
-            DB.execute(
+            database.execute(
                 "SELECT * FROM student WHERE stuId < ? AND stuId > ?",
                 (classid * 100 + 100, classid * 100))
-            r = DB.fetchall()
+            r = database.fetchall()
             if len(r) == 0:
                 respdata['message'] = "数据库信息错误！"
             else:
