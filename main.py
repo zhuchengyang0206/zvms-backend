@@ -1,7 +1,6 @@
 from flask import Flask,session
 import database
-from login import Login
-from logout import Logout
+from user import User
 from _class import Class
 from student import Student
 
@@ -10,12 +9,11 @@ app = Flask(__name__)
 app.debug = True  # 仅在测试环境打开！
 app.config["SECRET_KEY"] = "PaSsw0rD@1234!@#$"
 
-app.register_blueprint(Login) #登录
-app.register_blueprint(Logout) #登出
+app.register_blueprint(User)
 app.register_blueprint(Class)
 app.register_blueprint(Student)
 
-@app.route('/',methods=['POST','GET'])
+@app.route('/',methods=['POST'])
 def main():
    return ""
 

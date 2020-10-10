@@ -25,6 +25,7 @@ DB.execute("INSERT INTO student(sid,snm,vti,vto,vtl) VALUES(%s,'%s',%s,%s,%s);"%
 DB.execute('''CREATE TABLE volunteer(
                   vid INTEGER,
                   vnm CHAR(256),
+                  vdt CHAR(256),
                   vtm CHAR(256),
                   smx INTEGER,
                   dsc CHAR(1024),
@@ -33,7 +34,7 @@ DB.execute('''CREATE TABLE volunteer(
                   vto INTEGER,
                   vtl INTEGER
                );''')
-DB.execute("INSERT INTO volunteer(vid,vnm,vtm,smx,des,stt,vti,vto,vtl) VALUES(%s,'%s','%s','%s',%s,%s,%s,%s,%s);"%(1,"喂孔子+拜锦鲤","2020.9.24","blablablabla",0,202001,0,0,0))
+DB.execute("INSERT INTO volunteer(vid,vnm,vdt,vtm,smx,des,stt,vti,vto,vtl) VALUES(%s,'%s','%s','%s','%s',%s,%s,%s,%s,%s);"%(1,"喂孔子+拜锦鲤","2020.9.24","13:00","blablablabla",0,202001,0,0,0))
 
 DB.execute('''CREATE TABLE stu_vol(
                   vid INTEGER,

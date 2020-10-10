@@ -25,50 +25,64 @@ def classIdToString(a):
     ret = ret + (["NULL","1","2","3","4","5","6","7","8","9","10","2","3","4","5","6","7"])[_class]
     ret = ret + "班"
 
-@Class.route('/class/list', methods=['POST', 'GET'])
+@Class.route('/class/list', methods = ['POST'])
 def getClassList():
-    if request.method == 'POST':  # 只有POST请求才是符合规范的
-        respdata = {'type': 'ERROR', 'message': '未知错误!'}  # 定义默认返回值
-        if session['permission'] > 1:
-            database.execute(
-                "SELECT userid FROM user WHERE userid > %d" % (thisYear * 100 - 200))
-            # 获取数据库返回的所有行
-            r = database.fetchall()
-            if len(r) == 0:  # 如果没有对应的记录
-                respdata['message'] = "数据库信息错误！"
-            else:
-                respdata['type'] = "SUCCESS"
-                respdata['message'] = "获取成功"
-                respdata['class'] = [] # 列表初始化
-                for i in r:
-                    respdata['class'].append(
-                        {'id': i[0], 'name': classIdToString(i[0])})
+    respdata = {'type': 'ERROR', 'message': '未知错误!'}  # 定义默认返回值
+    if session['permission'] > 1:
+        database.execute(
+            "SELECT userid FROM user WHERE userid > %d" % (thisYear * 100 - 200))
+        # 获取数据库返回的所有行
+        r = database.fetchall()
+        if len(r) == 0:  # 如果没有对应的记录
+            respdata['message'] = "数据库信息错误！"
         else:
-            respdata['message'] = "权限错误！"
-        return json.dumps(respdata)  # 传回json数据
-    else:  # 如果不是POST请求那就返回个寂寞
-        return ""
-
-@Class.route("/class/stulist/<classid>", methods=['POST','GET'])
-def getStudentList(classid):
-    if request.method == 'POST':
-        respdata = {'type': 'ERROR', 'message': '未知错误!'}  # 定义默认返回值
-        if session["permission"] > 1 or classid == session["class"]:
-            database.execute(
-                "SELECT * FROM student WHERE stuId < ? AND stuId > ?",
-                (classid * 100 + 100, classid * 100))
-            r = database.fetchall()
-            if len(r) == 0:
-                respdata['message'] = "数据库信息错误！"
-            else:
-                respdata['type'] = "SUCCESS"
-                respdata['message'] = "获取成功"
-                respdata['student'] = []
-                for i in r:
-                    respdata['student'].append(
-                        {'id': i[0], 'name': i[1], 'inside': i[2], 'outside': i[3], 'large': i[4]})
-        else:
-            respdata['message'] = "权限错误！"
-        return json.dumps(respdata)  # 传回json数据
+            respdata['type'] = "SUCCESS"
+            respdata['message'] = "获取成功"
+            respdata['class'] = [] # 列表初始化
+            for i in r:
+                respdata['class'].append(
+                    {'id': i[0], 'name': classIdToString(i[0])})
     else:
-        return ""
+        respdata['message'] = "权限错误！"
+    return json.dumps(respdata)  # 传回json数据
+
+@Class.route("/class/stulist/<classid>", methods = ['POST'])
+def getStudentList(classid):
+    respdata = {'type': 'ERROR', 'message': '未知错误!'}  # 定义默认返回值
+    if session["permission"] > 1 or classid == session["class"]:
+        database.execute(
+            "SELECT * FROM student WHERE stuId < ? AND stuId > ?",
+            (classid * 100 + 100, classid * 100))
+        r = database.fetchall()
+        if len(r) == 0:
+            respdata['message'] = "数据库信息错误！"
+        else:
+            respdata['type'] = "SUCCESS"
+            respdata['message'] = "获取成功"
+            respdata['student'] = []
+            for i in r:
+                respdata['student'].append(
+                    {'id': i[0], 'name': i[1], 'inside': i[2], 'outside': i[3], 'large': i[4]})
+    else:
+        respdata['message'] = "权限错误！"
+    return json.dumps(respdata)  # 传回json数据
+
+@Class.route("/class/volunteer/<classid>", methods = ['POST'])
+def getClassVolunteer(classid):
+    respdata = {'type': 'ERROR', 'message': '未知错误!'}
+    database.execute(
+        "SELECT vid FROM class_vol WHERE cls=%s"%(classid))
+    r = database.fetchall()
+    if len(r) == 0:
+        respdata['message'] = "数据库信息错误！"
+    else:
+        respdata['type'] = 'SUCCESS'
+        respdata['message'] = '获取成功'
+        respdata['volunteer'] = []
+        for i in r:
+            database.execute("SELECT vnm, vdt, vtm, dsc, stt, smx FROM stu_vol WHERE volId=%s"%(i[0]))
+            res = database.fetchall()
+            respdata['volunteer'].append(
+                {"id": i[0], "name": res[0], "date": res[1], "time": res[2], "description": res[3], "status": res[4], "stuMax": res[5]}
+            )
+    return json.dumps(respdata)
