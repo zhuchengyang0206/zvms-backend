@@ -11,7 +11,7 @@ DB.execute('''CREATE TABLE user(
                   pms SMALLINT,
                   pwd CHAR(255)
                );''')
-DB.execute("INSERT INTO user(uid,unm,cls,pms,pwd) VALUES(%s,'%s',%s,%s,'%s');"%(20200101,"admin",202001,1,"123456"))
+DB.execute("INSERT INTO user(uid,unm,cls,pms,pwd) VALUES(%s,'%s',%s,%s,'%s');"%(20200101,"admin",202001,1,"e10adc3949ba59abbe56e057f20f883e"))
 
 DB.execute('''CREATE TABLE student(
                   sid INTEGER,
