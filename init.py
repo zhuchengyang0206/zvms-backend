@@ -28,13 +28,14 @@ DB.execute('''CREATE TABLE volunteer(
                   vdt CHAR(256),
                   vtm CHAR(256),
                   smx INTEGER,
+                  nst INTEGER,
                   dsc CHAR(1024),
                   stt SMALLINT,
                   vti INTEGER,
                   vto INTEGER,
                   vtl INTEGER
                );''')
-DB.execute("INSERT INTO volunteer(vid,vnm,vdt,vtm,smx,des,stt,vti,vto,vtl) VALUES(%s,'%s','%s','%s','%s',%s,%s,%s,%s,%s);"%(1,"喂孔子+拜锦鲤","2020.9.24","13:00","blablablabla",0,202001,0,0,0))
+DB.execute("INSERT INTO volunteer(vid,vnm,vdt,vtm,smx,nst,des,stt,vti,vto,vtl) VALUES(%s,'%s','%s','%s','%s',%s,%s,%s,%s,%s,%s);"%(1,"喂孔子+拜锦鲤","2020.9.24","13:00","blablablabla",0,202001,0,0,0,0))
 
 DB.execute('''CREATE TABLE stu_vol(
                   vid INTEGER,

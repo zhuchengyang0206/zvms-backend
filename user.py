@@ -5,6 +5,25 @@ import database
 
 User = Blueprint('user', __name__)
 
+def classIdToString(a):
+    global thisYear
+    id = int(a)
+    _year = id // 100
+    _class = id % 100
+    ret = ""
+    if _class <= 10:
+        ret = ret + "高"
+    elif _class <= 16:
+        ret = ret + "蛟"
+    if _year == thisYear:
+        ret = ret + "一"
+    elif _year == thisYear - 1:
+        ret = ret + "二"
+    else:
+        ret = ret + "三"
+    ret = ret + (["NULL","1","2","3","4","5","6","7","8","9","10","2","3","4","5","6","7"])[_class]
+    ret = ret + "班"
+
 @User.route('/user/login', methods=['POST'])
 def login():
     json_data = json.loads(
@@ -27,6 +46,7 @@ def login():
         respdata['username'] = row[1]
         respdata['class'] = row[2]
         respdata['permission'] = row[3]
+        respdata['classname'] = classIdToString(row[2])
 
         session['username'] = respdata['username']
         session['class'] = respdata['class']

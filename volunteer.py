@@ -25,6 +25,9 @@ def getVolunteer(volId):
     respdata = {'type': 'ERROR', 'message': '未知错误'}
     input_type = json_data.get("type")
     if input_type == "FETCH":
+        database.execute(
+            "SELECT vnm, vdt, vtm, smx, nst, des, stt, vti, vto, vtl FROM volunteer WHERE vid='%s'"%(volId))
+        r = database.fetchall()
         # TODO
     elif input_type == "SIGNUP":
         
