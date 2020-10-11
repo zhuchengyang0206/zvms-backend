@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, session
 import json
 import database
 
@@ -30,7 +30,7 @@ def getClassList():
     respdata = {'type': 'ERROR', 'message': '未知错误!'}  # 定义默认返回值
     if session['permission'] > 1:
         database.execute(
-            "SELECT userid FROM user WHERE userid > %d" % (thisYear * 100 - 200))
+            "SELECT uid FROM user WHERE uid > %d;" % (thisYear * 100 - 200))
         # 获取数据库返回的所有行
         r = database.fetchall()
         if len(r) == 0:  # 如果没有对应的记录
@@ -46,12 +46,12 @@ def getClassList():
         respdata['message'] = "权限错误！"
     return json.dumps(respdata)  # 传回json数据
 
-@Class.route("/class/stulist/<classid>", methods = ['POST'])
+@Class.route("/class/stulist/<int:classid>", methods = ['POST'])
 def getStudentList(classid):
     respdata = {'type': 'ERROR', 'message': '未知错误!'}  # 定义默认返回值
     if session["permission"] > 1 or classid == session["class"]:
         database.execute(
-            "SELECT * FROM student WHERE stuId < ? AND stuId > ?",
+            "SELECT * FROM student WHERE sid < %d AND sid > %d;"%
             (classid * 100 + 100, classid * 100))
         r = database.fetchall()
         if len(r) == 0:

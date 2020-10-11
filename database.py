@@ -14,6 +14,7 @@ def close():
     conn.close()
 
 def execute(a):
+    print(a)
     global cur, conn
     try:
         cur.execute(a)

@@ -12,7 +12,7 @@ def getVolBook(stuId):
     respdata['message'] = "获取成功"
     respdata['rec'] = []
     for i in r:
-        database.execute("SELECT vnm, vti, vto, vtl, stt FROM stu_vol WHERE volId=%s"%(i[0]))
+        database.execute("SELECT vnm, vti, vto, vtl, stt FROM stu_vol WHERE vid=%s"%(i[0]))
         res = database.fetchall()
         respdata['rec'].append(
             {"volId": i[0], "name": res[0], "inside": res[1], "outside": res[2], "large": res[3], "status": res[4]}
