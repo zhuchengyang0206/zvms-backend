@@ -8,7 +8,7 @@ Volunteer = Blueprint('volunteer', __name__)
 def getVolunteerList():
     respdata = {'type': 'ERROR', 'message': '未知错误'}
     database.execute(
-        "SELECT vid, vnm, dsc, vtm, stt, smx FROM volunteer")
+        "SELECT vid, vnm, dsc, vtm, stt, smx FROM volunteer") # 这里是否需要获取分配给我班有多少人
     r = database.fetchall()
     respdata['type'] = 'SUCCESS'
     respdata['message'] = '获取成功'
@@ -26,7 +26,7 @@ def getVolunteer(volId):
     input_type = json_data.get("type")
     if input_type == "FETCH":
         database.execute(
-            "SELECT vnm, vdt, vtm, smx, nst, des, stt, vti, vto, vtl FROM volunteer WHERE vid='%s'"%(volId))
+            "SELECT vnm, vdt, vtm, smx, dsc, nst, stt, vti, vto, vtl, hid FROM volunteer WHERE vid='%s'"%(volId))
         r = database.fetchall()
         # TODO
     elif input_type == "SIGNUP":

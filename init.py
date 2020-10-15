@@ -37,9 +37,10 @@ DB.execute('''CREATE TABLE volunteer(
                   stt SMALLINT,
                   vti INTEGER,
                   vto INTEGER,
-                  vtl INTEGER
+                  vtl INTEGER,
+                  hid INTEGER
                );''')
-DB.execute("INSERT INTO volunteer(vid,vnm,vdt,vtm,smx,nst,des,stt,vti,vto,vtl) VALUES(%s,'%s','%s','%s','%s',%s,%s,%s,%s,%s,%s);"%(1,"喂孔子+拜锦鲤","2020.9.24","13:00","blablablabla",0,202001,0,0,0,0))
+DB.execute("INSERT INTO volunteer(vid,vnm,vdt,vtm,smx,nst,dsc,stt,vti,vto,vtl,hid) VALUES(%d,'%s','%s','%s',%d,'%s',%d,%d,%d,%d,%d);"%(1,"喂孔子+拜锦鲤","2020.9.24","13:00",10,0,"blablablabla",0,0,0,0,202001))
 
 DB.execute("DROP TABLE IF EXISTS stu_vol;")
 
@@ -51,15 +52,16 @@ DB.execute('''CREATE TABLE stu_vol(
                   vto INTEGER,
                   vtl INTEGER
                );''')
-DB.execute("INSERT INTO stu_vol(vid,sid,stt,vti,vto,vtl) VALUES(%s,%s,%s,%s,%s,%s);"%(1,20200101,0,0,0,0))
+DB.execute("INSERT INTO stu_vol(vid,sid,stt,vti,vto,vtl) VALUES(%d,%d,%d,%d,%d,%d);"%(1,20200101,0,0,0,0))
 
 DB.execute("DROP TABLE IF EXISTS class_vol;")
 
 DB.execute('''CREATE TABLE class_vol(
                   vid INTEGER,
-                  cls INTEGER
+                  cls INTEGER,
+                  smx INTEGER
                );''')
 
-DB.execute("INSERT INTO class_vol(vid,cls) VALUES(%s,%s);"%(1,202001))
+DB.execute("INSERT INTO class_vol(vid,cls) VALUES(%d,%d,%d);"%(1,202001,10))
 
 DB.commit()
