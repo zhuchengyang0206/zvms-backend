@@ -45,3 +45,35 @@ def getVolunteer(volId):
 @Volunteer.route('/volunteer/signup/<volId>', methods = ['POST'])
 def signupVolunteer(volId):
     respdata = {'type': 'ERROR', 'message': '未知错误'}
+    json_data = json.loads(
+        request.get_data().decode("utf-8"))
+    user_class = session["class"]
+    tag = True
+    for i in json_data['stulst']:
+        if i < user_class * 100 or i >= user_class * 100 + 100:
+            Tag = False
+            break
+    if not Tag:
+        respdata['message'] = "学生列表错误"
+    else:
+        database.execute("SELECT stuMax, nowStuCount FROM volunteer WHERE volId=%d"%(volId))
+        r = database.fetchall()
+        if len(r) <> 1:
+            respdata['message'] = "数据库信息错误"
+        else:
+            if len(json_data['stulst']) > r[0][0] - r[0][1]:
+                respdata['message'] = "人数超限"
+            else:
+                database.execute("SELECT stuMax FROM class_vol WHERE volId=%d AND classId=%d"%(volId, user_class))
+                r = database.fetchall()
+                if len(r) <> 1:
+                    respdata['message'] = "数据库信息错误"
+                else:
+                    if len(json_data['stulst']) > r[0][0]:
+                        respdata['message'] = "人数超限"
+                    else:
+                        for i in json_data['stulst']:
+                            # TODO
+                        respdata['type'] = "SUCCESS"
+                        respdata['message'] = "添加成功"
+                        
