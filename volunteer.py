@@ -18,18 +18,30 @@ def getVolunteerList():
             {'id': i[0], 'name': i[1], 'description': i[2], 'time': i[3], 'status': i[4], 'stuMax': i[5]})
     return json.dumps(respdata)
 
-@Volunteer.route('/volunteer/<volId>', methods = ['POST'])
+@Volunteer.route('/volunteer/fetch/<volId>', methods = ['POST'])
 def getVolunteer(volId):
-    json_data = json.loads(
-        request.get_data().decode("utf-8"))
     respdata = {'type': 'ERROR', 'message': '未知错误'}
-    input_type = json_data.get("type")
-    if input_type == "FETCH":
-        database.execute(
-            "SELECT vnm, vdt, vtm, smx, dsc, nst, stt, vti, vto, vtl, hid FROM volunteer WHERE vid='%s'"%(volId))
-        r = database.fetchall()
-        # TODO
-    elif input_type == "SIGNUP":
-        
+    database.execute(
+        "SELECT vnm, vdt, vtm, smx, dsc, nst, stt, vti, vto, vtl, hid FROM volunteer WHERE vid='%s'"%(volId))
+    r = database.fetchall()
+    if len(r) <> 1:
+        respdata['message'] = '数据库信息错误'
     else:
-        respdata['message'] = '请求类型错误'
+        respdata['type'] = 'SUCCESS'
+        respdata['message'] = '获取成功'
+        respdata['name'] = r[0][0]
+        respdata['date'] = r[0][1]
+        respdata['time'] = r[0][2]
+        respdata['stuMax'] = r[0][3]
+        respdata['description'] = r[0][4]
+        respdata['nowStu'] = r[0][5]
+        respdata['status'] = r[0][6]
+        respdata['inside'] = r[0][7]
+        respdata['outside'] = r[0][8]
+        respdata['large'] = r[0][9]
+        respdata['hid'] = r[0][10]
+    return json.dumps(respdata)
+
+@Volunteer.route('/volunteer/signup/<volId>', methods = ['POST'])
+def signupVolunteer(volId):
+    respdata = {'type': 'ERROR', 'message': '未知错误'}
