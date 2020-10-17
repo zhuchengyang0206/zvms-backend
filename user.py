@@ -35,7 +35,7 @@ def login():
     userid = json_data.get("userid")
     password = json_data.get("password")
     database.execute(
-        "SELECT * FROM user WHERE unm='%s' AND pwd='%s';"%(userid, password))
+        "SELECT * FROM user WHERE userName='%s' AND password='%s';"%(userid, password))
     # 获取数据库返回的所有行
     r = database.fetchall()
     if len(r) == 0:  # 如果没有对应的记录

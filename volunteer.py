@@ -8,7 +8,7 @@ Volunteer = Blueprint('volunteer', __name__)
 def getVolunteerList():
     respdata = {'type': 'ERROR', 'message': '未知错误'}
     database.execute(
-        "SELECT vid, vnm, dsc, vtm, stt, smx FROM volunteer") # 这里是否需要获取分配给我班有多少人
+        "SELECT volId, volName, description, volTime, status, stuMax FROM volunteer") # 这里是否需要获取分配给我班有多少人
     r = database.fetchall()
     respdata['type'] = 'SUCCESS'
     respdata['message'] = '获取成功'
@@ -22,7 +22,7 @@ def getVolunteerList():
 def getVolunteer(volId):
     respdata = {'type': 'ERROR', 'message': '未知错误'}
     database.execute(
-        "SELECT vnm, vdt, vtm, smx, dsc, nst, stt, vti, vto, vtl, hid FROM volunteer WHERE vid='%s'"%(volId))
+        "SELECT volName, volDate, volTime, stuMax, description, nowStuCount, status, volTimeInside, volTimeOutside, volTimeLarge, holderId FROM volunteer WHERE volId='%s'"%(volId))
     r = database.fetchall()
     if len(r) <> 1:
         respdata['message'] = '数据库信息错误'

@@ -30,7 +30,7 @@ def getClassList():
     respdata = {'type': 'ERROR', 'message': '未知错误!'}  # 定义默认返回值
     if session['permission'] > 1:
         database.execute(
-            "SELECT uid FROM user WHERE uid > %d;" % (thisYear * 100 - 200))
+            "SELECT userId FROM user WHERE userId > %d;" % (thisYear * 100 - 200))
         # 获取数据库返回的所有行
         r = database.fetchall()
         if len(r) == 0:  # 如果没有对应的记录
@@ -51,7 +51,7 @@ def getStudentList(classid):
     respdata = {'type': 'ERROR', 'message': '未知错误!'}  # 定义默认返回值
     if session["permission"] > 1 or classid == session["class"]:
         database.execute(
-            "SELECT * FROM student WHERE sid < %d AND sid > %d;"%
+            "SELECT * FROM student WHERE stuId < %d AND stuId > %d;"%
             (classid * 100 + 100, classid * 100))
         r = database.fetchall()
         if len(r) == 0:
@@ -71,7 +71,7 @@ def getStudentList(classid):
 def getClassVolunteer(classid):
     respdata = {'type': 'ERROR', 'message': '未知错误!'}
     database.execute(
-        "SELECT vid FROM class_vol WHERE cls=%s"%(classid))
+        "SELECT volId FROM class_vol WHERE class=%s"%(classid))
     r = database.fetchall()
     if len(r) == 0:
         respdata['message'] = "数据库信息错误！"
@@ -80,7 +80,7 @@ def getClassVolunteer(classid):
         respdata['message'] = '获取成功'
         respdata['volunteer'] = []
         for i in r:
-            database.execute("SELECT vnm, vdt, vtm, dsc, stt, smx FROM stu_vol WHERE volId=%s"%(i[0]))
+            database.execute("SELECT volName, volDate, volTime, description, status, stuMax FROM stu_vol WHERE volId=%s"%(i[0]))
             res = database.fetchall()
             respdata['volunteer'].append(
                 {"id": i[0], "name": res[0], "date": res[1], "time": res[2], "description": res[3], "status": res[4], "stuMax": res[5]}
