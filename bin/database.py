@@ -14,10 +14,16 @@ def close():
     conn.close()
 
 def execute(a):
-    print(a)
     global cur, conn
     try:
         cur.execute(a)
+    except:
+        conn.rollback()
+
+def execute_param(a, b):
+    global cur, conn
+    try:
+        cur.execute(a, b)
     except:
         conn.rollback()
 

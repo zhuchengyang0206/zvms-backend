@@ -39,5 +39,5 @@
   ```
   7. 启动程序
   ```
-  python main.py
+  python bin\main.py
   ```

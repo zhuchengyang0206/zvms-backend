@@ -11,7 +11,9 @@ DB.execute('''CREATE TABLE user(
                   permission SMALLINT,
                   password CHAR(255)
                );''')
-DB.execute("INSERT INTO user(userId,userName,class,permission,password) VALUES(%d,'%s',%d,%d,'%s');"%(20200101,"admin",202001,2,"e10adc3949ba59abbe56e057f20f883e"))
+DB.execute_param('''INSERT INTO user(userId, userName, class, permission, password)
+                    VALUES(?, '?', ?, ?, '?');''',
+                    (20200101, "admin", 202001, 2, "e10adc3949ba59abbe56e057f20f883e"))
 
 DB.execute("DROP TABLE IF EXISTS student;")
 
@@ -22,7 +24,9 @@ DB.execute('''CREATE TABLE student(
                   volTimeOutside INTEGER,
                   volTimeLarge INTEGER
                );''')
-DB.execute("INSERT INTO student(stuId,stuName,volTimeInside,volTimeOutside,volTimeLarge) VALUES(%d,'%s',%d,%d,%d);"%(20200101,"王彳亍",0,0,0))
+DB.execute_param('''INSERT INTO student(stuId, stuName, volTimeInside, volTimeOutside, volTimeLarge)
+                    VALUES(?, '?', ?, ?, ?);''',
+                    (20200101, "王彳亍", 0, 0, 0))
 
 DB.execute("DROP TABLE IF EXISTS volunteer;")
 
@@ -40,7 +44,9 @@ DB.execute('''CREATE TABLE volunteer(
                   volTimeLarge INTEGER,
                   holderId INTEGER
                );''')
-DB.execute("INSERT INTO volunteer(volId,volName,volDate,volTime,stuMax,nowStuCount,description,status,volTimeInside,volTimeOutside,volTimeLarge,holderId) VALUES(%d,'%s','%s','%s',%d,'%s',%d,%d,%d,%d,%d);"%(1,"喂孔子+拜锦鲤","2020.9.24","13:00",10,0,"blablablabla",0,0,0,0,202001))
+DB.execute_param('''INSERT INTO volunteer(volId, volName, volDate, volTime, stuMax, nowStuCount, description, status, volTimeInside, volTimeOutside, volTimeLarge, holderId)
+                    VALUES(?, '?', '?', '?', ?, '?', ?, ?, ?, ?, ?);''',
+                    (1, "喂孔子+拜锦鲤", "2020.9.24", "13:00", 10, 0, "blablablabla", 0, 0, 0, 0, 202001))
 
 DB.execute("DROP TABLE IF EXISTS stu_vol;")
 
@@ -52,7 +58,9 @@ DB.execute('''CREATE TABLE stu_vol(
                   volTimeOutside INTEGER,
                   volTimeLarge INTEGER
                );''')
-DB.execute("INSERT INTO stu_vol(volId,stuId,status,volTimeInside,volTimeOutside,volTimeLarge) VALUES(%d,%d,%d,%d,%d,%d);"%(1,20200101,0,0,0,0))
+DB.execute_param('''INSERT INTO stu_vol(volId, stuId, status, volTimeInside, volTimeOutside, volTimeLarge)
+                    VALUES(?, ?, ?, ?, ?, ?);''',
+                    (1, 20200101, 0, 0, 0, 0))
 
 DB.execute("DROP TABLE IF EXISTS class_vol;")
 
@@ -62,6 +70,8 @@ DB.execute('''CREATE TABLE class_vol(
                   stuMax INTEGER
                );''')
 
-DB.execute("INSERT INTO class_vol(volId,class) VALUES(%d,%d,%d);"%(1,202001,10))
+DB.execute_param('''INSERT INTO class_vol(volId, class, stuMax)
+                    VALUES(?, ?, ?);''',
+                    (1, 202001, 10))
 
 DB.commit()

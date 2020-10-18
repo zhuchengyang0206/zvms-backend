@@ -1,7 +1,7 @@
 from flask import Blueprint, request, session
 
 import json
-import database
+import database as DB
 
 User = Blueprint('user', __name__)
 
@@ -34,10 +34,10 @@ def login():
     # 读取参数
     userid = json_data.get("userid")
     password = json_data.get("password")
-    database.execute(
-        "SELECT * FROM user WHERE userName='%s' AND password='%s';"%(userid, password))
+    DB.execute_param(
+        "SELECT * FROM user WHERE userName='?' AND password='?';", (userid, password))
     # 获取数据库返回的所有行
-    r = database.fetchall()
+    r = DB.fetchall()
     if len(r) == 0:  # 如果没有对应的记录
         respdata['message'] = "用户ID或密码错误！"
     elif len(r) == 1:  # 如果只有一条记录说明符合要求
