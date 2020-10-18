@@ -67,6 +67,7 @@ def signupVolunteer(volId):
             else:
                 DB.execute_param(
                     "SELECT stuMax FROM class_vol WHERE volId = ? AND classId = ?", (volId, user_class))
+                # 这里不对，应该在class_vol表里存这个班已经报名了多少人，不然多次报名可以突破班级人数限制
                 r = DB.fetchall()
                 if len(r) <> 1:
                     respdata['message'] = "数据库信息错误"
@@ -75,7 +76,10 @@ def signupVolunteer(volId):
                         respdata['message'] = "人数超限"
                     else:
                         for i in json_data['stulst']:
-                            # TODO
+                            # 代码来不及写了，写一下思路
+                            # class_vol表里修改一下这个班的报名人数
+                            # stu_vol表里加一条未审核的记录
+                            # volunteer表里修改nowStuCount
                         respdata['type'] = "SUCCESS"
                         respdata['message'] = "添加成功"
                         
