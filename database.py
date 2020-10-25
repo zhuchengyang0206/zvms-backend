@@ -9,13 +9,12 @@ conn = connect(
     db = "zvms"
 )
 cur = conn.cursor()
-fo = open("SQL.log", "a+")
 
-def execute(*args):
+def execute(*args): # 这个*args有问题
+    print(args)
     global cur, conn
     try:
         cur.execute(args)
-        fo.write(args, '\n')
     except:
         conn.rollback()
 
