@@ -3,7 +3,7 @@ import database as DB
 import json
 
 Student = Blueprint("student", __name__)
-@Student.route('/student/volbook/<stuId>', methods=['POST'])
+@Student.route('/student/volbook/<int:stuId>', methods=['POST'])
 def getVolBook(stuId):
     respdata = {'type': 'ERROR', 'message': '未知错误!'}
     DB.execute_param(

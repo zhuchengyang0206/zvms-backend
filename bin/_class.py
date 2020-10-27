@@ -47,7 +47,7 @@ def getClassList():
         respdata['message'] = "权限错误！"
     return json.dumps(respdata)  # 传回json数据
 
-@Class.route("/class/stulist/<int:classid>", methods = ['POST'])
+@Class.route("/class/stulist/<int:classId>", methods = ['POST'])
 def getStudentList(classid):
     respdata = {'type': 'ERROR', 'message': '未知错误!'}  # 定义默认返回值
     if session["permission"] > 1 or classid == session["class"]:
@@ -68,7 +68,7 @@ def getStudentList(classid):
         respdata['message'] = "权限错误！"
     return json.dumps(respdata)  # 传回json数据
 
-@Class.route("/class/volunteer/<classid>", methods = ['POST'])
+@Class.route("/class/volunteer/<int:classId>", methods = ['POST'])
 def getClassVolunteer(classid):
     respdata = {'type': 'ERROR', 'message': '未知错误!'}
     DB.execute_param(

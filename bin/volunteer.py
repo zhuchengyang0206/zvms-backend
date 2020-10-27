@@ -18,7 +18,7 @@ def getVolunteerList():
             {'id': i[0], 'name': i[1], 'description': i[2], 'time': i[3], 'status': i[4], 'stuMax': i[5]})
     return json.dumps(respdata)
 
-@Volunteer.route('/volunteer/fetch/<volId>', methods = ['POST'])
+@Volunteer.route('/volunteer/fetch/<int:volId>', methods = ['POST'])
 def getVolunteer(volId):
     respdata = {'type': 'ERROR', 'message': '未知错误'}
     DB.execute_param(
@@ -42,11 +42,10 @@ def getVolunteer(volId):
         respdata['hid'] = r[0][10]
     return json.dumps(respdata)
 
-@Volunteer.route('/volunteer/signup/<volId>', methods = ['POST'])
+@Volunteer.route('/volunteer/signup/<int:volId>', methods = ['POST'])
 def signupVolunteer(volId):
     respdata = {'type': 'ERROR', 'message': '未知错误'}
-    json_data = json.loads(
-        request.get_data().decode("utf-8"))
+    json_data = json.loads(request.get_data().decode("utf-8"))
     user_class = session["class"]
     tag = True
     for i in json_data['stulst']:
@@ -83,3 +82,8 @@ def signupVolunteer(volId):
                         respdata['type'] = "SUCCESS"
                         respdata['message'] = "添加成功"
                         
+@Volunteer.route('volunteer/create', methods = ['POST'])
+def createVolunteer():
+    respdata = {'type': 'error', 'message': '未知错误'}
+    json_data = json.loads(request.get_data().decode("utf-8"))
+    if session["permisson"]>1
