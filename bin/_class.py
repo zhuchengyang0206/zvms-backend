@@ -29,8 +29,8 @@ def classIdToString(a):
 def getClassList():
     respdata = {'type': 'ERROR', 'message': '未知错误!'}  # 定义默认返回值
     if session['permission'] > 1:
-        DB.execute_param(
-            "SELECT userId FROM user WHERE userId > ?;",
+        DB.execute(
+            "SELECT userId FROM user WHERE userId > %d;"%
             (thisYear * 100 - 200))
         # 获取数据库返回的所有行
         r = DB.fetchall()
@@ -51,8 +51,8 @@ def getClassList():
 def getStudentList(classid):
     respdata = {'type': 'ERROR', 'message': '未知错误!'}  # 定义默认返回值
     if session["permission"] > 1 or classid == session["class"]:
-        DB.execute_param(
-            "SELECT * FROM student WHERE stuId < ? AND stuId > ?;",
+        DB.execute(
+            "SELECT * FROM student WHERE stuId < %d AND stuId > %d;"%
             (classid * 100 + 100, classid * 100))
         r = DB.fetchall()
         if len(r) == 0:
@@ -71,8 +71,8 @@ def getStudentList(classid):
 @Class.route("/class/volunteer/<int:classId>", methods = ['POST'])
 def getClassVolunteer(classid):
     respdata = {'type': 'ERROR', 'message': '未知错误!'}
-    DB.execute_param(
-        "SELECT volId FROM class_vol WHERE class = ?", (classid))
+    DB.execute(
+        "SELECT volId FROM class_vol WHERE class = %d"% (classid))
     r = DB.fetchall()
     if len(r) == 0:
         respdata['message'] = "数据库信息错误！"
@@ -81,8 +81,8 @@ def getClassVolunteer(classid):
         respdata['message'] = '获取成功'
         respdata['volunteer'] = []
         for i in r:
-            DB.execute_param(
-                "SELECT volName, volDate, volTime, description, status, stuMax FROM stu_vol WHERE volId=?", (i[0]))
+            DB.execute(
+                "SELECT volName, volDate, volTime, description, status, stuMax FROM stu_vol WHERE volId=%d"% (i[0]))
             res = DB.fetchall()
             respdata['volunteer'].append(
                 {"id": i[0], "name": res[0], "date": res[1], "time": res[2], "description": res[3], "status": res[4], "stuMax": res[5]}

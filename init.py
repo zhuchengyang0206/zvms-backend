@@ -12,8 +12,8 @@ DB.execute('''CREATE TABLE user(
                   password CHAR(255)
                );''')
 DB.execute('''INSERT INTO user(userId, userName, class, permission, password)
-                    VALUES(?, '?', ?, ?, '?');''',
-                    (20200101, "admin", 202001, 2, "e10adc3949ba59abbe56e057f20f883e"))
+              VALUES(%d, '%s', %d, %d, '%s');'''%
+              (20200101, "admin", 202001, 2, "e10adc3949ba59abbe56e057f20f883e"))
 
 DB.execute("DROP TABLE IF EXISTS student;")
 
@@ -25,8 +25,8 @@ DB.execute('''CREATE TABLE student(
                   volTimeLarge INTEGER
                );''')
 DB.execute('''INSERT INTO student(stuId, stuName, volTimeInside, volTimeOutside, volTimeLarge)
-                    VALUES(?, '?', ?, ?, ?);''',
-                    (20200101, "王彳亍", 0, 0, 0))
+              VALUES(%d, '%s', %d, %d, %d);'''%
+              (20200101, "王彳亍", 0, 0, 0))
 
 DB.execute("DROP TABLE IF EXISTS volunteer;")
 
@@ -45,8 +45,8 @@ DB.execute('''CREATE TABLE volunteer(
                   holderId INTEGER
                );''')
 DB.execute('''INSERT INTO volunteer(volId, volName, volDate, volTime, stuMax, nowStuCount, description, status, volTimeInside, volTimeOutside, volTimeLarge, holderId)
-                    VALUES(?, '?', '?', '?', ?, '?', ?, ?, ?, ?, ?);''',
-                    (1, "喂孔子+拜锦鲤", "2020.9.24", "13:00", 10, 0, "blablablabla", 0, 0, 0, 0, 202001))
+              VALUES(%d, '%s', '%s', '%s', %d, %d, '%s', %d, %d, %d, %d);'''%
+              (1, "喂孔子+拜锦鲤", "2020.9.24", "13:00", 10, 0, "blablablabla", 0, 1, 0, 202001))
 
 DB.execute("DROP TABLE IF EXISTS stu_vol;")
 
@@ -59,8 +59,8 @@ DB.execute('''CREATE TABLE stu_vol(
                   volTimeLarge INTEGER
                );''')
 DB.execute('''INSERT INTO stu_vol(volId, stuId, status, volTimeInside, volTimeOutside, volTimeLarge)
-                    VALUES(?, ?, ?, ?, ?, ?);''',
-                    (1, 20200101, 0, 0, 0, 0))
+              VALUES(%d, %d, %d, %d, %d, %d);'''%
+              (1, 20200101, 0, 0, 0, 0))
 
 DB.execute("DROP TABLE IF EXISTS class_vol;")
 
@@ -71,7 +71,7 @@ DB.execute('''CREATE TABLE class_vol(
                );''')
 
 DB.execute('''INSERT INTO class_vol(volId, class, stuMax)
-                    VALUES(?, ?, ?);''',
-                    (1, 202001, 10))
+              VALUES(%d, %d, %d);'''%
+              (1, 202001, 10))
 
 DB.commit()

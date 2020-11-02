@@ -21,8 +21,8 @@ def getVolunteerList():
 @Volunteer.route('/volunteer/fetch/<int:volId>', methods = ['POST'])
 def getVolunteer(volId):
     respdata = {'type': 'ERROR', 'message': '未知错误'}
-    DB.execute_param(
-        "SELECT volName, volDate, volTime, stuMax, description, nowStuCount, status, volTimeInside, volTimeOutside, volTimeLarge, holderId FROM volunteer WHERE volId = '?'", (volId))
+    DB.execute(
+        "SELECT volName, volDate, volTime, stuMax, description, nowStuCount, status, volTimeInside, volTimeOutside, volTimeLarge, holderId FROM volunteer WHERE volId = '%s'"% (volId))
     r = DB.fetchall()
     if len(r) <> 1:
         respdata['message'] = '数据库信息错误'
@@ -55,8 +55,8 @@ def signupVolunteer(volId):
     if not Tag:
         respdata['message'] = "学生列表错误"
     else:
-        DB.execute_param(
-            "SELECT stuMax, nowStuCount FROM volunteer WHERE volId = ?", (volId))
+        DB.execute(
+            "SELECT stuMax, nowStuCount FROM volunteer WHERE volId = %d"% (volId))
         r = DB.fetchall()
         if len(r) <> 1:
             respdata['message'] = "数据库信息错误"
@@ -64,8 +64,8 @@ def signupVolunteer(volId):
             if len(json_data['stulst']) > r[0][0] - r[0][1]:
                 respdata['message'] = "人数超限"
             else:
-                DB.execute_param(
-                    "SELECT stuMax FROM class_vol WHERE volId = ? AND classId = ?", (volId, user_class))
+                DB.execute(
+                    "SELECT stuMax FROM class_vol WHERE volId = %d AND classId = %d"% (volId, user_class))
                 # 这里不对，应该在class_vol表里存这个班已经报名了多少人，不然多次报名可以突破班级人数限制
                 r = DB.fetchall()
                 if len(r) <> 1:
