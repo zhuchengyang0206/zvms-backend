@@ -33,6 +33,7 @@ def encrypt(a):
     a = re.sub('-' , '_w', a)
     a = re.sub('=' , '_e', a)
     a = re.sub('+' , '_E', a)
+    return a
 
 def decrypt(a):
     a = re.sub('__', '_' , a)
@@ -67,3 +68,4 @@ def decrypt(a):
     a = re.sub('_3', '#' , a)
     a = re.sub('_2', '@' , a)
     a = re.sub('_1', '!' , a)
+    return a
