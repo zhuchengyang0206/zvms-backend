@@ -1,4 +1,5 @@
 from pymysql import connect, cursors
+import traceback # 更好的错误输出
 
 conn = connect(
     host = "127.0.0.1",
@@ -10,15 +11,18 @@ cur = conn.cursor()
 
 def close():
     global conn,cur
-    cur.close()
-    conn.close()
-
-def execute(a):
-    global cur, conn
-    print(a)
     try:
-        cur.execute(a)
+        cur.close()
+        conn.close()
     except:
+        traceback.print_exc()
+
+def execute(sql, param = None):
+    global cur, conn
+    try:
+        cur.execute(sql, param)
+    except:
+        traceback.print_exc()
         conn.rollback()
         
 def commit():
@@ -26,8 +30,12 @@ def commit():
     try:
         conn.commit()
     except:
+        traceback.print_exc()
         conn.rollback()
 
 def fetchall():
     global cur
-    return cur.fetchall()
+    try:
+        return cur.fetchall()
+    except:
+        traceback.print_exc()
