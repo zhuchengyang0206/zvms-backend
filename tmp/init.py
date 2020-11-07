@@ -3,7 +3,6 @@
 import database as DB
 
 DB.execute("DROP TABLE IF EXISTS user;")
-
 DB.execute('''CREATE TABLE user(
                   userId INTEGER,
                   userName CHAR(255),
@@ -11,12 +10,8 @@ DB.execute('''CREATE TABLE user(
                   permission SMALLINT,
                   password CHAR(255)
                );''')
-DB.execute('''INSERT INTO user(userId, userName, class, permission, password)
-              VALUES(%d, '%s', %d, %d, '%s');'''%
-              (20200101, "admin", 202001, 2, "e10adc3949ba59abbe56e057f20f883e"))
 
 DB.execute("DROP TABLE IF EXISTS student;")
-
 DB.execute('''CREATE TABLE student(
                   stuId INTEGER,
                   stuName CHAR(64),
@@ -24,32 +19,24 @@ DB.execute('''CREATE TABLE student(
                   volTimeOutside INTEGER,
                   volTimeLarge INTEGER
                );''')
-DB.execute('''INSERT INTO student(stuId, stuName, volTimeInside, volTimeOutside, volTimeLarge)
-              VALUES(%d, '%s', %d, %d, %d);'''%
-              (20200101, "王彳亍", 0, 0, 0))
 
 DB.execute("DROP TABLE IF EXISTS volunteer;")
-
 DB.execute('''CREATE TABLE volunteer(
                   volId INTEGER,
-                  volName CHAR(256),
-                  volDate CHAR(256),
-                  volTime CHAR(256),
+                  volName CHAR(255),
+                  volDate DATE,
+                  volTime TIME,
                   stuMax INTEGER,
                   nowStuCount INTEGER,
-                  description CHAR(1024),
+                  description TEXT,
                   status SMALLINT,
                   volTimeInside INTEGER,
                   volTimeOutside INTEGER,
                   volTimeLarge INTEGER,
                   holderId INTEGER
                );''')
-DB.execute('''INSERT INTO volunteer(volId, volName, volDate, volTime, stuMax, nowStuCount, description, status, volTimeInside, volTimeOutside, volTimeLarge, holderId)
-              VALUES(%d, '%s', '%s', '%s', %d, %d, '%s', %d, %d, %d, %d);'''%
-              (1, "喂孔子+拜锦鲤", "2020.9.24", "13:00", 10, 0, "blablablabla", 0, 1, 0, 202001))
 
 DB.execute("DROP TABLE IF EXISTS stu_vol;")
-
 DB.execute('''CREATE TABLE stu_vol(
                   volId INTEGER,
                   stuId INTEGER,
@@ -58,20 +45,34 @@ DB.execute('''CREATE TABLE stu_vol(
                   volTimeOutside INTEGER,
                   volTimeLarge INTEGER
                );''')
-DB.execute('''INSERT INTO stu_vol(volId, stuId, status, volTimeInside, volTimeOutside, volTimeLarge)
-              VALUES(%d, %d, %d, %d, %d, %d);'''%
-              (1, 20200101, 0, 0, 0, 0))
 
 DB.execute("DROP TABLE IF EXISTS class_vol;")
-
 DB.execute('''CREATE TABLE class_vol(
                   volId INTEGER,
                   class INTEGER,
                   stuMax INTEGER
                );''')
 
-DB.execute('''INSERT INTO class_vol(volId, class, stuMax)
-              VALUES(%d, %d, %d);'''%
-              (1, 202001, 10))
+
+               
+# DB.execute('''INSERT INTO user(userId, userName, class, permission, password)
+#               VALUES(%d, %s, %d, %d, %s);''',
+#               (20200101, "admin", 202001, 2, "e10adc3949ba59abbe56e057f20f883e"))
+
+# DB.execute('''INSERT INTO student(stuId, stuName, volTimeInside, volTimeOutside, volTimeLarge)
+#               VALUES(%d, %s, %d, %d, %d);''',
+#               (20200101, "王彳亍", 0, 0, 0))
+
+# DB.execute('''INSERT INTO volunteer(volId, volName, volDate, volTime, stuMax, nowStuCount, description, status, volTimeInside, volTimeOutside, volTimeLarge, holderId)
+#               VALUES(%d, %s, %s, %s, %d, %d, %s, %d, %d, %d, %d);''',
+#               (1, "喂孔子+拜锦鲤", "2020.9.24", "13:00", 10, 0, "blablablabla", 0, 1, 0, 202001))
+
+# DB.execute('''INSERT INTO stu_vol(volId, stuId, status, volTimeInside, volTimeOutside, volTimeLarge)
+#               VALUES(%d, %d, %d, %d, %d, %d);''',
+#               (1, 20200101, 0, 0, 0, 0))
+
+# DB.execute('''INSERT INTO class_vol(volId, class, stuMax)
+#               VALUES(%d, %d, %d);''',
+#               (1, 202001, 10))
 
 DB.commit()
