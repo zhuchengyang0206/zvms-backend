@@ -3,10 +3,12 @@ import database
 from user import User
 from _class import Class
 from student import Student
+from flask_cors import CORS
 
 # Flask init
 app = Flask(__name__)
 app.debug = True  # 仅在测试环境打开！
+CORS(app, supports_credentials=True)
 app.config["SECRET_KEY"] = "PaSsw0rD@1234!@#$"
 
 app.register_blueprint(User)

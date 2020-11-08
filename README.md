@@ -14,6 +14,7 @@
   2. 安装Flask
   ```
   pip install flask
+  pip install flask_cors
   ```
   Postscript: 如果上一条指令不能使用，请使用下面这一条
   ```
