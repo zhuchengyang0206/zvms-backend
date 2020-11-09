@@ -4,7 +4,7 @@ import database as DB
 
 DB.execute("DROP TABLE IF EXISTS user;")
 DB.execute('''CREATE TABLE user(
-                  userId INTEGER,
+                  userId INTEGER PRIMARY KEY,
                   userName CHAR(255),
                   class INTEGER,
                   permission SMALLINT,
@@ -13,7 +13,7 @@ DB.execute('''CREATE TABLE user(
 
 DB.execute("DROP TABLE IF EXISTS student;")
 DB.execute('''CREATE TABLE student(
-                  stuId INTEGER,
+                  stuId INTEGER PRIMARY KEY,
                   stuName CHAR(64),
                   volTimeInside INTEGER,
                   volTimeOutside INTEGER,
@@ -22,7 +22,7 @@ DB.execute('''CREATE TABLE student(
 
 DB.execute("DROP TABLE IF EXISTS volunteer;")
 DB.execute('''CREATE TABLE volunteer(
-                  volId INTEGER,
+                  volId INTEGER PRIMARY KEY,
                   volName CHAR(255),
                   volDate DATE,
                   volTime TIME,
