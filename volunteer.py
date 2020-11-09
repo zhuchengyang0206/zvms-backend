@@ -1,21 +1,20 @@
 from flask import Blueprint, request
 import json
-import database as DB
+import oppressor as OP
 
 Volunteer = Blueprint('volunteer', __name__)
 
 @Volunteer.route('/volunteer/list', methods = ['POST'])
 def getVolunteerList():
     respdata = {'type': 'ERROR', 'message': '未知错误'}
-    DB.execute(
-        "SELECT volId, volName, description, volTime, status, stuMax FROM volunteer") # 这里是否需要获取分配给我班有多少人
-    r = DB.fetchall()
-    respdata['type'] = 'SUCCESS'
-    respdata['message'] = '获取成功'
-    respdata['volunteer'] = []
-    for i in r:
-        respdata['volunteer'].append(
-            {'id': i[0], 'name': i[1], 'description': i[2], 'time': i[3], 'status': i[4], 'stuMax': i[5]})
+    st, val = OP.volunteerList()
+    if st:
+        respdata['type'] = 'SUCCESS'
+        respdata['message'] = '获取成功'
+        respdata['volunteer'] = []
+        for i in r:
+            respdata['volunteer'].append(
+                {'id': i[0], 'name': i[1], 'description': i[2], 'time': i[3], 'status': i[4], 'stuMax': i[5]})
     return json.dumps(respdata)
 
 @Volunteer.route('/volunteer/fetch/<int:volId>', methods = ['POST'])
