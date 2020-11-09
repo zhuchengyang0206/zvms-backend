@@ -15,6 +15,7 @@ def login():
     password = json_data.get("password")
     st, val = OP.userLogin(userid, password)
     if st:
+        val = val[0] # 这样才是获取第一行,详见print(val)
         respdata['type'] = "SUCCESS"
         respdata['message'] = "登陆成功"
         respdata['username'] = val[1]
