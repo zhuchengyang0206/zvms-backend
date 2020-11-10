@@ -12,7 +12,7 @@ def getVolunteerList():
         respdata['type'] = 'SUCCESS'
         respdata['message'] = '获取成功'
         respdata['volunteer'] = []
-        for i in r:
+        for i in val:
             respdata['volunteer'].append(
                 {'id': i[0], 'name': i[1], 'description': i[2], 'time': i[3], 'status': i[4], 'stuMax': i[5]})
     return json.dumps(respdata)
@@ -20,25 +20,20 @@ def getVolunteerList():
 @Volunteer.route('/volunteer/fetch/<int:volId>', methods = ['POST'])
 def getVolunteer(volId):
     respdata = {'type': 'ERROR', 'message': '未知错误'}
-    DB.execute(
-        "SELECT volName, volDate, volTime, stuMax, description, nowStuCount, status, volTimeInside, volTimeOutside, volTimeLarge, holderId FROM volunteer WHERE volId = '%s'"% (volId))
-    r = DB.fetchall()
-    if len(r) <> 1:
-        respdata['message'] = '数据库信息错误'
+    st, val = OP.getVolunteerInfo(volId)
+    if st:
+        # version 1
+        st1, val1 = OP.listToDict_volunteer(val)
+        if st1:
+            respdata['type'] = 'SUCCESS'
+            respdata['message'] = '获取成功'
+        respdata.update(val1)
+        # version 2
+        # respdata['type'] = 'SUCCESS'
+        # respdata['message'] = '获取成功'
+        # respdata.update(OP.listToDict_volunteer_faultless(val))
     else:
-        respdata['type'] = 'SUCCESS'
-        respdata['message'] = '获取成功'
-        respdata['name'] = r[0][0]
-        respdata['date'] = r[0][1]
-        respdata['time'] = r[0][2]
-        respdata['stuMax'] = r[0][3]
-        respdata['description'] = r[0][4]
-        respdata['nowStu'] = r[0][5]
-        respdata['status'] = r[0][6]
-        respdata['inside'] = r[0][7]
-        respdata['outside'] = r[0][8]
-        respdata['large'] = r[0][9]
-        respdata['hid'] = r[0][10]
+        respdata.update(val)
     return json.dumps(respdata)
 
 @Volunteer.route('/volunteer/signup/<int:volId>', methods = ['POST'])

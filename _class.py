@@ -43,20 +43,25 @@ def getStudentList(classId):
 @Class.route("/class/volunteer/<int:classId>", methods = ['POST'])
 def getClassVolunteer(classId):
     respdata = {'type': 'ERROR', 'message': '未知错误!'}
-    DB.execute(
-        "SELECT volId FROM class_vol WHERE class = %d"% (classId))
-    r = DB.fetchall()
-    if len(r) == 0:
-        respdata['message'] = "数据库信息错误！"
-    else:
-        respdata['type'] = 'SUCCESS'
-        respdata['message'] = '获取成功'
+    st, val = OP.getClassVolunteerList(classId)
+    if st:
         respdata['volunteer'] = []
+        flg = True
+        err = {}
         for i in r:
-            DB.execute(
-                "SELECT volName, volDate, volTime, description, status, stuMax FROM stu_vol WHERE volId=%d"% (i[0]))
-            res = DB.fetchall()
-            respdata['volunteer'].append(
-                {"id": i[0], "name": res[0], "date": res[1], "time": res[2], "description": res[3], "status": res[4], "stuMax": res[5]}
-            )
+            st1, val1 = OP.getVolunteerInfo(i)
+            if st1:
+                respdata['volunteer'].append(
+                    OP.listToDict_volunteer_faultless(val1))
+            else:
+                flg = False
+                err = val1
+                break
+        if flg:
+            respdata['type'] = 'SUCCESS'
+            respdata['message'] = '获取成功'
+        else:
+            respdata.update(err)
+    else:
+        respdata.update(val)
     return json.dumps(respdata)

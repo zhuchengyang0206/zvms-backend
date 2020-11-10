@@ -76,8 +76,42 @@ def studentList(classId):
     else:
         return False, {"message": "请求接口错误"}
 
+def getClassVolunteerList(classId):
+    if isinstance(classId, int):
+        DB.execute("SELECT volId FROM class_vol WHERE class = %d", (classId))
+        r = DB.fetchall() # len(r) == 0 是否判定为数据库信息错误？
+        lst = []
+        for i in r:
+            lst.append(i[0])
+        return True, lst
+    else:
+        return False, {"message": "请求接口错误"}
+
 def volunteerList(): # 总列表
-    DB.execute(
-        "SELECT * FROM volunteer WHERE volId = '%s'", (volId))
+    DB.execute("SELECT * FROM volunteer")
     r = DB.fetchall()
     return True, r
+
+def getVolunteerInfo(volId):
+    if isinstance(volId, int):
+        DB.execute("SELECT * FROM volunteer WHERE volId = %d", (volId))
+        r = DB.fetchall()
+        if len(r) == 0:
+            return False, {"message": "数据库信息错误"}
+        else:
+            return True, r[0]
+    else:
+        return False, {"message": "请求接口错误"}
+
+def listToDict_volunteer(a):
+    if isinstance(a, list) and len(a) == 12 and isinstance(a[0], int) and isinstance(a[1], str) and isinstance(a[2], ?): # Date形式存储的mysql内容读取出来后怎么判断
+        return True, {"volId": a[0], "volName": a[1], "volDate": a[2], "volTime": a[3], "stuMax": a[4], "nowStuCount": a[5], "description": a[6], "status": a[7], "volTimeInside": a[8], "volTimeOutside": a[9], "volTimeLarge": a[10], "holderId": a[11]})
+    else:
+        return False, {"message": "调用接口错误"} # 其实这里和前端没有多大关系，参数也是后端生成的，这一行应该是不会运行到的
+
+def listToDict_volunteer_faultless(a): # @ljx 决定一下用哪个呗
+    st, val = listToDict_volunteer(a)
+    if st:
+        return val
+    else:
+        return {}

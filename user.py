@@ -17,10 +17,7 @@ def login():
     if st:
         respdata['type'] = "SUCCESS"
         respdata['message'] = "登陆成功"
-        respdata['username'] = val[1]
-        respdata['class'] = val[2]
-        respdata['permission'] = val[3]
-        respdata['classname'] = OP.classIdToString(val[2])
+        respdata.update({"username": val[1], "class": val[2], "permission": val[3], "className": OP.classIdToString(val[2])})
 
         session['username'] = respdata['username']
         session['class'] = respdata['class']
