@@ -104,14 +104,7 @@ def getVolunteerInfo(volId):
         return False, {"message": "请求接口错误"}
 
 def listToDict_volunteer(a):
-    if isinstance(a, list) and len(a) == 12 and isinstance(a[0], int) and isinstance(a[1], str) and isinstance(a[2], ?): # Date形式存储的mysql内容读取出来后怎么判断
-        return True, {"volId": a[0], "volName": a[1], "volDate": a[2], "volTime": a[3], "stuMax": a[4], "nowStuCount": a[5], "description": a[6], "status": a[7], "volTimeInside": a[8], "volTimeOutside": a[9], "volTimeLarge": a[10], "holderId": a[11]})
+    if isinstance(a, list) and len(a) == 12 and isinstance(a[0], int) and isinstance(a[1], str) and isinstance(a[2], str): # Date形式存储的mysql内容读取出来后怎么判断
+        return True, {"volId": a[0], "volName": a[1], "volDate": a[2], "volTime": a[3], "stuMax": a[4], "nowStuCount": a[5], "description": a[6], "status": a[7], "volTimeInside": a[8], "volTimeOutside": a[9], "volTimeLarge": a[10], "holderId": a[11]}
     else:
-        return False, {"message": "调用接口错误"} # 其实这里和前端没有多大关系，参数也是后端生成的，这一行应该是不会运行到的
-
-def listToDict_volunteer_faultless(a): # @ljx 决定一下用哪个呗
-    st, val = listToDict_volunteer(a)
-    if st:
-        return val
-    else:
-        return {}
+        return False, {"message": "调用接口错误"}

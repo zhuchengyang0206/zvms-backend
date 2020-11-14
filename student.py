@@ -1,4 +1,4 @@
-from flask import Blueprint, session
+from flask import Blueprint
 import database as DB
 import json
 

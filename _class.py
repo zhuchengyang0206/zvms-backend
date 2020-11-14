@@ -1,4 +1,5 @@
-from flask import Blueprint, request, session
+from flask import Blueprint, request
+import tokenlib as tk
 import json
 import oppressor as OP
 
@@ -7,7 +8,8 @@ Class = Blueprint('class', __name__)
 @Class.route('/class/list', methods = ['POST'])
 def getClassList():
     respdata = {'type': 'ERROR', 'message': '未知错误!'}  # 定义默认返回值
-    if session['permission'] >= 1:
+    tkst, tkdata = tk.readToken(json.loads(request.get_data().decode('utf-8')).get('token'))
+    if tkdata['permission'] >= 1 and tkst == tk.SUCCESS:
         st, val = OP.classList()
         if st:
             respdata['type'] = "SUCCESS"
@@ -18,14 +20,17 @@ def getClassList():
                     {'id': i, 'name': OP.classIdToString(i)})
         else:
             respdata.update(val)
+    elif tkst == tk.EXPIRED or tkst == tk.BAD or tkst == tk.ERROR:
+        respdata['message'] = "Token错误"
     else:
         respdata['message'] = "权限错误！"
     return json.dumps(respdata)  # 传回json数据
 
 @Class.route("/class/stulist/<int:classId>", methods = ['POST'])
 def getStudentList(classId):
+    tkst, tkdata = tk.readToken(json.loads(request.get_data().decode('utf-8')).get('token'))
     respdata = {'type': 'ERROR', 'message': '未知错误!'}  # 定义默认返回值
-    if session["permission"] > 1 or classId == session["class"]:
+    if (tkdata["permission"] > 1 or classId == tkdata["class"]) and tkst == tk.SUCCESS:
         st, val = OP.studentList(classId)
         if st:
             respdata['type'] = "SUCCESS"
@@ -36,6 +41,8 @@ def getStudentList(classId):
                     {'id': i[0], 'name': i[1], 'inside': i[2], 'outside': i[3], 'large': i[4]})
         else:
             respdata.update(val)
+    elif tkst == tk.EXPIRED or tkst == tk.BAD or tkst == tk.ERROR:
+        respdata['message'] = "Token错误"
     else:
         respdata['message'] = "权限错误！"
     return json.dumps(respdata)  # 传回json数据
