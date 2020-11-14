@@ -27,8 +27,7 @@ def getClassList():
     return json.dumps(respdata)  # 传回json数据
 
 @Class.route("/class/stulist/<int:classId>", methods = ['POST'])
-def getStudentList(classId):
-    tkst, tkdata = tk.readToken(json.loads(request.get_data().decode('utf-8')).get('token'))
+def getStudentList(classId):}
     respdata = {'type': 'ERROR', 'message': '未知错误!'}  # 定义默认返回值
     if (tkdata["permission"] > 1 or classId == tkdata["class"]) and tkst == tk.SUCCESS:
         st, val = OP.studentList(classId)
