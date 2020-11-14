@@ -4,6 +4,11 @@ import oppressor as OP
 
 Volunteer = Blueprint('volunteer', __name__)
 
+@Volunteer.route('volunteer/randomThought', methods=['POST','GET'])
+def randthought():
+    respdata = {'type':'SUCCESS', 'stuName':'用户名', 'stuId': 20200101, 'content':'这是感想内容'}
+    return json.dumps(respdata)
+
 @Volunteer.route('/volunteer/list', methods = ['POST'])
 def getVolunteerList():
     respdata = {'type': 'ERROR', 'message': '未知错误'}
@@ -52,7 +57,7 @@ def signupVolunteer(volId):
         DB.execute(
             "SELECT stuMax, nowStuCount FROM volunteer WHERE volId = %d"% (volId))
         r = DB.fetchall()
-        if len(r) <> 1:
+        if len(r) != 1:
             respdata['message'] = "数据库信息错误"
         else:
             if len(json_data['stulst']) > r[0][0] - r[0][1]:
@@ -62,7 +67,7 @@ def signupVolunteer(volId):
                     "SELECT stuMax FROM class_vol WHERE volId = %d AND classId = %d"% (volId, user_class))
                 # 这里不对，应该在class_vol表里存这个班已经报名了多少人，不然多次报名可以突破班级人数限制
                 r = DB.fetchall()
-                if len(r) <> 1:
+                if len(r) != 1:
                     respdata['message'] = "数据库信息错误"
                 else:
                     if len(json_data['stulst']) > r[0][0]:
@@ -75,7 +80,7 @@ def signupVolunteer(volId):
                             # volunteer表里修改nowStuCount
                         respdata['type'] = "SUCCESS"
                         respdata['message'] = "添加成功"
-                        
+
 @Volunteer.route('volunteer/create', methods = ['POST'])
 def createVolunteer():
     respdata = {'type': 'error', 'message': '未知错误'}
