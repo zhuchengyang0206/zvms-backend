@@ -39,7 +39,7 @@ def classIdToString(a):
     return ret
 
 def userLogin(userId, password):
-    if isinstance(userId, str) and isinstance(password, str): # 其实传入的都是str类型
+    if isinstance(userId, str) and isinstance(password, str):
         DB.execute("SELECT * FROM user WHERE userId = %s AND password = %s;", (userId, password))
         r = DB.fetchall()
         if len(r) == 0:
@@ -103,7 +103,7 @@ def getVolunteerInfo(volId):
         return False, {"message": "请求接口错误"}
 
 def listToDict_volunteer(a):
-    if isinstance(a, list) and len(a) == 12 and isinstance(a[0], int) and isinstance(a[1], str) and isinstance(a[2], str): # Date形式存储的mysql内容读取出来后怎么判断
+    # if isinstance(a, list) and len(a) == 12 and isinstance(a[0], int) and isinstance(a[1], str) and isinstance(a[2], str): # Date形式存储的mysql内容读取出来后怎么判断
         return True, {"volId": a[0], "volName": a[1], "volDate": a[2], "volTime": a[3], "stuMax": a[4], "nowStuCount": a[5], "description": a[6], "status": a[7], "volTimeInside": a[8], "volTimeOutside": a[9], "volTimeLarge": a[10], "holderId": a[11]}
-    else:
-        return False, {"message": "调用接口错误"}
+    # else:
+    #     return False, {"message": "调用接口错误"}
