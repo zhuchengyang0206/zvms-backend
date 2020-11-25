@@ -1,4 +1,4 @@
-from pymysql import connect, cursors
+from sqlite3 import connect, cursors
 import traceback # 更好的错误输出
 
 conn = connect(
