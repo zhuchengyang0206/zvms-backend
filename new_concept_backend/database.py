@@ -1,12 +1,7 @@
-from sqlite3 import connect, cursors
+from sqlite3 import connect
 import traceback # 更好的错误输出
 
-conn = connect(
-    host = "127.0.0.1",
-    user = "zvms",
-    password = "123456",
-    db = "zvms"
-)
+conn = connect("zvms.db")
 cur = conn.cursor()
 
 def close():

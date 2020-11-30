@@ -21,4 +21,3 @@ def exec(url, param, ext): #  ext[Auth] 是权限  ext[Class] 是班级
         return volunteer.getVolunteerList()
     if "volunteer/fetch/" in url:
         return volunteer.getVolunteer(int(url[url.find("volunteer/fetch/")+len("volunteer/fetch/"):]))
-    

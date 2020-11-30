@@ -1,7 +1,7 @@
 import json
 import oppressor as OP
 
-@Volunteer.route('volunteer/randomThought', methods=['POST','GET'])
+# @Volunteer.route('volunteer/randomThought', methods=['POST','GET'])
 def randThought():
     respdata = {'type':'SUCCESS', 'stuName':'用户名', 'stuId': 20200101, 'content':'这是感想内容'}
     return json.dumps(respdata)
@@ -69,9 +69,9 @@ def getVolunteer(volId):
 #                             # volunteer表里修改nowStuCount
 #                         respdata['type'] = "SUCCESS"
 #                         respdata['message'] = "添加成功"
-
-@Volunteer.route('volunteer/create', methods = ['POST'])
-def createVolunteer():
-    respdata = {'type': 'error', 'message': '未知错误'}
-    json_data = json.loads(request.get_data().decode("utf-8"))
-    if session["permisson"] > 1
+#
+#@Volunteer.route('volunteer/create', methods = ['POST'])
+#def createVolunteer():
+#    respdata = {'type': 'error', 'message': '未知错误'}
+#    json_data = json.loads(request.get_data().decode("utf-8"))
+#    if session["permisson"] > 1
