@@ -8,6 +8,7 @@ User = Blueprint('user', __name__)
 
 @User.route('/user/login', methods=['POST'])
 def login():
+    print("<----------------->")
     respdata = {'type': 'ERROR', 'message': '未知错误!'}  # 定义默认返回值
     try:
         json_data = json.loads(request.get_data().decode("utf-8"))  # 读取POST传入的JSON数据
@@ -29,7 +30,7 @@ def login():
             respdata.update(val)
     except:
         respdata['message'] = "接口错误"
-
+    print(respdata)
     return json.dumps(respdata)  # 传回json数据
 
 @User.route('/user/logout', methods=['POST'])

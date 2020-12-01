@@ -7,9 +7,13 @@ Class = Blueprint('class', __name__)
 
 @Class.route('/class/list', methods = ['POST'])
 def getClassList():
+    print("OK?")
     respdata = {'type': 'ERROR', 'message': '未知错误!'}  # 定义默认返回值
+    print(request.get_json())
     try:
+        print("Before")
         tkst, tkdata = tk.readToken(json.loads(request.get_data().decode('utf-8')).get('token'))
+        print("After")
         if tkdata['permission'] >= 1 and tkst == tk.SUCCESS:
             st, val = OP.classList()
             if st:
