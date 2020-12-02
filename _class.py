@@ -7,52 +7,50 @@ Class = Blueprint('class', __name__)
 
 @Class.route('/class/list', methods = ['POST'])
 def getClassList():
-    print("OK?")
     respdata = {'type': 'ERROR', 'message': '未知错误!'}  # 定义默认返回值
-    print(request.get_json())
     try:
-        print("Before")
-        tkst, tkdata = tk.readToken(json.loads(request.get_data().decode('utf-8')).get('token'))
-        print("After")
-        if tkdata['permission'] >= 1 and tkst == tk.SUCCESS:
-            st, val = OP.classList()
-            if st:
-                respdata['type'] = "SUCCESS"
-                respdata['message'] = "获取成功"
-                respdata['class'] = [] # 列表初始化
-                for i in val:
-                    respdata['class'].append(
-                        {'id': i, 'name': OP.classIdToString(i)})
-            else:
-                respdata.update(val)
-        elif tkst == tk.EXPIRED or tkst == tk.BAD or tkst == tk.ERROR:
-            respdata['message'] = "Token错误"
+        #print("Before")
+        #tkst, tkdata = tk.readToken(json.loads(request.get_data().decode('utf-8')).get('token'))
+        #print("After")
+        #if tkdata['permission'] >= 1 and tkst == tk.SUCCESS:
+        st, val = OP.classList()
+        if st:
+            respdata['type'] = "SUCCESS"
+            respdata['message'] = "获取成功"
+            respdata['class'] = [] # 列表初始化
+            for i in val:
+                respdata['class'].append(
+                    {'id': i, 'name': OP.classIdToString(i)})
         else:
-            respdata['message'] = "权限错误！"
+            respdata.update(val)
+        #elif tkst == tk.EXPIRED or tkst == tk.BAD or tkst == tk.ERROR:
+        #    respdata['message'] = "Token错误"
+        #else:
+        #    respdata['message'] = "权限错误！"
     except:
         respdata['message'] = "接口错误"
     return json.dumps(respdata)  # 传回json数据
-
+    
 @Class.route("/class/stulist/<int:classId>", methods = ['POST'])
 def getStudentList(classId):
     respdata = {'type': 'ERROR', 'message': '未知错误!'}  # 定义默认返回值
     try:
-        tkst, tkdata = tk.readToken(json.loads(request.get_data().decode('utf-8')).get('token'))
-        if (tkdata["permission"] > 1 or classId == tkdata["class"]) and tkst == tk.SUCCESS:
-            st, val = OP.studentList(classId)
-            if st:
-                respdata['type'] = "SUCCESS"
-                respdata['message'] = "获取成功"
-                respdata['student'] = []
-                for i in val:
-                    respdata['student'].append(
-                        {'id': i[0], 'name': i[1], 'inside': i[2], 'outside': i[3], 'large': i[4]})
-            else:
-                respdata.update(val)
-        elif tkst == tk.EXPIRED or tkst == tk.BAD or tkst == tk.ERROR:
-            respdata['message'] = "Token错误"
+        #tkst, tkdata = tk.readToken(json.loads(request.get_data().decode('utf-8')).get('token'))
+        #if (tkdata["permission"] > 1 or classId == tkdata["class"]) and tkst == tk.SUCCESS:
+        st, val = OP.studentList(classId)
+        if st:
+            respdata['type'] = "SUCCESS"
+            respdata['message'] = "获取成功"
+            respdata['student'] = []
+            for i in val:
+                respdata['student'].append(
+                    {'id': i[0], 'name': i[1], 'inside': i[2], 'outside': i[3], 'large': i[4]})
         else:
-            respdata['message'] = "权限错误！"
+            respdata.update(val)
+        #elif tkst == tk.EXPIRED or tkst == tk.BAD or tkst == tk.ERROR:
+        #    respdata['message'] = "Token错误"
+        #else:
+        #    respdata['message'] = "权限错误！"
     except:
         respdata['message'] = "接口错误"
 
