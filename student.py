@@ -4,7 +4,7 @@ import json
 
 Student = Blueprint("student", __name__)
 @Student.route('/student/volbook/<int:stuId>', methods=['POST'])
-def getVolBook(stuId):
+def getVolbook(stuId):
     respdata = {'type': 'ERROR', 'message': '未知错误!'}
     DB.execute(
         "SELECT volId FROM stu_vol WHERE stuId = %d"% (stuId))

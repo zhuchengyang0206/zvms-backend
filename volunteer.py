@@ -4,11 +4,6 @@ import oppressor as OP
 
 Volunteer = Blueprint('volunteer', __name__)
 
-@Volunteer.route('volunteer/randomThought', methods=['POST','GET'])
-def randthought():
-    respdata = {'type':'SUCCESS', 'stuName':'用户名', 'stuId': 20200101, 'content':'这是感想内容'}
-    return json.dumps(respdata)
-
 @Volunteer.route('/volunteer/list', methods = ['POST'])
 def getVolunteerList():
     respdata = {'type': 'ERROR', 'message': '未知错误'}
@@ -86,3 +81,20 @@ def createVolunteer():
     respdata = {'type': 'error', 'message': '未知错误'}
     json_data = json.loads(request.get_data().decode("utf-8"))
     if session["permisson"]>1
+
+@Volunteer.route('volunteer/signerList/<int:volId>', methods = ['POST'])
+def getSignerList(volId):
+
+@Volunteer.route('volunteer/choose/<int:volId>', methods = ['POST'])
+def chooseVolunteer(volId):
+
+@Volunteer.route('volunteer/joinerList/<int:volId>', methods = ['POST'])
+def getJoinerList(volId):
+
+@Volunteer.route('volunteer/thought/<int:volId>', methods = ['POST'])
+def submitThought(volId):
+
+@Volunteer.route('volunteer/randomThought', methods=['POST','GET'])
+def randthought():
+    respdata = {'type':'SUCCESS', 'stuName':'用户名', 'stuId': 20200101, 'content':'这是感想内容'}
+    return json.dumps(respdata)

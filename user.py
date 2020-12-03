@@ -53,3 +53,7 @@ def info():
     except:
         respdata['message']="接口错误"
     return json.dumps(respdata)
+
+@User.route('/user/getInfo/<int:userId>', methods=['POST'])
+def getInfo():
+    
