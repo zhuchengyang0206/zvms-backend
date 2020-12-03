@@ -1,6 +1,6 @@
 from flask import Blueprint, request
 from deco import Deco, json_data
-import tokenlib as tk
+import tokenlib as TK
 import json
 import traceback
 import oppressor as OP
@@ -17,7 +17,7 @@ def login():
     if st:
         ret.update({"type":"SUCCESS", "message":"登入成功！"})
         ret.update(OP.user2dict(val))
-        ret.update({"token":tk.generateToken({
+        ret.update({"token":TK.generateToken({
             "username": ret['username'],
             "class": ret['class'],
             "permission": ret['permission']
@@ -36,14 +36,13 @@ def logout():
 @User.route('/user/info', methods=['POST','GET'])
 @Deco
 def info():
-    tkst, tkdata = tk.readToken(json_data()).get('token')
-    if tkst == tk.SUCCESS:
+    tkst, tkdata=TK.readToken(json_data()).get('token')
+    if tkst==TK.SUCCESS:
         return {'type':'SUCCESS', 'message':"获取成功", 'info':tkdata}
-    elif tkst == tk.EXPIRED:
+    elif tkst==TK.EXPIRED:
         return {'type':'ERROR', 'message':"token过期"}
-    elif tkst == tk.BAD:
+    elif tkst==TK.BAD:
         return {'type':'ERROR', 'message':"token失效"}
-    return respdata
 
 @User.route('/user/getInfo/<int:userId>', methods=['POST'])
 @Deco

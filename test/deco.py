@@ -15,7 +15,10 @@ def Deco(func):
     def wrapper(*args,**kwargs):
         print("Enter->%s"%func.__name__)
         global post_data
-        post_data=json.loads(request.get_data().decode("utf-8"))
+        try: # 为了防止空POST出锅
+            post_data=json.loads(request.get_data().decode("utf-8"))
+        except:
+            post_data=""
         try:
             ret=func(*args,**kwargs)
         except:
