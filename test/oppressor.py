@@ -71,7 +71,7 @@ def classList():
 def studentList(classId):
     if isinstance(classId, int):
         DB.execute(
-            "SELECT * FROM student WHERE stuId < %d AND stuId > %d;"% # 这里是不是要 %s ?
+            "SELECT * FROM student WHERE stuId < %d AND stuId > %d;", # 这里是不是要 %s ?
             (classId * 100 + 100, classId * 100))
         r = DB.fetchall()
         if len(r) == 0:

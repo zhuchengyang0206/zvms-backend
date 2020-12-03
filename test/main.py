@@ -12,13 +12,13 @@ app.config["SECRET_KEY"] = "PaSsw0rD@1234!@#$"
 CORS(app, supports_credentials=True)
 @app.after_request
 def af_req(resp):
-    resp = make_response(resp)
+    resp = make_response(resp, 200)
     resp.headers['Access-Control-Allow-Origin'] = 'http://localhost:8080'
     resp.headers['Access-Control-Allow-Methods'] = 'PUT,POST,GET,DELETE,OPTIONS'
     resp.headers['Access-Control-Allow-Headers'] = 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , authorize'
     resp.headers['Access-Control-Allow-Credentials'] = 'true'
 
-    resp.headers['X-Powered-By'] = '3.2.1'
+    resp.headers['X-Powered-By'] = 'ZVMS-beta'
     resp.headers['Content-Type'] = 'application/json;charset=utf-8'
     return resp
 

@@ -62,22 +62,17 @@ def getClassVolunteer(classId):
     st, val = OP.getClassVolunteerList(classId)
     if st:
         respdata['volunteer'] = []
-        flg = True
-        err = {}
         for i in r:
             st1, val1 = OP.getVolunteerInfo(i)
             if st1:
                 respdata['volunteer'].append(
-                    OP.listToDict_volunteer_faultless(val1))
+                    OP.listToDict_volunteer(val1))
             else:
-                flg = False
-                err = val1
+                respdata.update(val1)
                 break
-        if flg:
+        else:
             respdata['type'] = 'SUCCESS'
             respdata['message'] = '获取成功'
-        else:
-            respdata.update(err)
     else:
         respdata.update(val)
     return json.dumps(respdata)
