@@ -56,4 +56,4 @@ def info():
 
 @User.route('/user/getInfo/<int:userId>', methods=['POST'])
 def getInfo():
-    
+    pass
