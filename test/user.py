@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from deco import Deco, json_data
+from deco import *
 import tokenlib as TK
 import json
 import traceback
@@ -9,7 +9,7 @@ User = Blueprint('user', __name__)
 
 @User.route('/user/login', methods=['POST'])
 @Deco
-def login():
+def login_NoToken():
     userid = json_data().get("userid")
     password = json_data().get("password")
     st, val = OP.userLogin(userid, password)
@@ -29,20 +29,14 @@ def login():
 
 @User.route('/user/logout', methods=['POST'])
 @Deco
-def logout():
+def logout_NoToken():
     return {'type': 'SUCCESS', 'message': '登出成功！'}
     #最好在这里做点什么吧，比如删除cookie什么的
 
 @User.route('/user/info', methods=['POST','GET'])
 @Deco
 def info():
-    tkst, tkdata=TK.readToken(json_data().get('token'))
-    if tkst==TK.SUCCESS:
-        return {'type':'SUCCESS', 'message':"获取成功", 'info':tkdata}
-    elif tkst==TK.EXPIRED:
-        return {'type':'ERROR', 'message':"token过期"}
-    elif tkst==TK.BAD:
-        return {'type':'ERROR', 'message':"token失效"}
+    return {'type':'SUCCESS', 'message':"获取成功", 'info':tkData()}
 
 @User.route('/user/getInfo/<int:userId>', methods=['POST'])
 @Deco

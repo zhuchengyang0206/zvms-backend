@@ -22,24 +22,33 @@ def tkData():
 def Deco(func):
     @wraps(func)
     def wrapper(*args,**kwargs):
-        print("Enter->%s"%func.__name__)
+        print("Entering Function->%s:"%func.__name__)
         global postdata, tkst, tkdata # 重要！！
         try: # 为了防止空POST出锅
             postdata=json.loads(request.get_data().decode("utf-8"))
-            print(postdata)
+            print("Postdata:",postdata)
         except:
             postdata=""
-        
-        try: # 获取Token
-            tkst, tkdata=TK.readToken(json_data().get('token'))
-            print(tkst, tkdata)
-        except:
-            tksk=TK.ERROR
-            tkdata={}
+            print("No Postdata loaded.")
+
+        if not "NoToken" in func.__name__:
+        # 为了判断是否需要Token验证
+        # 我知道这很不好，但是带参数的修饰器和Flask冲突了（估计是）
+        # 所以请在不用Token的函数名后面加上"_NoToken"
+            try: # 获取Token
+                tkst, tkdata=TK.readToken(json_data().get('token'))
+                print("Loading Token:",tkst, tkdata)
+                if tkst==TK.EXPIRED:
+                    return json.dumps({'type':'ERROR', 'message':"token过期"})
+                elif tkst==TK.BAD:
+                    return json.dumps({'type':'ERROR', 'message':"token失效"})
+            except:
+                tksk=TK.ERROR
+                tkdata={}
+                return json.dumps({'type':'ERROR', 'message':"未获取到Token"})
         
         try:
-            ret=func(*args,**kwargs)
+            return json.dumps(func(*args,**kwargs))
         except:
-            ret={'type':'ERROR','message':'未知错误'}
-        return json.dumps(ret)
+            return json.dumps({'type':'ERROR','message':'未知错误'})
     return wrapper
