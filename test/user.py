@@ -36,7 +36,7 @@ def logout():
 @User.route('/user/info', methods=['POST','GET'])
 @Deco
 def info():
-    tkst, tkdata=TK.readToken(json_data()).get('token')
+    tkst, tkdata=TK.readToken(json_data().get('token'))
     if tkst==TK.SUCCESS:
         return {'type':'SUCCESS', 'message':"获取成功", 'info':tkdata}
     elif tkst==TK.EXPIRED:
