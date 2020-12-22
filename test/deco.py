@@ -36,7 +36,7 @@ def Deco(func):
         # 我知道这很不好，但是带参数的修饰器和Flask冲突了（估计是）
         # 所以请在不用Token的函数名后面加上"_NoToken"
             try: # 获取Token
-                tkst, tkdata=TK.readToken(json_data().get('token'))
+                tkst, tkdata=TK.readToken(request.headers.get("Authorization")) # 改了一下
                 print("Loading Token:",tkst, tkdata)
                 if tkst==TK.EXPIRED:
                     return json.dumps({'type':'ERROR', 'message':"token过期"})

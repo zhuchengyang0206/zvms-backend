@@ -1,10 +1,12 @@
 from flask import Blueprint, request
 import json
+from deco import *
 import oppressor as OP
 
 Volunteer = Blueprint('volunteer', __name__)
 
 @Volunteer.route('/volunteer/list', methods = ['POST'])
+@Deco
 def getVolunteerList():
     respdata = {'type': 'ERROR', 'message': '未知错误'}
     st, val = OP.volunteerList()
@@ -15,9 +17,10 @@ def getVolunteerList():
         for i in val:
             respdata['volunteer'].append(
                 {'id': i[0], 'name': i[1], 'description': i[2], 'time': i[3], 'status': i[4], 'stuMax': i[5]})
-    return json.dumps(respdata)
+    return respdata
 
 @Volunteer.route('/volunteer/fetch/<int:volId>', methods = ['POST'])
+@Deco
 def getVolunteer(volId):
     respdata = {'type': 'ERROR', 'message': '未知错误'}
     st, val = OP.getVolunteerInfo(volId)
@@ -34,12 +37,12 @@ def getVolunteer(volId):
         # respdata.update(OP.listToDict_volunteer_faultless(val))
     else:
         respdata.update(val)
-    return json.dumps(respdata)
+    return respdata
 
 @Volunteer.route('/volunteer/signup/<int:volId>', methods = ['POST'])
+@Deco
 def signupVolunteer(volId):
     respdata = {'type': 'ERROR', 'message': '未知错误'}
-    json_data = json.loads(request.get_data().decode("utf-8"))
     user_class = session["class"]
     tag = True
     for i in json_data['stulst']:
@@ -50,7 +53,7 @@ def signupVolunteer(volId):
         respdata['message'] = "学生列表错误"
     else:
         DB.execute(
-            "SELECT stuMax, nowStuCount FROM volunteer WHERE volId = %d"% (volId))
+            "SELECT stuMax, nowStuCount FROM volunteer WHERE volId = %d", volId)
         r = DB.fetchall()
         if len(r) != 1:
             respdata['message'] = "数据库信息错误"
@@ -59,7 +62,7 @@ def signupVolunteer(volId):
                 respdata['message'] = "人数超限"
             else:
                 DB.execute(
-                    "SELECT stuMax FROM class_vol WHERE volId = %d AND classId = %d"% (volId, user_class))
+                    "SELECT stuMax FROM class_vol WHERE volId = %d AND classId = %d", volId, user_class)
                 # 这里不对，应该在class_vol表里存这个班已经报名了多少人，不然多次报名可以突破班级人数限制
                 r = DB.fetchall()
                 if len(r) != 1:
@@ -75,12 +78,14 @@ def signupVolunteer(volId):
                             # volunteer表里修改nowStuCount
                         respdata['type'] = "SUCCESS"
                         respdata['message'] = "添加成功"
+    return respdata
 
 @Volunteer.route('volunteer/create', methods = ['POST'])
+@Deco
 def createVolunteer():
     respdata = {'type': 'error', 'message': '未知错误'}
     json_data = json.loads(request.get_data().decode("utf-8"))
-    if session["permisson"]>1
+    # if session["permisson"]>1
 
 @Volunteer.route('volunteer/signerList/<int:volId>', methods = ['POST'])
 def getSignerList(volId):
