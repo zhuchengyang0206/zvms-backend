@@ -47,7 +47,7 @@ def select(col,src,exp,val,ret,only=True):
     s="SELECT %s FROM %s WHERE %s;"%(col,src,exp);
     DB.execute(s,val)
     r=DB.fetchall()
-    if ret==[]: ret=list(split(col))
+    if ret==[]: ret=list(split(col,","))
     if len(r)==0: return False, {"message": "数据库信息错误：未查询到相关信息"}
     if len(r)==1:
         ret={}
