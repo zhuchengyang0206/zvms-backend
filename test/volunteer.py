@@ -42,42 +42,32 @@ def getVolunteer(volId):
 @Volunteer.route('/volunteer/signup/<int:volId>', methods = ['POST'])
 @Deco
 def signupVolunteer(volId):
-    respdata = {'type': 'ERROR', 'message': '未知错误'}
-    user_class = session["class"]
-    tag = True
+    user_class = tkdata.get("class")
     for i in json_data['stulst']:
         if i < user_class * 100 or i >= user_class * 100 + 100:
-            Tag = False
-            break
-    if not Tag:
-        respdata['message'] = "学生列表错误"
+            return {"type": "ERROR", "message": "学生列表错误"}
+    st, r = OP.select("stuMax, nowStuCount","volunteer","volId=%d",volId,[])
+    #下面还没改
+    if len(json_data['stulst']) > r[0][0] - r[0][1]:
+        respdata['message'] = "人数超限"
     else:
         DB.execute(
-            "SELECT stuMax, nowStuCount FROM volunteer WHERE volId = %d", volId)
+            "SELECT stuMax FROM class_vol WHERE volId = %d AND classId = %d", volId, user_class)
+        # 这里不对，应该在class_vol表里存这个班已经报名了多少人，不然多次报名可以突破班级人数限制
         r = DB.fetchall()
         if len(r) != 1:
             respdata['message'] = "数据库信息错误"
         else:
-            if len(json_data['stulst']) > r[0][0] - r[0][1]:
+            if len(json_data['stulst']) > r[0][0]:
                 respdata['message'] = "人数超限"
             else:
-                DB.execute(
-                    "SELECT stuMax FROM class_vol WHERE volId = %d AND classId = %d", volId, user_class)
-                # 这里不对，应该在class_vol表里存这个班已经报名了多少人，不然多次报名可以突破班级人数限制
-                r = DB.fetchall()
-                if len(r) != 1:
-                    respdata['message'] = "数据库信息错误"
-                else:
-                    if len(json_data['stulst']) > r[0][0]:
-                        respdata['message'] = "人数超限"
-                    else:
-                        for i in json_data['stulst']:
-                            # 代码来不及写了，写一下思路
-                            # class_vol表里修改一下这个班的报名人数
-                            # stu_vol表里加一条未审核的记录
-                            # volunteer表里修改nowStuCount
-                        respdata['type'] = "SUCCESS"
-                        respdata['message'] = "添加成功"
+                for i in json_data['stulst']:
+                    # 代码来不及写了，写一下思路
+                    # class_vol表里修改一下这个班的报名人数
+                    # stu_vol表里加一条未审核的记录
+                    # volunteer表里修改nowStuCount
+                respdata['type'] = "SUCCESS"
+                respdata['message'] = "添加成功"
     return respdata
 
 @Volunteer.route('volunteer/create', methods = ['POST'])
