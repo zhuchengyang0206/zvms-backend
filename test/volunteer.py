@@ -46,29 +46,25 @@ def signupVolunteer(volId):
     for i in json_data['stulst']:
         if i < user_class * 100 or i >= user_class * 100 + 100:
             return {"type": "ERROR", "message": "学生列表错误"}
-    st, r = OP.select("stuMax, nowStuCount","volunteer","volId=%d",volId,[])
+    # 判断人数是否超过这个义工的人数上限
+    st, r = OP.select("stuMax, nowStuCount","volunteer","volId=%d",volId,["stuMax","nowStuCount"],only=True)
     if not st: return r
     if len(json_data['stulst']) > r["stuMax"] - r["nowStuCount"]:
         return {"type":"ERROR", "message":"人数超限"}
-    # 先到这
-    DB.execute(
-        "SELECT stuMax FROM class_vol WHERE volId = %d AND classId = %d", volId, user_class)
-    # 这里不对，应该在class_vol表里存这个班已经报名了多少人，不然多次报名可以突破班级人数限制
-    r = DB.fetchall()
-    if len(r) != 1:
-        respdata['message'] = "数据库信息错误"
-    else:
-        if len(json_data['stulst']) > r[0][0]:
-            respdata['message'] = "人数超限"
-        else:
-            for i in json_data['stulst']:
-                # 代码来不及写了，写一下思路
-                # class_vol表里修改一下这个班的报名人数
-                # stu_vol表里加一条未审核的记录
-                # volunteer表里修改nowStuCount
-            respdata['type'] = "SUCCESS"
-            respdata['message'] = "添加成功"
-    return respdata
+    # 判断人数是否超过班级人数上限
+    st, r = OP.select("stuMax, nowStuCount","class_vol","volId=%d AND classId=%d",(volId,classId),["stuMax"],only=True)
+    # 在class_vol表里面应该加上nowStuCount字段
+    if not st: return r
+    if len(json_data['stulst']) > r["stuMax"] - r["nowStuCount"]:
+        return {"type":"ERROR", "message":"人数超限"}
+    for i in json_data['stulst']:
+        # 代码来不及写了，写一下思路
+        OP.update("nowStuCount=nowStuCount+%d","class_vol","volId=%d AND classId=%d",
+            (len(json_data['stulst']),volId,classId))
+        OP.update("nowStuCount=nowStuCount+%d","volunteer","volId=%d",
+            (len(json_data['stulst']),volId))
+        # stu_vol表里加一条未审核的记录 # 这里是不是有点问题？
+    return {"type":"SUCCESS","message":"添加成功"}
 
 @Volunteer.route('volunteer/create', methods = ['POST'])
 @Deco

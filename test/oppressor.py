@@ -44,17 +44,17 @@ def select(col,src,exp,val,ret,only=True):
     # val:传入的数据，元组 ret:返回的格式，列表，内容为字符串，为[]则为col
     # only:是否只取一个
     # 返回值:一个布尔值、一个字典，格式由ret决定（若only=False则为一个数组）
-    s="SELECT %s FROM %s WHERE %s;"%(col,src,exp);
+    s="SELECT %s FROM %s WHERE %s;"%(col,src,exp)
     DB.execute(s,val)
     r=DB.fetchall()
-    if ret==[]: ret=list(split(col,","))
+    # if ret==[]: ret=list(split(col,",")) # 好像不行的样子，col里面还有空格
     if len(r)==0: return False, {"message": "数据库信息错误：未查询到相关信息"}
     if len(r)==1:
         ret={}
         for j in range(0,len(val)):
             ret.update({val[j]: r[0][j]})
-        if only: return ret
-        else: return [ret]
+        if only: return True, ret
+        else: return True, [ret]
     else:
         if only: return False, {"message": "数据库信息错误：要求一个但查询到多个"}
         ret=[]
@@ -62,6 +62,12 @@ def select(col,src,exp,val,ret,only=True):
             for j in range(0,len(val)):
                 ret[i].update({val[j]: r[i][j]})
         return True, ret
+
+def update(col,src,exp,val):
+    s="UPDATE %s SET %s WHERE %s;"%(src,col,exp)
+    DB.execute(s,val)
+    r=DB.fetchall()
+    # 这个东西封装起来似乎没什么用。。以后可以考虑加上错误处理？
 
 def user2dict(v):
     return { "username":v[1], "class":v[2],
