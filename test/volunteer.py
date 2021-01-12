@@ -43,6 +43,7 @@ def getVolunteer(volId):
 @Deco
 def signupVolunteer(volId):
     user_class = tkdata.get("class")
+    # 判断是否都是本班的人
     for i in json_data['stulst']:
         if i < user_class * 100 or i >= user_class * 100 + 100:
             return {"type": "ERROR", "message": "学生列表错误"}
@@ -53,17 +54,19 @@ def signupVolunteer(volId):
         return {"type":"ERROR", "message":"人数超限"}
     # 判断人数是否超过班级人数上限
     st, r = OP.select("stuMax, nowStuCount","class_vol","volId=%d AND classId=%d",(volId,classId),["stuMax"],only=True)
-    # 在class_vol表里面应该加上nowStuCount字段
     if not st: return r
     if len(json_data['stulst']) > r["stuMax"] - r["nowStuCount"]:
         return {"type":"ERROR", "message":"人数超限"}
+    # 修改数据库
+    OP.update("nowStuCount=nowStuCount+%d","class_vol","volId=%d AND classId=%d",
+        (len(json_data['stulst']),volId,classId))
+    OP.update("nowStuCount=nowStuCount+%d","volunteer","volId=%d",
+        (len(json_data['stulst']),volId))
     for i in json_data['stulst']:
-        # 代码来不及写了，写一下思路
-        OP.update("nowStuCount=nowStuCount+%d","class_vol","volId=%d AND classId=%d",
-            (len(json_data['stulst']),volId,classId))
-        OP.update("nowStuCount=nowStuCount+%d","volunteer","volId=%d",
-            (len(json_data['stulst']),volId))
-        # stu_vol表里加一条未审核的记录 # 这里是不是有点问题？
+        # 遍历每一个学生，加入一条未审核的记录
+        OP.insert("volId,stuId,status,volTimeInside,volTimeOutside,volTimeLarge,thought",
+            "stu_vol",(volId,i,0,0,0,""))
+        # 审核过了以后再发义工时间
     return {"type":"SUCCESS","message":"添加成功"}
 
 @Volunteer.route('volunteer/create', methods = ['POST'])

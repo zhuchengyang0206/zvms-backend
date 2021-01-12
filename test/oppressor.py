@@ -47,7 +47,9 @@ def select(col,src,exp,val,ret,only=True):
     s="SELECT %s FROM %s WHERE %s;"%(col,src,exp)
     DB.execute(s,val)
     r=DB.fetchall()
-    # if ret==[]: ret=list(split(col,",")) # 好像不行的样子，col里面还有空格
+    if ret==[]:
+        ret=list(split(col,","))
+        for i in len(ret): ret[i]=ret[i].strip()
     if len(r)==0: return False, {"message": "数据库信息错误：未查询到相关信息"}
     if len(r)==1:
         ret={}
@@ -68,6 +70,17 @@ def update(col,src,exp,val):
     DB.execute(s,val)
     r=DB.fetchall()
     # 这个东西封装起来似乎没什么用。。以后可以考虑加上错误处理？
+
+def insert(col,src,val):
+    tmp=""
+    for i in val:
+        if isinstance(i,int): tmp+="%d,"
+        if isinstance(i,str): tmp+="%s,"
+        # 暂且如此
+    tmp=tmp[0:-1]
+    s="INSERT INTO %s (%s) VALUES (%s);"%(src,col,tmp)
+    DB.execute(s,val)
+    r=DB.fetchall()
 
 def user2dict(v):
     return { "username":v[1], "class":v[2],
