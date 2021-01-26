@@ -9,12 +9,12 @@ def json_data():
     return postdata
 
 tkst=TK.BAD
-tkdata={}
+tkdt={}
 def tkStatus():
     return tkst
 
 def tkData():
-    return tkdata
+    return tkdt
 
 # 以后把调试的代码写在这边，把一些公用的功能也可以移到这边
 # 在所有函数名前面加上@Deco

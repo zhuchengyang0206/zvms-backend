@@ -42,7 +42,7 @@ def getVolunteer(volId):
 @Volunteer.route('/volunteer/signup/<int:volId>', methods = ['POST'])
 @Deco
 def signupVolunteer(volId):
-    user_class = tkdata.get("class")
+    user_class = tkData.get("class")
     # 判断是否都是本班的人
     for i in json_data['stulst']:
         if i < user_class * 100 or i >= user_class * 100 + 100:
@@ -72,13 +72,47 @@ def signupVolunteer(volId):
 @Volunteer.route('volunteer/create', methods = ['POST'])
 @Deco
 def createVolunteer():
-    respdata = {'type': 'error', 'message': '未知错误'}
-    json_data = json.loads(request.get_data().decode("utf-8"))
-    # if session["permisson"]>1
+    if not tkData.get("permission") in [2,4]: # 这权限是不是有点奇怪？
+        return {'type':'ERROR', 'message':"权限不足"}
+    
+    OP.insert("volId,volName,volDate,volTime",
+        "volunteer",
+        ())
+    # 这里出了一些问题
+    # TIME和DATE类型的insert还没写
+    # 还有这两个类型可以直接用%吗？
+    return {"type":"SUCCESS", "message":"创建成功"}
+'''
+    {
+    "name": "义工活动1",
+    "date": "2020.10.1",
+    "time": "13:00",
+    "stuMax": 20,
+    "description": "新华书店打扫",
+    "inside": 0,
+    "outside": 3,
+    "large": 0,
+    "class": [
+        {"id": 202001, "stuMax": 10},
+        {"id": 202002, "stuMax": 5},
+        {"id": 202003, "stuMax": 10}
+    ]
+    // hid 是自动从session获取的
+    }
+'''
 
 @Volunteer.route('volunteer/signerList/<int:volId>', methods = ['POST'])
 def getSignerList(volId):
-    pass
+    if not tkData.get("permission")<3:
+        return {'type':'ERROR', 'message':"权限不足"}
+    ret={"type":"SUCCESS", "message":"获取成功","result":[]}
+    fl,r=OP.select("stuId","stu_vol","volId=%d",(volId),["stuId"],only=False)
+    if not fl: return r
+    for i in r: # 为什么要返回学生姓名啊
+        fl,rr=OP.select("stuId,stuName","student","stuId=%d",(i.get("stuId"),["stuId","stuName"])
+        if not fl: return rr
+        ret["result"]+=rr
+    return ret
 
 @Volunteer.route('volunteer/choose/<int:volId>', methods = ['POST'])
 def chooseVolunteer(volId):
@@ -86,7 +120,17 @@ def chooseVolunteer(volId):
 
 @Volunteer.route('volunteer/joinerList/<int:volId>', methods = ['POST'])
 def getJoinerList(volId):
-    pass
+    # 所以这个的意思是返回所有审核过了的报名的人吗？
+    if not tkData.get("permission")<3:
+        return {'type':'ERROR', 'message':"权限不足"}
+    ret={"type":"SUCCESS", "message":"获取成功","result":[]}
+    fl,r=OP.select("stuId","stu_vol","volId=%d and status=1",(volId),["stuId"],only=False)
+    if not fl: return r
+    for i in r: # 为什么要返回学生姓名啊
+        fl,rr=OP.select("stuId,stuName","student","stuId=%d",(i.get("stuId"),["stuId","stuName"])
+        if not fl: return rr
+        ret["result"]+=rr
+    return ret
 
 @Volunteer.route('volunteer/thought/<int:volId>', methods = ['POST'])
 def submitThought(volId):
