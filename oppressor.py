@@ -38,6 +38,57 @@ def classIdToString(a):
     ret = ret + "班"
 
     return ret
+    
+def select(col,src,exp,val,ret,only=True): # 估计能用了
+    # col:选择的列，字符串 src:从哪张表，字符串 exp:条件，字符串
+    # val:传入的数据，元组 ret:返回的格式，列表，内容为字符串，为[]则为col
+    # only:是否只取一个
+    # 返回值:一个布尔值、一个字典，格式由ret决定（若only=False则为一个数组）
+    s="SELECT %s FROM %s WHERE %s;"%(col,src,exp)
+    print("Selecting:",s,val)
+    DB.execute(s,val)
+    r=DB.fetchall()
+    print(r)
+    if ret==[]:
+        ret=list(split(col,","))
+        for i in len(ret): ret[i]=ret[i].strip()
+    if len(r)==0: return False, {"type":"ERROR","message": "数据库信息错误：未查询到相关信息"}
+    if len(r)==1:
+        result={}
+        for j in range(0,len(ret)):
+            result.update({ret[j]: r[0][j]})
+        if only: return True, result
+        else: return True, [result]
+    else:
+        if only: return False, {"type":"ERROR","message": "数据库信息错误：要求一个但查询到多个"}
+        result=[]
+        for i in range(0,len(r)):
+            result.append({})
+            for j in range(0,len(ret)):
+                result[i].update({ret[j]: r[i][j]})
+        return True, result
+
+def update(col,src,exp,val):
+    s="UPDATE %s SET %s WHERE %s;"%(src,col,exp)
+    DB.execute(s,val)
+    r=DB.fetchall()
+    # 这个东西封装起来似乎没什么用。。以后可以考虑加上错误处理？
+
+def insert(col,src,val):
+    tmp=""
+    for i in val:
+        if isinstance(i,int): tmp+="%d,"
+        if isinstance(i,str): tmp+="%s,"
+        # 暂且如此
+    tmp=tmp[0:-1]
+    s="INSERT INTO %s (%s) VALUES (%s);"%(src,col,tmp)
+    DB.execute(s,val)
+    r=DB.fetchall()
+
+def user2dict(v):
+    return { "username":v[1], "class":v[2],
+        "permission":v[3], "classname":classIdToString(v[2])
+    }
 
 def userLogin(userId, password):
     if isinstance(userId, str) and isinstance(password, str): # 其实传入的都是str类型
@@ -49,30 +100,6 @@ def userLogin(userId, password):
             return False, {"message": "数据库信息错误"}
         else:
             return True, r[0]
-    else:
-        return False, {"message": "请求接口错误"}
-
-def classList():
-    DB.execute("SELECT class FROM user WHERE userId > %s;", (thisYear * 100 - 200))
-    r = DB.fetchall()
-    if len(r) == 0:
-        return False, {"message": "数据库信息错误"}
-    else:
-        lst = []
-        for i in r:
-            lst.append(i[0])
-        return True, lst
-
-def studentList(classId):
-    if isinstance(classId, int):
-        DB.execute(
-            "SELECT * FROM student WHERE stuId < %d AND stuId > %d;"% # 这里是不是要 %s ?
-            (classId * 100 + 100, classId * 100))
-        r = DB.fetchall()
-        if len(r) == 0:
-            return False, {"message": "数据库信息错误"}
-        else:
-            return True, r
     else:
         return False, {"message": "请求接口错误"}
 
