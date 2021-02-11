@@ -73,6 +73,7 @@ def update(col,src,exp,val):
     DB.execute(s,val)
     r=DB.fetchall()
     # 这个东西封装起来似乎没什么用。。以后可以考虑加上错误处理？
+    # 可以
 
 def insert(col,src,val):
     tmp=""
@@ -97,7 +98,7 @@ def userLogin(userId, password):
         if len(r) == 0:
             return False, {"message": "用户ID或密码错误"}
         elif len(r) > 1:
-            return False, {"message": "数据库信息错误"}
+            return False, {"message": "数据库信息错误：要求一个但查询到多个"}
         else:
             return True, r[0]
     else:
