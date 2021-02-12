@@ -1,6 +1,10 @@
+# 在Oppressor完成以后请不要直接使用这里面的函数
+# 详细请看oppressor.py中的select/insert/update
+
 from pymysql import connect, cursors
 import traceback # 更好的错误输出
 
+# （临时的）设置
 conn = connect(
     host = "127.0.0.1",
     user = "zvms",
@@ -9,7 +13,7 @@ conn = connect(
 )
 cur = conn.cursor()
 
-def close():
+def close(): # 这玩意有被用到吗？
     global conn,cur
     try:
         cur.close()
@@ -25,7 +29,7 @@ def execute(sql, param = None):
         traceback.print_exc()
         conn.rollback()
         
-def commit():
+def commit(): # 这玩意有被用到吗？
     global conn
     try:
         conn.commit()

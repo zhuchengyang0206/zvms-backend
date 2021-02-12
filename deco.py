@@ -49,7 +49,10 @@ def Deco(func):
         try:
             r=func(*args,**kwargs)
             print("result->",r)
+			# 如果想做错误输出的话加在这里
             return json.dumps(r)
         except:
+			# 理论上不应该有这个
+			# 出现这种情况说明代码锅了或者前端接口错了
             return json.dumps({'type':'ERROR','message':'未知错误'})
     return wrapper
