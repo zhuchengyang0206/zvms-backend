@@ -133,6 +133,7 @@ def getVolunteerInfo(volId):
 
 def listToDict_volunteer(a):
     if isinstance(a, list) and len(a) == 12 and isinstance(a[0], int) and isinstance(a[1], str) and isinstance(a[2], str): # Date形式存储的mysql内容读取出来后怎么判断
+    # 这里还是要全部判断，不然一旦出错服务器直接宕机就不太好了
         return True, {"volId": a[0], "volName": a[1], "volDate": a[2], "volTime": a[3], "stuMax": a[4], "nowStuCount": a[5], "description": a[6], "status": a[7], "volTimeInside": a[8], "volTimeOutside": a[9], "volTimeLarge": a[10], "holderId": a[11]}
     else:
-        return False, {"message": "调用接口错误"}
+        return False, {"message": "请求接口错误"}

@@ -59,7 +59,7 @@ def signupVolunteer(volId):
 @Volunteer.route('/volunteer/create', methods = ['POST'])
 @Deco
 def createVolunteer():
-    if not tkData.get("permission") in [2,4]: # 这权限是不是有点奇怪？
+    if not tkData.get("permission") in [2,4]: # 这权限是不是有点奇怪？ # 我觉得义管会应该可以创建义工活动吧，难不成每次都要进入系统权限？
         return {'type':'ERROR', 'message':"权限不足"}
     
     OP.insert("volId,volName,volDate,volTime",
@@ -67,7 +67,7 @@ def createVolunteer():
         ())
     # 这里出了一些问题
     # TIME和DATE类型的insert还没写
-    # 还有这两个类型可以直接用%吗？
+    # 还有这两个类型可以直接用%吗？ # 现在数据库改完之后就可以写了哦
     return {"type":"SUCCESS", "message":"创建成功"}
 '''
     {
