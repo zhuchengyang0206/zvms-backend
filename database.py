@@ -28,14 +28,6 @@ def execute(sql, param = None):
     except:
         traceback.print_exc()
         conn.rollback()
-        
-def commit(): # 这玩意有被用到吗？
-    global conn
-    try:
-        conn.commit()
-    except:
-        traceback.print_exc()
-        conn.rollback()
 
 def fetchall():
     global cur
