@@ -33,7 +33,7 @@ def logout_NoToken():
     return {'type': 'SUCCESS', 'message': '登出成功！'}
     #最好在这里做点什么吧，比如删除cookie什么的
 
-@User.route('/user/info', methods=['POST','GET'])
+@User.route('/user/info', methods=['GET'])
 @Deco
 def info():
     return {'type':'SUCCESS', 'message':"获取成功", 'info':tkData()}

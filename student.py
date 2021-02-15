@@ -7,7 +7,7 @@ import json
 
 Student = Blueprint("student", __name__)
 
-@Student.route('/student/volbook/<int:stuId>', methods=['POST'])
+@Student.route('/student/volbook/<int:stuId>', methods=['GET'])
 @Deco
 def getVolbook(stuId): # 可以了
     fl,r=OP.select("volId","stu_vol","stuId=%s",(stuId),["volId"],only=False)

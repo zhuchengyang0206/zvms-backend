@@ -5,7 +5,7 @@ import oppressor as OP
 
 Volunteer = Blueprint('volunteer', __name__)
 
-@Volunteer.route('/volunteer/list', methods = ['POST'])
+@Volunteer.route('/volunteer/list', methods = ['GET']) # 这里不需要参数传入，使用GET方式。下同
 @Deco
 def getVolunteerList(): # 可以了
     fl,r=OP.select("volId,volName,description,volDate,volTime,status,stuMax","volunteer","true",(),
@@ -17,7 +17,7 @@ def getVolunteerList(): # 可以了
         "volunteer": r
     }
 
-@Volunteer.route('/volunteer/fetch/<int:volId>', methods = ['POST'])
+@Volunteer.route('/volunteer/fetch/<int:volId>', methods = ['GET'])
 @Deco
 def getVolunteer(volId): # 可以了
     fl,r=OP.select("volName,volDate,volTime,stuMax,nowStuCount,description,status,volTimeInside,volTimeOutside,volTimeLarge",
@@ -59,7 +59,10 @@ def signupVolunteer(volId):
 @Volunteer.route('/volunteer/create', methods = ['POST'])
 @Deco
 def createVolunteer():
-    if not tkData.get("permission") in [2,4]: # 这权限是不是有点奇怪？ # 我觉得义管会应该可以创建义工活动吧，难不成每次都要进入系统权限？
+    if not tkData.get("permission") in [2,4]: 
+        # 这权限是不是有点奇怪？
+        # 我觉得义管会应该可以创建义工活动吧，难不成每次都要进入系统权限？
+        # 不能。只有教师和实践部、系统可以。
         return {'type':'ERROR', 'message':"权限不足"}
     
     OP.insert("volId,volName,volDate,volTime,stuMax,nowStuCount,description,status,",
@@ -85,7 +88,7 @@ def createVolunteer():
     }
 '''
 
-@Volunteer.route('/volunteer/signerList/<int:volId>', methods = ['POST'])
+@Volunteer.route('/volunteer/signerList/<int:volId>', methods = ['GET'])
 def getSignerList(volId):
     if not tkData.get("permission")<3:
         return {'type':'ERROR', 'message':"权限不足"}
@@ -102,7 +105,7 @@ def getSignerList(volId):
 def chooseVolunteer(volId):
     pass
 
-@Volunteer.route('/volunteer/joinerList/<int:volId>', methods = ['POST'])
+@Volunteer.route('/volunteer/joinerList/<int:volId>', methods = ['GET'])
 def getJoinerList(volId):
     # 所以这个的意思是返回所有审核过了的报名的人吗？
     if not tkData.get("permission")<3:
@@ -120,7 +123,7 @@ def getJoinerList(volId):
 def submitThought(volId):
     pass
 
-@Volunteer.route('/volunteer/randomThought', methods=['POST','GET'])
+@Volunteer.route('/volunteer/randomThought', methods=['GET'])
 def randthought():
     respdata = {'type':'SUCCESS', 'stuName':'用户名', 'stuId': 20200101, 'content':'这是感想内容'}
     return json.dumps(respdata)

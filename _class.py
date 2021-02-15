@@ -6,7 +6,7 @@ from deco import Deco
 
 Class = Blueprint('class', __name__)
 
-@Class.route('/class/list', methods = ['POST'])
+@Class.route('/class/list', methods = ['GET'])
 @Deco
 def getClassList(): # 好了
     fl,r=OP.select("class","user","true",(),["id"],only=False)
@@ -19,7 +19,7 @@ def getClassList(): # 好了
         "class": r
     }
     
-@Class.route("/class/stulist/<int:classId>", methods = ['POST'])
+@Class.route("/class/stulist/<int:classId>", methods = ['GET'])
 @Deco
 def getStudentList(classId): # 好了
     fl,r=OP.select("stuId,stuName,volTimeInside,volTimeOutside,volTimeLarge","student",
@@ -32,7 +32,7 @@ def getStudentList(classId): # 好了
         "student": r
     }
 
-@Class.route("/class/volunteer/<int:classId>", methods = ['POST'])
+@Class.route("/class/volunteer/<int:classId>", methods = ['GET'])
 def getClassVolunteer(classId):
     respdata = {'type': 'ERROR', 'message': '未知错误!'}
     st, val = OP.getClassVolunteerList(classId)
