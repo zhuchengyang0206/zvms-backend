@@ -27,7 +27,7 @@ def login_NoToken():
         ret.update(val)
     return ret
 
-@User.route('/user/logout', methods=['POST'])
+@User.route('/user/logout', methods=['GET'])
 @Deco
 def logout_NoToken():
     return {'type': 'SUCCESS', 'message': '登出成功！'}
