@@ -33,22 +33,14 @@ def getStudentList(classId): # 好了
     }
 
 @Class.route("/class/volunteer/<int:classId>", methods = ['GET'])
-def getClassVolunteer(classId):
-    respdata = {'type': 'ERROR', 'message': '未知错误!'}
-    st, val = OP.getClassVolunteerList(classId)
-    if st:
-        respdata['volunteer'] = []
-        for i in r:
-            st1, val1 = OP.getVolunteerInfo(i)
-            if st1:
-                respdata['volunteer'].append(
-                    OP.listToDict_volunteer(val1))
-            else:
-                respdata.update(val1)
-                break
-        else:
-            respdata['type'] = 'SUCCESS'
-            respdata['message'] = '获取成功'
-    else:
-        respdata.update(val)
-    return json.dumps(respdata)
+@Deco
+def getClassVolunteer(classId): # 还没调
+    fl,r=OP.select("volId","class_vol","class=%s",(classId),["id"],only=False)
+    if not fl: return r
+    ret={"type":"SUCCESS","message":"获取成功","volunteer":[]}
+    for i in r:
+        ff,rr=OP.select("volId,volName,volDate,volTime,description,status,stuMax",
+        "volunteer","volId=%s",(i),["id","name","date","time","description","status","stuMax"])
+        if not ff: return rr
+        ret["volunteer"].append(rr)
+    return ret
