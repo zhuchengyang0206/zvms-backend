@@ -38,6 +38,7 @@ def Deco(func):
         # 为了判断是否需要Token验证
         # 我知道这很不好，但是带参数的修饰器和Flask冲突了（估计是）
         # 所以请在不用Token的函数名后面加上"_NoToken"
+<<<<<<< HEAD
 			try: # 获取Token
 				tkst, tkdata=TK.readToken(request.headers.get("Authorization")) # 改了一下
 				print("Loading Token:",tkst, tkdata)
@@ -50,6 +51,19 @@ def Deco(func):
 				tkdata={}
 				return json.dumps({'type':'ERROR', 'message':"未获取到Token"})
 
+=======
+		try: # 获取Token
+			tkst, tkdata=TK.readToken(request.headers.get("Authorization")) # 改了一下
+			print("Loading Token:",tkst, tkdata)
+			if tkst==TK.EXPIRED:
+				return json.dumps({'type':'ERROR', 'message':"token过期"})
+			elif tkst==TK.BAD:
+				return json.dumps({'type':'ERROR', 'message':"token失效"})
+		except:
+			tksk=TK.ERROR
+			tkdata={}
+			return json.dumps({'type':'ERROR', 'message':"未获取到Token"})
+>>>>>>> 2d48b2b731d88beba6ad7785a1e92208ebcab8b8
         try:
             r=func(*args,**kwargs)
             print("result->",r) # 函数返回的JSON
