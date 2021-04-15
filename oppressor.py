@@ -11,7 +11,7 @@ def classIdToString(a):
 	_year = id // 100
 	_class = id % 100
 	ret = ""
-	# 特殊身份的判断
+	# 特殊身份的判断 # 这些东西要放到文档里
 	# 教师 100001 100002
 	# 管理员 110001 110002
 	# 系统 120003 120004
@@ -77,18 +77,16 @@ def select(col,src,exp,val,ret,only=True): # 估计能用了
 def update(col,src,exp,val): # 估计能用了
 	# 参数同上
 	s="UPDATE %s SET %s WHERE %s;"%(src,col,exp)
-	print("Updating:",s,val) # 生成的SQL语句和参数 #
+	print("Updating:",s,val) # 生成的SQL语句和参数
 	DB.execute(s,val)
 	r=DB.fetchall()
 
 def insert(col,src,val): # 估计能用了
 	# 参数同上
-	tmp=""
-	for i in val: tmp+="%s,"
+	tmp=("%s,"*len(val))[:-1]
 	# 谁能告诉我为什么？虽然这样写是对的。。难不成是隐式类型转换的锅？
-	tmp=tmp[0:-1]
-	s="INSERT INTO %s (%s) VALUES (%s);"%(src,col,tmp)
-	print("Inserting:",s,val) # 生成的SQL语句和参数 #
+	s="INSERT INTO %s (%s) VALUES (%s);"%(src,col,tmp) # 为什么不是tmp,col
+	print("Inserting:",s,val) # 生成的SQL语句和参数
 	DB.execute(s,val)
 	r=DB.fetchall()
 
