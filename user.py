@@ -18,6 +18,7 @@ def login_NoToken():
         ret.update({"type":"SUCCESS", "message":"登入成功！"})
         ret.update(OP.user2dict(val))
         ret.update({"token":TK.generateToken({
+			"userid": userid,
             "username": ret['username'],
             "class": ret['class'],
             "permission": ret['permission']

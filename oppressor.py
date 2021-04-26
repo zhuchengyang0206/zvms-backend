@@ -91,6 +91,17 @@ def insert(col,src,val): # 估计能用了
 	print("Inserting:",s,val) # 生成的SQL语句和参数 #
 	DB.execute(s,val)
 	r=DB.fetchall()
+
+# 获取一个表中有多少行记录
+# （到目前）只被用于获取volId
+# 是不是可以用来随机获取一条数据？
+def getLength(src): # 还未调试！
+	s="SELECT MAX(ROWNUM) FROM %s"%src
+	print("Get Length:",s,src) # 生成的SQL语句和参数 #
+	DB.execute(s)
+	r=DB.fetchall()
+	print("Length:",r) # SQL返回值 #
+	return r[0]
 	
 # 下面两个函数本来是想改掉的，但是他们（到目前为止）没有任何锅，
 # 并且和别的函数也没有关系，暂时先放一下。
