@@ -57,7 +57,7 @@ def select(col,src,exp,val,ret,only=True): # 估计能用了
 		ret=list(split(col,","))
 		for i in len(ret): ret[i]=ret[i].strip()
 	if len(r)==0:
-		return False, {"type":"ERROR","message": "数据库信息错误：未查询到相关信息"}
+		return False, {"type":"ERROR","message":"数据库信息错误：未查询到相关信息"}
 	if len(r)==1:
 		result={} # 格式化返回值
 		for j in range(0,len(ret)):
@@ -66,7 +66,7 @@ def select(col,src,exp,val,ret,only=True): # 估计能用了
 		else: return True, [result] # 就算只有一个，没有Only还是要返回数组
 	else:
 		if only: # 理论上不应该有这种情况，真出现了估计是Insert的锅
-			return False, {"type":"ERROR","message": "数据库信息错误：要求一个但查询到多个"}
+			return False, {"type":"ERROR","message":"数据库信息错误：要求一个但查询到多个"}
 		result=[]
 		for i in range(0,len(r)):
 			result.append({}) # 格式化返回值
@@ -91,6 +91,17 @@ def insert(col,src,val): # 估计能用了
 	print("Inserting:",s,val) # 生成的SQL语句和参数 #
 	DB.execute(s,val)
 	r=DB.fetchall()
+
+# 获取一个表中有多少行记录
+# （到目前）只被用于获取volId
+# 是不是可以用来随机获取一条数据？
+def getLength(src): # 还未调试！
+	s="SELECT MAX(ROWNUM) FROM %s"%src
+	print("Get Length:",s,src) # 生成的SQL语句和参数 #
+	DB.execute(s)
+	r=DB.fetchall()
+	print("Length:",r) # SQL返回值 #
+	return r[0]
 	
 # 下面两个函数本来是想改掉的，但是他们（到目前为止）没有任何锅，
 # 并且和别的函数也没有关系，暂时先放一下。
@@ -105,9 +116,9 @@ def userLogin(userId, password):
 		DB.execute("SELECT * FROM user WHERE userId = %s AND password = %s;", (userId, password))
 		r = DB.fetchall()
 		if len(r) == 0:
-			return False, {"message": "用户ID或密码错误"}
+			return False, {"message":"用户ID或密码错误"}
 		elif len(r) > 1:
-			return False, {"message": "数据库信息错误：要求一个但查询到多个"}
+			return False, {"message":"数据库信息错误：要求一个但查询到多个"}
 		else:
 			return True, r[0]
 	else:

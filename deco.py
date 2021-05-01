@@ -5,6 +5,7 @@ import json
 import sys
 
 # 我不知道还有没有更好的方法，如果有的话麻烦把下面这几行改掉
+# 不要吐槽这堆奇奇怪怪的变量名了。。全部改掉太麻烦了
 postdata={}
 def json_data():
     return postdata
@@ -23,40 +24,41 @@ def tkData():
 def Deco(func):
     @wraps(func)
     def wrapper(*args,**kwargs):
-        tmp,sys.stdout=sys.stdout,open("logs/debug.log","w+")
+        tmp,sys.stdout=sys.stdout,open("logs/debug.log","w+") # 重定向到文件输出 #
         print("Entering Function->%s:"%func.__name__)
         global postdata, tkst, tkdata # 重要！！
         try: # 为了防止空POST出锅
             postdata=json.loads(request.get_data().decode("utf-8"))
-            print("Postdata:",postdata)
+            print("Postdata:",postdata) # 加载到的POST数据
         except:
             postdata=""
             print("No Postdata loaded.")
-        # Token还是不行。。前端到底是用什么实现的？
-        # if not "NoToken" in func.__name__:
+        # Token还是不行。。前端到底是用什么实现的？ # 现在估计是能用了
+        if not "NoToken" in func.__name__:
         # 为了判断是否需要Token验证
         # 我知道这很不好，但是带参数的修饰器和Flask冲突了（估计是）
         # 所以请在不用Token的函数名后面加上"_NoToken"
-            # try: # 获取Token
-                # tkst, tkdata=TK.readToken(request.headers.get("Authorization")) # 改了一下
-                # print("Loading Token:",tkst, tkdata)
-                # if tkst==TK.EXPIRED:
-                    # return json.dumps({'type':'ERROR', 'message':"token过期"})
-                # elif tkst==TK.BAD:
-                    # return json.dumps({'type':'ERROR', 'message':"token失效"})
-            # except:
-                # tksk=TK.ERROR
-                # tkdata={}
-                # return json.dumps({'type':'ERROR', 'message':"未获取到Token"})
+			try: # 获取Token
+				tkst, tkdata=TK.readToken(request.headers.get("Authorization")) # 改了一下
+				print("Loading Token:",tkst, tkdata)
+				if tkst==TK.EXPIRED:
+					return json.dumps({'type':'ERROR', 'message':"token过期"})
+				elif tkst==TK.BAD:
+					return json.dumps({'type':'ERROR', 'message':"token失效"})
+			except:
+				tksk=TK.ERROR
+				tkdata={}
+				return json.dumps({'type':'ERROR', 'message':"未获取到Token"})
+
         try:
             r=func(*args,**kwargs)
-            print("result->",r)
+            print("result->",r) # 函数返回的JSON
 			# 如果想做错误输出的话加在这里
-            sys.stdout=tmp
+            sys.stdout=tmp # 重新回到控制台输出 #
             return json.dumps(r)
         except:
 			# 理论上不应该有这个
 			# 出现这种情况说明代码锅了或者前端接口错了
-            sys.stdout=tmp
+            sys.stdout=tmp # 重新回到控制台输出 #
             return json.dumps({'type':'ERROR','message':'未知错误'})
     return wrapper
