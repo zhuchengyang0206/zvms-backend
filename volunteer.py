@@ -113,6 +113,16 @@ def getJoinerList(volId):
 		ret["result"].append(rr)
 	return ret
 
+@Volunteer.route('/volunteer/audit/<int:volId>', methods = ['POST'])
+@Deco
+def auditThought(volId):
+	pass
+
+@Volunteer.route('/volunteer/modify/<int:volId>', methods = ['POST'])
+@Deco
+def modifyVolunteer(volId):
+	pass
+
 @Volunteer.route('/volunteer/thought/<int:volId>', methods = ['POST'])
 def submitThought(volId):
 	pass

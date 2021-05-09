@@ -7,7 +7,7 @@ import oppressor as OP
 
 User = Blueprint('user', __name__)
 
-@User.route('/user/login', methods=['POST'])
+@User.route('/user/login', methods = ['POST'])
 @Deco
 def login_NoToken():
     userid = json_data().get("userid")
@@ -28,13 +28,13 @@ def login_NoToken():
         ret.update(val)
     return ret
 
-@User.route('/user/logout', methods=['GET'])
+@User.route('/user/logout', methods = ['GET'])
 @Deco
 def logout_NoToken():
     return {'type': 'SUCCESS', 'message': '登出成功！'}
     #最好在这里做点什么吧，比如删除cookie什么的
 
-@User.route('/user/info', methods=['GET'])
+@User.route('/user/info', methods = ['GET'])
 @Deco
 def info():
     return {'type':'SUCCESS', 'message':"获取成功", 'info':tkData()}
@@ -43,3 +43,8 @@ def info():
 @Deco
 def getInfo(userId):
     pass
+
+@User.route('/user/modPwd', methods = ['POST'])
+@Deco
+def modifyPassword():
+	pass
