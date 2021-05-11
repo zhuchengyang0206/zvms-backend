@@ -42,9 +42,15 @@ def info():
 @User.route('/user/getInfo/<int:userId>', methods=['POST'])
 @Deco
 def getInfo(userId):
-    pass
+    r,fl=OP.select("userName,class,permission","user","userId=%s",userId,[])
+	if not fl: return r
+	r.update({"type":"SUCCESS", "message":"获取成功"})
+	return r
 
 @User.route('/user/modPwd', methods = ['POST'])
 @Deco
 def modifyPassword():
-	pass
+	old=json_data().get("oldPwd")
+	new=json_data().get("newPwd")
+	OP.update("password","user","userId=%s",tkData().get("userid"))
+	return {"type":"SUCCESS", "message":"修改成功"}

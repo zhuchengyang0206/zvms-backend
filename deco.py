@@ -33,12 +33,12 @@ def Deco(func):
         except:
             postdata=""
             print("No Postdata loaded.")
+
         # Token还是不行。。前端到底是用什么实现的？ # 现在估计是能用了
         if not "NoToken" in func.__name__:
         # 为了判断是否需要Token验证
         # 我知道这很不好，但是带参数的修饰器和Flask冲突了（估计是）
         # 所以请在不用Token的函数名后面加上"_NoToken"
-<<<<<<< HEAD
 			try: # 获取Token
 				tkst, tkdata=TK.readToken(request.headers.get("Authorization")) # 改了一下
 				print("Loading Token:",tkst, tkdata)
@@ -50,20 +50,8 @@ def Deco(func):
 				tksk=TK.ERROR
 				tkdata={}
 				return json.dumps({'type':'ERROR', 'message':"未获取到Token"})
+		# 上面这一段是在上面的if里面的啊，要加上缩进的
 
-=======
-		try: # 获取Token
-			tkst, tkdata=TK.readToken(request.headers.get("Authorization")) # 改了一下
-			print("Loading Token:",tkst, tkdata)
-			if tkst==TK.EXPIRED:
-				return json.dumps({'type':'ERROR', 'message':"token过期"})
-			elif tkst==TK.BAD:
-				return json.dumps({'type':'ERROR', 'message':"token失效"})
-		except:
-			tksk=TK.ERROR
-			tkdata={}
-			return json.dumps({'type':'ERROR', 'message':"未获取到Token"})
->>>>>>> 2d48b2b731d88beba6ad7785a1e92208ebcab8b8
         try:
             r=func(*args,**kwargs)
             print("result->",r) # 函数返回的JSON
