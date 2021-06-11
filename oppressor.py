@@ -4,7 +4,7 @@ import database as DB
 
 thisYear = 2020 # 以后要改成自动获取
 # 并且这个应该是指学年而不是当前年份
-
+# 这个函数被用到的地方：_class.py
 def classIdToString(a):
 	global thisYear
 	id = int(a)
@@ -43,6 +43,7 @@ def classIdToString(a):
 # 下面三个是对MySQL操作的封装
 # 对SQL的操作尽量使用这三个而不是直接DB.execute()
 # 标出来的是调试输出
+# 注意：SQL中传入的所有参数要使用%s（我也不知道为什么，但是是对的）
 def select(col,src,exp,val,ret,only=True): # 估计能用了
 	# col:选择的列，字符串 src:从哪张表，字符串 exp:条件，字符串
 	# val:传入的数据，元组 ret:返回的格式，列表，内容为字符串，为[]则为col
@@ -74,6 +75,9 @@ def select(col,src,exp,val,ret,only=True): # 估计能用了
 				result[i].update({ret[j]: r[i][j]})
 		return True, result
 
+# ！！！注意！！！下面两个函数是没有返回值的！！！
+# fl,r=OP.update(...) 错！
+# OP.update(...) 对！
 def update(col,src,exp,val): # 估计能用了
 	# 参数同上
 	s="UPDATE %s SET %s WHERE %s;"%(src,col,exp)
@@ -84,8 +88,7 @@ def update(col,src,exp,val): # 估计能用了
 def insert(col,src,val): # 估计能用了
 	# 参数同上
 	tmp=("%s,"*len(val))[:-1]
-	# 谁能告诉我为什么？虽然这样写是对的。。难不成是隐式类型转换的锅？
-	s="INSERT INTO %s (%s) VALUES (%s);"%(src,col,tmp) # 为什么不是tmp,col
+	s="INSERT INTO %s (%s) VALUES (%s);"%(src,col,tmp)
 	print("Inserting:",s,val) # 生成的SQL语句和参数 #
 	DB.execute(s,val)
 	r=DB.fetchall()
@@ -93,6 +96,7 @@ def insert(col,src,val): # 估计能用了
 # 获取一个表中有多少行记录
 # （到目前）只被用于获取volId
 # 是不是可以用来随机获取一条数据？
+# 这东西现在看来好像没什么用，只要设置AUTO_INCREMENT就好了
 def getLength(src): # 还未调试！
 	s="SELECT MAX(ROWNUM) FROM %s"%src
 	print("Get Length:",s,src) # 生成的SQL语句和参数 #

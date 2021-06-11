@@ -9,6 +9,7 @@ Class = Blueprint('class', __name__)
 @Class.route('/class/list', methods = ['GET'])
 @Deco
 def getClassList(): # 好了
+	# 是不是还要加上特殊情况的判断？
     fl,r=OP.select("class","user","true",(),["id"],only=False)
     print(fl,r)
     if not fl: return r
