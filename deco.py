@@ -6,15 +6,15 @@ import sys
 
 # 我不知道还有没有更好的方法，如果有的话麻烦把下面这几行改掉
 # 不要吐槽这堆奇奇怪怪的变量名了。。全部改掉太麻烦了
+# 在其他文件中请使用：json_data(),tkData()
+# ！！！注意上面这两个括号！！！
 postdata={}
 def json_data():
 	return postdata
-
 tkst=TK.BAD
 tkdata={}
 def tkStatus():
 	return tkst
-
 def tkData():
 	return tkdata
 
@@ -34,13 +34,12 @@ def Deco(func):
 			postdata=""
 			print("No Postdata loaded.")
 
-		# Token还是不行。。前端到底是用什么实现的？ # 现在估计是能用了
 		if not "NoToken" in func.__name__:
 		# 为了判断是否需要Token验证
 		# 我知道这很不好，但是带参数的修饰器和Flask冲突了（估计是）
 		# 所以请在不用Token的函数名后面加上"_NoToken"
 			try: # 获取Token
-				tkst, tkdata=TK.readToken(request.headers.get("Authorization")) # 改了一下
+				tkst, tkdata=TK.readToken(request.headers.get("Authorization"))
 				print("Loading Token:",tkst, tkdata)
 				if tkst==TK.EXPIRED:
 					return json.dumps({'type':'ERROR', 'message':"token过期"})

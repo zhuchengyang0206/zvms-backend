@@ -26,7 +26,7 @@ def getVolunteer(volId): # 可以了
 
 # 判断班级人数是否超限
 # 义工vol，在cls班里再报名dlt个人
-def checkStuLimit(vol,cls,dlt):
+def checkStuLimit(vol,cls,dlt): # 过了
 	print("Checking:",vol,cls,dlt)
 	fl,r=OP.select("stuMax,nowStuCount","class_vol","volId=%s AND class=%s",(vol,cls),["stuMax","nowStuCount"])
 	if not fl:
@@ -38,20 +38,34 @@ def checkStuLimit(vol,cls,dlt):
 		return False,{"type":"ERROR","message":"班级%d人数超限"%cls}
 	return True,{}
 
-# 目前已有BUG：
-# 1. 先后报名同一个人可以报两次
+# 判断义工人数是否合法
+# 传入字典（直接用postdata就好）至少有以下内容：
+# {"stuMax":233,"class":[{"id":202001,"stuMax":10},...]}
+def checkStudentCount(js): # 过了
+	# 传入json
+	# 如果最大人数大于每个班最大人数之和那么永远报不满
+	mx=js["stuMax"]
+	for i in js["class"]: mx-=i["stuMax"]
+	return mx<=0
+
 @Volunteer.route('/volunteer/signup/<int:volId>', methods = ['POST'])
 @Deco
-def signupVolunteer(volId):
+def signupVolunteer(volId): # 过了
 	# 判断权限
 	for i in json_data()['stulst']:
 		if not checkPermission(tkData()["class"],tkData()["permission"],i):
 			return {"type":"ERROR", "message":"权限不足：学生列表中有别班学生"}
 	# 判断人数是否超过这个义工的人数上限
-	fl,r=OP.select("stuMax,nowStuCount","volunteer","volId=%s",volId,["stuMax","nowStuCount"])
+	fl,r=OP.select("stuMax,nowStuCount","volunteer","volId=%s",(volId),["stuMax","nowStuCount"])
 	if not fl: return r # 数据库错误
-	if len(json_data()['stulst']) > r["stuMax"] - r["nowStuCount"]:
+	if len(json_data()['stulst'])>r["stuMax"]-r["nowStuCount"]:
 		return {"type":"ERROR", "message":"人数超限"}
+	# 判断是否有人已经报名了
+	for i in json_data()["stulst"]:
+		fl,r=OP.select("status","stu_vol","volId=%s AND stuId=%s",(volId,i),["status"])
+		# 理论上所有人都没有在数据库里面
+		if not (fl==False and r["message"]=="数据库信息错误：未查询到相关信息"):
+			return {"type":"ERROR", "message":"学生%d已经报名，不可重复报名！"%i}
 	# 判断人数是否超过班级人数上限
 	# 先统计每个班级报名人数
 	num={} # {202001:233,202002:234,...}
@@ -59,7 +73,7 @@ def signupVolunteer(volId):
 		cur=i//100 # 获取学生的班级
 		if cur in num: num[cur]+=1
 		else: num[cur]=1
-	for i in num:
+	for i in num: # 分别检查每个班的报名
 		fl,r=checkStuLimit(volId,i,num[i])
 		if not fl: return r
 	# 修改数据库
@@ -90,9 +104,11 @@ def createVolunteer(): # 大概可以了
 		"volunteer",
 		(json_data()["name"],json_data()["date"],json_data()["time"],json_data()["stuMax"],0,
 		json_data()["description"],VOLUNTEER_WAITING,json_data()["inside"],json_data()["outside"],json_data()["large"],tkData()["userid"]))
+	# 因为volunteer表里面是AUTO_INCREMENT，所以insert的时候volId自动加一
+	# 所以下面要获取当前的volId以供后面操作（为了防止一些奇奇怪怪的锅用了三项）
 	fl,r=OP.select("volId","volunteer","volName=%s AND volDate=%s AND volTime=%s",
 		(json_data()["name"],json_data()["date"],json_data()["time"]),["id"])
-	if not fl: return r
+	if not fl: return r # 理论上这个错误不可能发生
 	volId=r["id"]
 	# 在每个班的表里添加一条记录
 	for i in json_data()["class"]:
@@ -101,7 +117,7 @@ def createVolunteer(): # 大概可以了
 
 @Volunteer.route('/volunteer/signerList/<int:volId>', methods = ['GET'])
 @Deco
-def getSignerList(volId):
+def getSignerList(volId): # 过了
 	# 判断权限
 	if not tkData().get("permission") in [PMS_TEACHER,PMS_MANAGER,PMS_SYSTEM]:
 		return {'type':'ERROR', 'message':"权限不足"}
@@ -109,10 +125,11 @@ def getSignerList(volId):
 	fl,r=OP.select("stuId","stu_vol","volId=%s",(volId),["stuId"],only=False)
 	if not fl: return r # 数据库错误：没有这个义工
 	for i in r: # 返回学生姓名
-		ff,rr=OP.select("stuId,stuName","student","stuId=%s",(i[stuId]),["stuId","stuName"])
+		ff,rr=OP.select("stuId,stuName","student","stuId=%s",(i["stuId"]),["stuId","stuName"])
 		if not ff: return rr # 数据库错误：没有这个人
 		ret["result"].append(rr)
 	return ret
+
 '''
 @Volunteer.route('/volunteer/choose/<int:volId>', methods = ['POST'])
 def chooseVolunteer(volId):
@@ -220,9 +237,8 @@ def submitThought(volId): # 大概是过了
 			return {"type":"ERROR","message":"权限不足：学生列表中有别班学生"}
 	# 判断状态是否可以提交
 	for i in json_data()["thought"]:
-		print(i)
 		fl,r=OP.select("status","stu_vol","volId=%s AND stuId=%s",(volId,i["stuId"]),["status"])
-		if not fl: return r
+		if not fl: return r # 数据库错误
 		if r["status"]==STATUS_ACCEPT:
 			return {"type":"ERROR", "message":"学生%d已过审，不可重复提交"%i["stuId"]}
 		if r["status"]==STATUS_REJECT:
