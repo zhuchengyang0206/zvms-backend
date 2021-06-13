@@ -1,34 +1,28 @@
-from flask import Flask,make_response
+from flask import Flask,make_response,request
 from flask_cors import CORS
 import database
 from user import User
 from _class import Class
 from student import Student
+from volunteer import Volunteer
+from notice import Notice
 
 # Flask init
 app = Flask(__name__)
 app.debug = True  # 仅在测试环境打开！
 app.config["SECRET_KEY"] = "PaSsw0rD@1234!@#$"
-CORS(app, supports_credentials=True)
-@app.after_request
-def af_req(resp):
-    resp = make_response(resp)
-    resp.headers['Access-Control-Allow-Origin'] = 'http://localhost:8080'
-    resp.headers['Access-Control-Allow-Methods'] = 'PUT,POST,GET,DELETE,OPTIONS'
-    resp.headers['Access-Control-Allow-Headers'] = 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , authorize'
-    resp.headers['Access-Control-Allow-Credentials'] = 'true'
 
-    resp.headers['X-Powered-By'] = '3.2.1'
-    resp.headers['Content-Type'] = 'application/json;charset=utf-8'
-    return resp
+CORS(app, supports_credentials=True) # 允许跨域
 
 app.register_blueprint(User)
 app.register_blueprint(Class)
 app.register_blueprint(Student)
+app.register_blueprint(Volunteer)
+app.register_blueprint(Notice)
 
 @app.route('/',methods=['POST'])
 def main():
    return ""
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0', port=5000)

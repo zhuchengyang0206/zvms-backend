@@ -1,22 +1,21 @@
 from flask import Blueprint
 import database as DB
+import oppressor as OP
+from deco import *
+import tokenlib as TK
 import json
 
 Student = Blueprint("student", __name__)
-@Student.route('/student/volbook/<int:stuId>', methods=['POST'])
-def getVolbook(stuId):
-    respdata = {'type': 'ERROR', 'message': '未知错误!'}
-    DB.execute(
-        "SELECT volId FROM stu_vol WHERE stuId = %d"% (stuId))
-    r = DB.fetchall()
-    respdata['type'] = "SUCCESS"
-    respdata['message'] = "获取成功"
-    respdata['rec'] = []
+
+@Student.route('/student/volbook/<int:stuId>', methods=['GET'])
+@Deco
+def getVolbook(stuId): # 可以了
+    fl,r=OP.select("volId","stu_vol","stuId=%s",(stuId),["volId"],only=False)
+    if not fl: return r
+    ret={"type": "SUCCESS","message": "获取成功","rec":[]}
     for i in r:
-        DB.execute(
-            "SELECT volName, volTimeInside, volTimeOutside, volTimeLarge, status FROM stu_vol WHERE vid = %d"%d (i[0]))
-        res = DB.fetchall()
-        respdata['rec'].append(
-            {"volId": i[0], "name": res[0], "inside": res[1], "outside": res[2], "large": res[3], "status": res[4]}
-        )
-    return json.dumps(respdata)
+        ff,rr=OP.select("volId,volName,volTimeInside,volTimeOutside,volTimeLarge,status","volunteer",
+            "volId=%s",(i["volId"]),["volId","name","inside","outside","large","status"])
+        if not ff: return rr
+        ret["rec"].append(rr)
+    return ret

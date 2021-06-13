@@ -1,4 +1,0 @@
-﻿volId,volName,volDate,volTime,stuMax,nowStuCount,description,status,volTimeInside,volTimeOutside,volTimeLarge,holderId
-1,义工活动1,2020-01-01,16:00:00,5,5,第1次义工活动,2,4,0,0,100001
-2,义工活动2,2020-01-02,17:00:00,5,5,第2次义工活动,2,4,2,0,100001
-3,义工活动3,2020-01-03,18:00:00,5,5,第3次义工活动,2,4,0,0,100001
