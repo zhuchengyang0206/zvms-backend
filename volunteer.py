@@ -258,4 +258,5 @@ def randthought(): # 随机【钦定】一条感想（话说SQL怎么随机取�
 		r=OP.getRand("stu_vol")
 		if r[2] == 1:
 			respdata = {"type": "SUCCESS", "stuId": r[1], "content": r[7]} # TODO：要获取名字！！ 应该还有一条 'stuName':'张三' 的记录
+			break
 	return json.dumps(respdata)
