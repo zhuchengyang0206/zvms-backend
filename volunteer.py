@@ -249,7 +249,7 @@ def submitThought(volId): # 大概是过了
 	return {"type":"SUCCESS","message":"提交成功"}
 
 @Volunteer.route('/volunteer/randomThought', methods=['GET'])
-def randthought(): # 随机【钦定】一条感想（话说SQL怎么随机取一条数据啊）
+def randthought(): # 随机【钦定】一条感想 # 未调试
 	cnt=0
 	respdata = {'type':'ERROR',"message": "感想获取不到"}
 	while True:
@@ -257,6 +257,7 @@ def randthought(): # 随机【钦定】一条感想（话说SQL怎么随机取�
 		if cnt>10:break   # 说明系统刚上线
 		r=OP.getRand("stu_vol")
 		if r[2] == 1:
-			respdata = {"type": "SUCCESS", "stuId": r[1], "content": r[7]} # TODO：要获取名字！！ 应该还有一条 'stuName':'张三' 的记录
+			name = OP.select("stuName", "student", "stuId=%s", (r[1]), ["name"])["name"]
+			respdata = {"type": "SUCCESS", "stuId": r[1], "stuName": name, "content": r[7]}
 			break
 	return json.dumps(respdata)
