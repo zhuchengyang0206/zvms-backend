@@ -6,10 +6,16 @@
 
 -----
 
-  1. 启用virtualenv开发环境(Windows)
+  1. 启用virtualenv开发环境
   ```
+  Windows：
+  
   py -3 -m venv venv
   venv\Scripts\activate
+  
+  Linux：
+  
+  source venv/bin/activate
   ```
   2. 安装Flask
   ```
