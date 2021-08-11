@@ -27,7 +27,7 @@ def getVolunteer(volId): # 可以了
 # 判断班级人数是否超限
 # 义工vol，在cls班里再报名dlt个人
 def checkStuLimit(vol,cls,dlt): # 过了
-	print("Checking:",vol,cls,dlt)
+	# print("Checking:",vol,cls,dlt)
 	fl,r=OP.select("stuMax,nowStuCount","class_vol","volId=%s AND class=%s",(vol,cls),["stuMax","nowStuCount"])
 	if not fl:
 		if r["message"]=="数据库信息错误：未查询到相关信息":
@@ -93,7 +93,7 @@ def signupVolunteer(volId): # 过了
 @Deco
 def createVolunteer(): # 大概可以了
 	# 判断权限，教师、义管会、系统可以创建义工
-	print(tkData())
+	# print(tkData())
 	if not tkData().get("permission") in [PMS_TEACHER,PMS_MANAGER,PMS_SYSTEM]:
 		return {'type':'ERROR', 'message':"权限不足"}
 	if not checkStudentCount(json_data()):
@@ -152,6 +152,16 @@ def getJoinerList(volId): # 这个到底要不要？
 	return ret
 '''
 
+@Volunteer.route('/volunteer/unaudited', methods=['GET'])
+@Deco
+def getUnaudited():
+	fl,r=OP.select("volId,stuId,thought","stu_vol","status=%s",(STATUS_WAITING),["volId,stuId","thought"],only=False)
+	if not fl:
+		if r["message"]=="数据库信息错误：未查询到相关信息":
+			r={"type":"SUCCESS","message":"全部审核完毕"}
+		return r
+	return {"type":"SUCCESS","message":"获取成功","result":r}
+
 @Volunteer.route('/volunteer/audit/<int:volId>', methods = ['POST'])
 @Deco
 def auditThought(volId): # 大概是过了
@@ -181,6 +191,35 @@ def auditThought(volId): # 大概是过了
 		OP.update("volTimeLarge=volTimeLarge+%s","student","stuId=%s",(i["large"],stuId))
 		# 如果SQL的update可以一次修改多列的话麻烦把上面改了
 	return {"type":"SUCCESS", "message":"审核成功"}
+
+@Volunteer.route('/volunteer/holiday', methods=['POST'])
+@Deco
+def holidayVolunteer():
+	# 判断是否是本班的人
+	# 这里义管会和系统是不可以的（因为后面关联到班级的时候必须要有一个classId）
+	# 真要改也不是不可以。在后面统计学生列表中出现过的班级。
+	for i in json_data()["stuId"]:
+		if not tkData()["class"]==i//10:
+			return {"type":"ERROR", "message":"权限不足：学生列表中有别班学生"}
+	stulen=len(json_data()["stuId"])
+	#  先创建一个义工（照搬Create）
+	OP.insert("volName,volDate,volTime,stuMax,nowStuCount,description,status,"
+		+"volTimeInside,volTimeOutside,volTimeLarge,holderId",
+		"volunteer", # 初始把所有学生报进去
+		(json_data()["name"],json_data()["date"],json_data()["time"],stulen,stulen),
+		json_data()["description"],VOLUNTEER_WAITING,json_data()["inside"],json_data()["outside"],json_data()["large"],tkData()["userid"]))
+	# 获取volId
+	fl,r=OP.select("volId","volunteer","volName=%s AND volDate=%s AND volTime=%s",
+		(json_data()["name"],json_data()["date"],json_data()["time"]),["id"])
+	if not fl: return r # 理论上这个错误不可能发生
+	volId=r["id"]
+	# 在每个班的表里添加一条记录
+	OP.insert("volId,class,stuMax,nowStuCount","class_vol",(volId,tkData()["class"],stulen,0))
+	# 给每个学生一条记录
+	for i in json_data["stuId"]:
+		OP.insert("volId,stuId,status,volTimeInside,volTimeOutside,volTimeLarge,thought",
+			"stu_vol",(volId,i,STATUS_WAITING,0,0,0,""))
+	return {"type":"SUCCESS", "message":"提交成功"}
 
 '''暂时去掉
 @Volunteer.route('/volunteer/modify/<int:volId>', methods = ['POST'])
