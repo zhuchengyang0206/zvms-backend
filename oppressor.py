@@ -94,8 +94,9 @@ def insert(col,src,val): # 估计能用了
 	r=DB.fetchall()
 
 def getRand(src):
-	s="SELECT * FROM %s AS t1 JOIN (SELECT ROUND(RAND() * ((SELECT MAX(id) FROM %s)-(SELECT MIN(id) FROM %s))+(SELECT MIN(id) FROM %s)) AS id) AS t2 WHERE t1.id >= t2.id ORDER BY t1.id LIMIT 1;"%(src,src,src,src)
+	s="SELECT * FROM %s ORDER BY RAND() LIMIT 1;"%(src)
 	DB.execute(s)
+	print(DB.fetchone())
 	return DB.fetchone()
 
 # 获取一个表中有多少行记录
