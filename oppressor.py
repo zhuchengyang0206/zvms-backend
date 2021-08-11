@@ -93,10 +93,9 @@ def insert(col,src,val): # 估计能用了
 	DB.execute(s,val)
 	r=DB.fetchall()
 
-def getRand(src):
-	s="SELECT * FROM %s ORDER BY RAND() LIMIT 1;"%(src)
+def getRandThought():
+	s="SELECT * FROM stu_vol ORDER BY status DESC, RAND() DESC LIMIT 1;"
 	DB.execute(s)
-	print(DB.fetchone())
 	return DB.fetchone()
 
 # 获取一个表中有多少行记录
