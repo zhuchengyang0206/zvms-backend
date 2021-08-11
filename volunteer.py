@@ -207,7 +207,7 @@ def holidayVolunteer():
 		+"volTimeInside,volTimeOutside,volTimeLarge,holderId",
 		"volunteer", # 初始把所有学生报进去
 		(json_data()["name"],json_data()["date"],json_data()["time"],stulen,stulen),
-		json_data()["description"],VOLUNTEER_WAITING,json_data()["inside"],json_data()["outside"],json_data()["large"],tkData()["userid"]))
+		json_data()["description"],VOLUNTEER_WAITING,json_data()["inside"],json_data()["outside"],json_data()["large"],tkData()["userid"])
 	# 获取volId
 	fl,r=OP.select("volId","volunteer","volName=%s AND volDate=%s AND volTime=%s",
 		(json_data()["name"],json_data()["date"],json_data()["time"]),["id"])
@@ -287,7 +287,7 @@ def submitThought(volId): # 大概是过了
 		OP.update("thought=%s","stu_vol","stuId=%s",(i["content"],i["stuId"]))
 	return {"type":"SUCCESS","message":"提交成功"}
 
-@Volunteer.route('/volunteer/randomThought', methods=['GET'])
+@Volunteer.route('/volunteer/randomThought', methods=['GET', 'OPTIONS'])
 def randthought(): # 随机【钦定】一条感想 # 未调试
 	cnt=0
 	respdata = {'type':'ERROR',"message": "感想获取不到"}

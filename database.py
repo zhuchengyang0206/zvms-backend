@@ -35,3 +35,10 @@ def fetchall():
         return cur.fetchall()
     except:
         traceback.print_exc()
+
+def fetchone():
+    global cur
+    try:
+        return cur.fetchone()
+    except:
+        traceback.print_exc()
