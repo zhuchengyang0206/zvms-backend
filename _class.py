@@ -13,13 +13,17 @@ def getClassList(): # 好了
     fl,r=OP.select("class","user","true",(),["id"],only=False)
     print(fl,r)
     if not fl: return r
-    for i in r: i.update({"name":OP.classIdToString(i["id"])})
+    classes = []
+    for i in r: classes.append(i["id"])
+    classes = sorted(set(classes))
+    r = []
+    for i in classes: r.append({"id": i, "name": OP.classIdToString(i)})
     return {
         "type": "SUCCESS",
         "message": "获取成功",
         "class": r
     }
-    
+
 @Class.route("/class/stulist/<int:classId>", methods = ['GET'])
 @Deco
 def getStudentList(classId): # 好了
