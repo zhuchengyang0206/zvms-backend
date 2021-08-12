@@ -55,7 +55,7 @@ def select(col,src,exp,val,ret,only=True): # 估计能用了
 	r=DB.fetchall()
 	print("Select Result:",r) # SQL返回值 #
 	if ret==[]: # 这个尽量避免使用吧，可能会有奇奇怪怪的锅（本来还想偷点懒的）
-		ret=list(split(col,","))
+		ret=list(col.split(","))
 		for i in len(ret): ret[i]=ret[i].strip()
 	if len(r)==0:
 		return False, {"type":"ERROR","message":"数据库信息错误：未查询到相关信息"}
