@@ -290,8 +290,12 @@ def submitThought(volId): # 大概是过了
 @Volunteer.route('/volunteer/randomThought', methods=['GET'])
 def randthought(): # 随机一条感想
 	respdata = {'type':'ERROR',"message": "感想获取不到"}
-	r=OP.getRandThought()
-	if r != None and r[2] == 1:
-		fl,name = OP.select("stuName", "student", "stuId=%s", (r[1]), ["name"])
-		respdata = {"type": "SUCCESS", "stuId": r[1], "stuName": name["name"], "content": r[6]}
+	while True:
+		cnt+=1
+		if cnt>10:break   # 说明系统刚上线
+		r=OP.getRandThought()
+		if r[2] == 1:
+			name = OP.select("stuName", "student", "stuId=%s", (r[1]), ["name"])["name"]
+			respdata = {"type": "SUCCESS", "stuId": r[1], "stuName": name, "content": r[7]}
+			break
 	return json.dumps(respdata)
