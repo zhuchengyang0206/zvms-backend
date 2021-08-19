@@ -7,7 +7,7 @@ import oppressor as OP
 
 User = Blueprint('user', __name__)
 
-@User.route('/user/login', methods = ['POST'])
+@User.route('/user/login', methods = ['POST','OPTIONS'])
 @Deco
 def login_NoToken():
 	userid = json_data().get("userid")
@@ -28,7 +28,7 @@ def login_NoToken():
 		ret.update(val)
 	return ret
 
-@User.route('/user/logout', methods = ['GET'])
+@User.route('/user/logout', methods = ['GET','OPTIONS'])
 @Deco
 def logout_NoToken():
 	return {'type': 'SUCCESS', 'message': '登出成功！'}

@@ -22,6 +22,8 @@ def close(): # 这玩意有被用到吗？
         traceback.print_exc()
 
 def execute(sql, param = None):
+    print("sql =", sql)
+    print("param =", param)
     global cur, conn
     try:
         cur.execute(sql, param)

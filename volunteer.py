@@ -44,6 +44,7 @@ def checkStuLimit(vol,cls,dlt): # 过了
 def checkStudentCount(js): # 过了
 	# 传入json
 	# 如果最大人数大于每个班最大人数之和那么永远报不满
+	print("Entered checkStudentCount.")
 	mx=js["stuMax"]
 	for i in js["class"]: mx-=i["stuMax"]
 	return mx<=0
@@ -89,15 +90,21 @@ def signupVolunteer(volId): # 过了
 		# 审核过了以后再发义工时间
 	return {"type":"SUCCESS","message":"添加成功"}
 
-@Volunteer.route('/volunteer/create', methods = ['POST'])
+@Volunteer.route('/volunteer/create', methods = ['POST','OPTIONS'])
 @Deco
 def createVolunteer(): # 大概可以了
 	# 判断权限，教师、义管会、系统可以创建义工
+	# print(2333)
 	# print(tkData())
 	if not tkData().get("permission") in [PMS_TEACHER,PMS_MANAGER,PMS_SYSTEM]:
+		print("Pemission Denied.")
 		return {'type':'ERROR', 'message':"权限不足"}
-	if not checkStudentCount(json_data()):
+	print("Permission verified.")
+	print(json_data())
+	if not checkStudentCount(json_data()): # HERE! PARAMTERS ERROR!
+		print("count check failed.")
 		return {"type":"ERROR", "message":"最大人数不符合要求：义工人数永远无法报满"}
+	print(666)
 	# 创建一条总的记录
 	OP.insert("volName,volDate,volTime,stuMax,nowStuCount,description,status,"
 		+"volTimeInside,volTimeOutside,volTimeLarge,holderId",
@@ -289,11 +296,14 @@ def submitThought(volId): # 大概是过了
 
 @Volunteer.route('/volunteer/randomThought', methods=['GET'])
 def randthought(): # 随机一条感想
-	respdata = {'type':'ERROR',"message": "感想获取不到"}
+	# respdata = {'type':'ERRR',"message": "感想获取不到"}
+	respdata = {'type':'SUCCESS',"message": "感想获取不到"}
+	cnt = 0
 	while True:
-		cnt+=1
-		if cnt>10:break   # 说明系统刚上线
-		r=OP.getRandThought()
+		cnt += 1
+		if cnt > 10: break   # 说明系统刚上线
+		r = OP.getRandThought()
+		if r == None: break
 		if r[2] == 1:
 			name = OP.select("stuName", "student", "stuId=%s", (r[1]), ["name"])["name"]
 			respdata = {"type": "SUCCESS", "stuId": r[1], "stuName": name, "content": r[7]}
