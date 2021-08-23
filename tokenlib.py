@@ -8,7 +8,7 @@ BAD = 3
 
 SECRET_KEY = "譋窹乆乣詈"
 SALT = "詈乆窹乣譋 "
-EXPIRES_IN = 3600
+EXPIRES_IN = 36000
 
 def generateToken(data):
     global SECRET_KEY, SALT, EXPIRES_IN

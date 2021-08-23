@@ -52,5 +52,6 @@ def getInfo(userId):
 def modifyPassword():
 	old=json_data().get("oldPwd")
 	new=json_data().get("newPwd")
-	OP.update("password","user","userId=%s",tkData().get("userid"))
+	print(type(tkData().get("userid")))
+	OP.update("password=%s","user","userId=%s",(new, tkData().get("userid"),))
 	return {"type":"SUCCESS", "message":"修改成功"}

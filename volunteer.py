@@ -6,7 +6,7 @@ import oppressor as OP
 
 Volunteer = Blueprint('volunteer', __name__)
 
-@Volunteer.route('/volunteer/list', methods = ['GET']) # 这里不需要参数传入，使用GET方式。下同
+@Volunteer.route('/volunteer/list', methods = ['GET', 'OPTIONS']) # 这里不需要参数传入，使用GET方式。下同
 @Deco
 def getVolunteerList(): # 可以了
 	fl,r=OP.select("volId,volName,description,volDate,volTime,status,stuMax","volunteer","true",(),
@@ -14,7 +14,7 @@ def getVolunteerList(): # 可以了
 	if not fl: return r # 数据库错误
 	return {"type":"SUCCESS","message":"获取成功","volunteer":r}
 
-@Volunteer.route('/volunteer/fetch/<int:volId>', methods = ['GET'])
+@Volunteer.route('/volunteer/fetch/<int:volId>', methods = ['GET', 'OPTIONS'])
 @Deco
 def getVolunteer(volId): # 可以了
 	fl,r=OP.select("volName,volDate,volTime,stuMax,nowStuCount,description,status,volTimeInside,volTimeOutside,volTimeLarge",
