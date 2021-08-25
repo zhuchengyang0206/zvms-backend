@@ -27,6 +27,7 @@ def execute(sql, param = None):
     global cur, conn
     try:
         cur.execute(sql, param)
+        conn.commit()
     except:
         traceback.print_exc()
         conn.rollback()
@@ -34,13 +35,17 @@ def execute(sql, param = None):
 def fetchall():
     global cur
     try:
-        return cur.fetchall()
+        r=cur.fetchall()
+        conn.commit()
+        return r
     except:
         traceback.print_exc()
 
 def fetchone():
     global cur
     try:
-        return cur.fetchone()
+        r=cur.fetchone()
+        conn.commit()
+        return r
     except:
         traceback.print_exc()
