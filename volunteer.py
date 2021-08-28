@@ -205,27 +205,34 @@ def holidayVolunteer():
 	# 判断是否是本班的人
 	# 这里义管会和系统是不可以的（因为后面关联到班级的时候必须要有一个classId）
 	# 真要改也不是不可以。在后面统计学生列表中出现过的班级。
+	print(json_data())
+	print(json_data()["stuId"],tkData()["class"])
 	for i in json_data()["stuId"]:
-		if not tkData()["class"]==i//10:
+		if not tkData()["class"]==i//100:
 			return {"type":"ERROR", "message":"权限不足：学生列表中有别班学生"}
 	stulen=len(json_data()["stuId"])
+	print(2333)
+	print(stulen)
+	print(json_data()["name"],json_data()["date"],json_data()["time"],stulen,stulen)
+	print(json_data()["description"],VOLUNTEER_WAITING,json_data()["inside"],json_data()["outside"],json_data()["large"],tkData()["userid"])
 	#  先创建一个义工（照搬Create）
 	OP.insert("volName,volDate,volTime,stuMax,nowStuCount,description,status,"
 		+"volTimeInside,volTimeOutside,volTimeLarge,holderId",
 		"volunteer", # 初始把所有学生报进去
-		(json_data()["name"],json_data()["date"],json_data()["time"],stulen,stulen),
-		json_data()["description"],VOLUNTEER_WAITING,json_data()["inside"],json_data()["outside"],json_data()["large"],tkData()["userid"])
+		(json_data()["name"],json_data()["date"],json_data()["time"],str(stulen),str(stulen),
+		json_data()["description"],str(VOLUNTEER_WAITING),json_data()["inside"],json_data()["outside"],json_data()["large"],tkData()["userid"]))
+	print(233)
 	# 获取volId
 	fl,r=OP.select("volId","volunteer","volName=%s AND volDate=%s AND volTime=%s",
 		(json_data()["name"],json_data()["date"],json_data()["time"]),["id"])
 	if not fl: return r # 理论上这个错误不可能发生
 	volId=r["id"]
 	# 在每个班的表里添加一条记录
-	OP.insert("volId,class,stuMax,nowStuCount","class_vol",(volId,tkData()["class"],stulen,0))
+	OP.insert("volId,class,stuMax,nowStuCount","class_vol",(volId,tkData()["class"],str(stulen),str(stulen)))
 	# 给每个学生一条记录
-	for i in json_data["stuId"]:
+	for i in json_data()["stuId"]:
 		OP.insert("volId,stuId,status,volTimeInside,volTimeOutside,volTimeLarge,thought",
-			"stu_vol",(volId,i,STATUS_WAITING,0,0,0,""))
+			"stu_vol",(str(volId),str(i),str(STATUS_WAITING),'0','0','0',""))
 	return {"type":"SUCCESS", "message":"提交成功"}
 
 '''暂时去掉

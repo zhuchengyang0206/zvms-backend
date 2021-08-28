@@ -87,7 +87,11 @@ def update(col,src,exp,val): # 估计能用了
 
 def insert(col,src,val): # 估计能用了
 	# 参数同上
+	print(col)
+	print(src)
+	print(val)
 	tmp=("%s,"*len(val))[:-1]
+	print(tmp)
 	s="INSERT INTO %s (%s) VALUES (%s);"%(src,col,tmp)
 	print("Inserting:",s,val) # 生成的SQL语句和参数 #
 	DB.execute(s,val)
