@@ -162,7 +162,7 @@ def getJoinerList(volId): # 这个到底要不要？
 @Volunteer.route('/volunteer/unaudited', methods=['GET'])
 @Deco
 def getUnaudited():
-	fl,r=OP.select("volId,stuId,thought","stu_vol","status=%s",(STATUS_WAITING),["volId,stuId","thought"],only=False)
+	fl,r=OP.select("volId,stuId,thought","stu_vol","status=%s",(STATUS_WAITING),["volId","stuId","thought"],only=False)
 	if not fl:
 		if r["message"]=="数据库信息错误：未查询到相关信息":
 			r={"type":"SUCCESS","message":"全部审核完毕"}
