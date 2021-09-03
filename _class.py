@@ -3,6 +3,7 @@ import tokenlib as tk
 import json
 import oppressor as OP
 from deco import Deco
+from res import *
 
 Class = Blueprint('class', __name__)
 
@@ -53,7 +54,7 @@ def getClassVolunteer(classId): # 还没调
 @Class.route('/class/noThought/<int:classId>', methods=['GET'])
 @Deco
 def getNoThought(classId): # 还没调
-	fl,r=OP.select("volId,stuId","stu_vol","length(description)<=0",(),["volId","stuId"],only=False)
+	fl,r=OP.select("volId,stuId","stu_vol","status=%s or status=%s",(STATUS_WAITING,STATUS_RESUBMIT),["volId","stuId"],only=False)
 	if not fl:
 		if r["message"]=="数据库信息错误：未查询到相关信息":
 			r={"type":"SUCCESS","message":"没有需要填写感想的义工"}

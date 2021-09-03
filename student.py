@@ -13,9 +13,6 @@ def getVolunteerWork(stuId):
     ["volId","inside","outside","large","status"],only=False)
     if not fl: return r
     for i in r:
-        i["inside"]/=60
-        i["outside"]/=60
-        i["large"]/=60
         ff,rr=OP.select("volName","volunteer","volId=%s",i["volId"], ["name"])
         if not ff: return rr
         i.update({"name": rr["name"]})

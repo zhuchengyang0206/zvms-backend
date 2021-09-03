@@ -126,8 +126,8 @@ def createVolunteer(): # 大概可以了
 @Deco
 def getSignerList(volId): # 过了
 	# 判断权限
-	if not tkData().get("permission") in [PMS_TEACHER,PMS_MANAGER,PMS_SYSTEM]:
-		return {'type':'ERROR', 'message':"权限不足"}
+	# if not tkData().get("permission") in [PMS_TEACHER,PMS_MANAGER,PMS_SYSTEM]:
+	# 	return {'type':'ERROR', 'message':"权限不足"}
 	ret={"type":"SUCCESS", "message":"获取成功","result":[]}
 	fl,r=OP.select("stuId","stu_vol","volId=%s",(volId),["stuId"],only=False)
 	if not fl: return r # 数据库错误：没有这个义工
@@ -162,7 +162,7 @@ def getJoinerList(volId): # 这个到底要不要？
 @Volunteer.route('/volunteer/unaudited', methods=['GET'])
 @Deco
 def getUnaudited():
-	fl,r=OP.select("volId,stuId,thought","stu_vol","status=%s",(STATUS_WAITING),["volId","stuId","thought"],only=False)
+	fl,r=OP.select("volId,stuId,thought","stu_vol","((status=%s or status=%s)and length(thought)>0)",(STATUS_WAITING,STATUS_RESUBMIT),["volId","stuId","thought"],only=False)
 	if not fl:
 		if r["message"]=="数据库信息错误：未查询到相关信息":
 			r={"type":"SUCCESS","message":"全部审核完毕"}
@@ -298,7 +298,7 @@ def submitThought(volId): # 大概是过了
 			return {"type":"ERROR", "message":"学生%d不可重新提交"%i["stuId"]}
 	# 修改数据库
 	for i in json_data()["thought"]:
-		OP.update("thought=%s","stu_vol","stuId=%s",(i["content"],i["stuId"]))
+		OP.update("thought=%s","stu_vol","volId=%s and stuId=%s",(i["content"],volId,i["stuId"]))
 	return {"type":"SUCCESS","message":"提交成功"}
 
 @Volunteer.route('/volunteer/randomThought', methods=['GET'])
