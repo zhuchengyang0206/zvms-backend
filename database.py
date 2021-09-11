@@ -20,27 +20,48 @@ def close(): # 这玩意有被用到吗？
         conn.close()
     except:
         traceback.print_exc()
-
+        
+def test_connection():
+    global conn, cur
+    try:
+        conn.ping()
+    except:
+        conn = connect(
+            host = "127.0.0.1",
+            user = "zvms",
+            password = "123456",
+            db = "zvms"
+        )
+        cur = conn.cursor()
+	
 def execute(sql, param = None):
+    test_connection()
     print("sql =", sql)
     print("param =", param)
     global cur, conn
     try:
         cur.execute(sql, param)
+        conn.commit()
     except:
         traceback.print_exc()
         conn.rollback()
 
 def fetchall():
+    test_connection()
     global cur
     try:
-        return cur.fetchall()
+        r=cur.fetchall()
+        conn.commit()
+        return r
     except:
         traceback.print_exc()
 
 def fetchone():
+    test_connection()
     global cur
     try:
-        return cur.fetchone()
+        r=cur.fetchone()
+        conn.commit()
+        return r
     except:
         traceback.print_exc()

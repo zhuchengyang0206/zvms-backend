@@ -126,8 +126,8 @@ def createVolunteer(): # 大概可以了
 @Deco
 def getSignerList(volId): # 过了
 	# 判断权限
-	if not tkData().get("permission") in [PMS_TEACHER,PMS_MANAGER,PMS_SYSTEM]:
-		return {'type':'ERROR', 'message':"权限不足"}
+	# if not tkData().get("permission") in [PMS_TEACHER,PMS_MANAGER,PMS_SYSTEM]:
+	# 	return {'type':'ERROR', 'message':"权限不足"}
 	ret={"type":"SUCCESS", "message":"获取成功","result":[]}
 	fl,r=OP.select("stuId","stu_vol","volId=%s",(volId),["stuId"],only=False)
 	if not fl: return r # 数据库错误：没有这个义工
@@ -162,7 +162,7 @@ def getJoinerList(volId): # 这个到底要不要？
 @Volunteer.route('/volunteer/unaudited', methods=['GET'])
 @Deco
 def getUnaudited():
-	fl,r=OP.select("volId,stuId,thought","stu_vol","status=%s",(STATUS_WAITING),["volId,stuId","thought"],only=False)
+	fl,r=OP.select("volId,stuId,thought","stu_vol","((status=%s)and length(thought)>0)",(STATUS_WAITING),["volId","stuId","thought"],only=False)
 	if not fl:
 		if r["message"]=="数据库信息错误：未查询到相关信息":
 			r={"type":"SUCCESS","message":"全部审核完毕"}
@@ -186,6 +186,8 @@ def auditThought(volId): # 大概是过了
 	# 修改数据库
 	for i in json_data()["thought"]:
 		stuId=i["stuId"]
+		if i["status"]!=STATUS_ACCEPT:
+                        OP.update("thought=%s","stu_vol","volId=%s AND stuId=%s",("",volId,stuId))
 		# 修改状态。状态由JSON传入
 		OP.update("status=%s","stu_vol","volId=%s AND stuId=%s",(i["status"],volId,stuId))
 		# 把stu_vol的表里的数据填上
@@ -206,26 +208,26 @@ def holidayVolunteer():
 	# 这里义管会和系统是不可以的（因为后面关联到班级的时候必须要有一个classId）
 	# 真要改也不是不可以。在后面统计学生列表中出现过的班级。
 	for i in json_data()["stuId"]:
-		if not tkData()["class"]==i//10:
+		if not tkData()["class"]==i//100:
 			return {"type":"ERROR", "message":"权限不足：学生列表中有别班学生"}
 	stulen=len(json_data()["stuId"])
 	#  先创建一个义工（照搬Create）
 	OP.insert("volName,volDate,volTime,stuMax,nowStuCount,description,status,"
 		+"volTimeInside,volTimeOutside,volTimeLarge,holderId",
 		"volunteer", # 初始把所有学生报进去
-		(json_data()["name"],json_data()["date"],json_data()["time"],stulen,stulen),
-		json_data()["description"],VOLUNTEER_WAITING,json_data()["inside"],json_data()["outside"],json_data()["large"],tkData()["userid"])
+		(json_data()["name"],json_data()["date"],json_data()["time"],str(stulen),str(stulen),
+		json_data()["description"],str(VOLUNTEER_WAITING),json_data()["inside"],json_data()["outside"],json_data()["large"],tkData()["userid"]))
 	# 获取volId
 	fl,r=OP.select("volId","volunteer","volName=%s AND volDate=%s AND volTime=%s",
 		(json_data()["name"],json_data()["date"],json_data()["time"]),["id"])
 	if not fl: return r # 理论上这个错误不可能发生
 	volId=r["id"]
 	# 在每个班的表里添加一条记录
-	OP.insert("volId,class,stuMax,nowStuCount","class_vol",(volId,tkData()["class"],stulen,0))
+	OP.insert("volId,class,stuMax,nowStuCount","class_vol",(volId,tkData()["class"],str(stulen),str(stulen)))
 	# 给每个学生一条记录
-	for i in json_data["stuId"]:
+	for i in json_data()["stuId"]:
 		OP.insert("volId,stuId,status,volTimeInside,volTimeOutside,volTimeLarge,thought",
-			"stu_vol",(volId,i,STATUS_WAITING,0,0,0,""))
+			"stu_vol",(str(volId),str(i),str(STATUS_WAITING),'0','0','0',""))
 	return {"type":"SUCCESS", "message":"提交成功"}
 
 '''暂时去掉
@@ -291,7 +293,8 @@ def submitThought(volId): # 大概是过了
 			return {"type":"ERROR", "message":"学生%d不可重新提交"%i["stuId"]}
 	# 修改数据库
 	for i in json_data()["thought"]:
-		OP.update("thought=%s","stu_vol","stuId=%s",(i["content"],i["stuId"]))
+		OP.update("thought=%s","stu_vol","volId=%s and stuId=%s",(i["content"],volId,i["stuId"]))
+		OP.update("status=%s","stu_vol","volId=%s and stuId=%s",(STATUS_WAITING,volId,i["stuId"]))
 	return {"type":"SUCCESS","message":"提交成功"}
 
 @Volunteer.route('/volunteer/randomThought', methods=['GET'])

@@ -7,7 +7,7 @@ import oppressor as OP
 
 User = Blueprint('user', __name__)
 
-@User.route('/user/login', methods = ['POST','OPTIONS'])
+@User.route('/user/login', methods = ['POST','OPTIONS','GET'])
 @Deco
 def login_NoToken():
 	userid = json_data().get("userid")
@@ -28,7 +28,7 @@ def login_NoToken():
 		ret.update(val)
 	return ret
 
-@User.route('/user/logout', methods = ['GET','OPTIONS'])
+@User.route('/user/logout', methods = ['GET','OPTIONS','POST'])
 @Deco
 def logout_NoToken():
 	return {'type': 'SUCCESS', 'message': '登出成功！'}
@@ -52,6 +52,8 @@ def getInfo(userId):
 def modifyPassword():
 	old=json_data().get("oldPwd")
 	new=json_data().get("newPwd")
+	fl, r = OP.select("userid","user", "userId = %s and password = %s", (tkData().get("userid"), old), ["user"])
+	if not fl: return {"type": "ERROR", "message": "密码错误"}
 	print(type(tkData().get("userid")))
 	OP.update("password=%s","user","userId=%s",(new, tkData().get("userid"),))
 	return {"type":"SUCCESS", "message":"修改成功"}

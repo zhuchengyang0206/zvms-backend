@@ -3,6 +3,7 @@ import tokenlib as tk
 import json
 import oppressor as OP
 from deco import Deco
+from res import *
 
 Class = Blueprint('class', __name__)
 
@@ -10,7 +11,7 @@ Class = Blueprint('class', __name__)
 @Deco
 def getClassList(): # 好了
 	# 是不是还要加上特殊情况的判断？
-    fl,r=OP.select("class","user","true",(),["id"],only=False)
+    fl,r=OP.select("class","user","userId>200000",(),["id"],only=False)
     print(fl,r)
     if not fl: return r
     classes = []
@@ -53,7 +54,7 @@ def getClassVolunteer(classId): # 还没调
 @Class.route('/class/noThought/<int:classId>', methods=['GET'])
 @Deco
 def getNoThought(classId): # 还没调
-	fl,r=OP.select("volId,stuId","stu_vol","length(description)<=0",(),["volId","stuId"],only=False)
+	fl,r=OP.select("volId,stuId","stu_vol","status=%s or (status = %s and thought='')",(STATUS_RESUBMIT,STATUS_WAITING),["volId","stuId"],only=False)
 	if not fl:
 		if r["message"]=="数据库信息错误：未查询到相关信息":
 			r={"type":"SUCCESS","message":"没有需要填写感想的义工"}

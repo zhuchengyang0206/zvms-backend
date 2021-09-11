@@ -2,7 +2,7 @@
 # 这个文件封装了一些针对数据库的操作
 import database as DB
 
-thisYear = 2020 # 以后要改成自动获取
+thisYear = 2021 # 以后要改成自动获取
 # 并且这个应该是指学年而不是当前年份
 # 这个函数被用到的地方：_class.py
 def classIdToString(a):
@@ -37,6 +37,7 @@ def classIdToString(a):
 		ret = ret + "三"
 	ret = ret + (["NULL","1","2","3","4","5","6","7","8","9","10","NULL","2","3","4","5","6","7"])[_class] #如果我没记错的话校徽是这样的
 	ret = ret + "班"
+	if "NULL" in ret: ret = "无班级"
 
 	return ret
 
@@ -87,7 +88,11 @@ def update(col,src,exp,val): # 估计能用了
 
 def insert(col,src,val): # 估计能用了
 	# 参数同上
+	print(col)
+	print(src)
+	print(val)
 	tmp=("%s,"*len(val))[:-1]
+	print(tmp)
 	s="INSERT INTO %s (%s) VALUES (%s);"%(src,col,tmp)
 	print("Inserting:",s,val) # 生成的SQL语句和参数 #
 	DB.execute(s,val)
