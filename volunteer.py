@@ -207,10 +207,16 @@ def holidayVolunteer():
 	# 判断是否是本班的人
 	# 这里义管会和系统是不可以的（因为后面关联到班级的时候必须要有一个classId）
 	# 真要改也不是不可以。在后面统计学生列表中出现过的班级。
+	print(json_data())
+	print(json_data()["stuId"],tkData()["class"])
 	for i in json_data()["stuId"]:
 		if not tkData()["class"]==i//100:
 			return {"type":"ERROR", "message":"权限不足：学生列表中有别班学生"}
 	stulen=len(json_data()["stuId"])
+	print(2333)
+	print(stulen)
+	print(json_data()["name"],json_data()["date"],json_data()["time"],stulen,stulen)
+	print(json_data()["description"],VOLUNTEER_WAITING,json_data()["inside"],json_data()["outside"],json_data()["large"],tkData()["userid"])
 	#  先创建一个义工（照搬Create）
 	OP.insert("volName,volDate,volTime,stuMax,nowStuCount,description,status,"
 		+"volTimeInside,volTimeOutside,volTimeLarge,holderId",
