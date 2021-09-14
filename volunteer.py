@@ -12,7 +12,7 @@ def getVolunteerList(): # 可以了
 	fl,r=OP.select("volId,volName,description,volDate,volTime,status,stuMax","volunteer","true",(),
 	              ["id", "name", "description","date","time","status","stuMax"],only=False)
 	if not fl: return r # 数据库错误
-	return {"type":"SUCCESS","message":"获取成功","volunteer":r}
+	return {"type":"SUCCESS","message":"获取成功","volunteer":r[::-1]}
 
 @Volunteer.route('/volunteer/fetch/<int:volId>', methods = ['GET', 'OPTIONS'])
 @Deco
