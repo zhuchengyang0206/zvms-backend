@@ -1,5 +1,6 @@
 from flask import Blueprint, request
 import json
+import time
 from deco import *
 from res import *
 import oppressor as OP
@@ -57,10 +58,14 @@ def signupVolunteer(volId): # 过了
 		if not checkPermission(tkData()["class"],tkData()["permission"],i):
 			return {"type":"ERROR", "message":"权限不足：学生列表中有别班学生"}
 	# 判断人数是否超过这个义工的人数上限
-	fl,r=OP.select("stuMax,nowStuCount","volunteer","volId=%s",(volId),["stuMax","nowStuCount"])
+	fl,r=OP.select("stuMax,nowStuCount,volDate,volTime","volunteer","volId=%s",(volId),["stuMax","nowStuCount","volDate","volTime"])
 	if not fl: return r # 数据库错误
 	if len(json_data()['stulst'])>r["stuMax"]-r["nowStuCount"]:
 		return {"type":"ERROR", "message":"人数超限"}
+	nowTime=time.time()
+	endTime=time.mktime(time.strptime(r["volDate"] + ' ' + r["volTime"], "%Y-%m-%d %H:%M"))
+	if nowTime > endTime:
+		return {"type":"ERROR", "message":"义工时间已过"}
 	# 判断是否有人已经报名了
 	for i in json_data()["stulst"]:
 		fl,r=OP.select("status","stu_vol","volId=%s AND stuId=%s",(volId,i),["status"])
