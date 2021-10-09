@@ -42,13 +42,13 @@ def Deco(func):
 				tkst, tkdata=TK.readToken(request.headers.get("Authorization"))
 				print("Loading Token:",tkst, tkdata)
 				if tkst==TK.EXPIRED:
-					return json.dumps({'type':'ERROR', 'message':"token过期"})
+					return json.dumps({'type':'ERROR', 'message':"token过期，请重新登陆"})
 				elif tkst==TK.BAD:
-					return json.dumps({'type':'ERROR', 'message':"token失效"})
+					return json.dumps({'type':'ERROR', 'message':"token失效，请重新登陆"})
 			except:
 				tksk=TK.ERROR
 				tkdata={}
-				return json.dumps({'type':'ERROR', 'message':"未获取到Token"})
+				return json.dumps({'type':'ERROR', 'message':"未获取到Token，请重新登陆"})
 		# 上面这一段是在上面的if里面的啊，要加上缩进的
 
 		try:

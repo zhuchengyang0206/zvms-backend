@@ -6,6 +6,7 @@ from _class import Class
 from student import Student
 from volunteer import Volunteer
 from notice import Notice
+from report import Report
 
 # Flask init
 app = Flask(__name__)
@@ -19,6 +20,7 @@ app.register_blueprint(Class)
 app.register_blueprint(Student)
 app.register_blueprint(Volunteer)
 app.register_blueprint(Notice)
+app.register_blueprint(Report)
 
 @app.route('/',methods=['POST'])
 def main():
