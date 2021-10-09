@@ -6,8 +6,16 @@ SUCCESS = 1
 EXPIRED = 2
 BAD = 3
 
-SECRET_KEY = "譋窹乆乣詈"
-SALT = "詈乆窹乣譋 "
+def generateStrangeString():
+    import random, hashlib
+    x = random.randint(0, 100000)
+    x = hashlib.md5(x)
+    x = x + str(random.randint(0, 100000))
+    x = hashlib.md5(x)[:10]
+    return x
+
+SECRET_KEY = generateStrangeString()
+SALT = generateStrangeString()
 EXPIRES_IN = 36000
 
 def generateToken(data):
