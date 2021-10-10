@@ -1,5 +1,6 @@
 import json
 from itsdangerous import TimedJSONWebSignatureSerializer, SignatureExpired, BadSignature
+import random, hashlib
 
 ERROR = 0
 SUCCESS = 1
@@ -7,12 +8,10 @@ EXPIRED = 2
 BAD = 3
 
 def generateStrangeString():
-    import random, hashlib
-    x = random.randint(0, 100000)
-    x = hashlib.md5(x)
-    x = x + str(random.randint(0, 100000))
-    x = hashlib.md5(x)[:10]
-    return x
+    md = hashlib.md5()
+    md.update(str(random.uniform()))
+    s = md.hexdigest()
+    return s
 
 SECRET_KEY = generateStrangeString()
 SALT = generateStrangeString()
