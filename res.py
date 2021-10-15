@@ -20,5 +20,5 @@ def checkPermission(cls,pms,stu): # 判断一个用户是否有权限管理该�
 	# 班级编号为6位：202001，学号为8位：20200100~20200199
 	return pms in [PMS_CLASS,PMS_TEACHER,PMS_SYSTEM] or(pms==PMS_CLASS and stu>=cls*100 and stu<cls*100+100)
 
-CURRENT_VERSION = "b99f9a5aff3fef173d46e270155b87fe"
+CURRENT_VERSION = "7659efa34712b560a174dd090b605c1c"
 CURRENT_VERSION_ERROR_MESSAGE = "版本号过期，请重新下载"
