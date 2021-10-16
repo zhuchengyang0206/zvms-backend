@@ -110,8 +110,8 @@ def createVolunteer(): # 大概可以了
 		print("count check failed.")
 		return {"type":"ERROR", "message":"最大人数不符合要求：义工人数永远无法报满"}
 	print(666)
-    if json_data()["inside"]<=0 or json_data()["outside"]<=0 or json_data()["large"]<=0:
-        return {"type":"ERROR", "message":"义工时间不能为负数"}
+	if json_data()["inside"]<=0 or json_data()["outside"]<=0 or json_data()["large"]<=0:
+		return {"type":"ERROR", "message":"义工时间不能为负数"}
 	# 创建一条总的记录
 	OP.insert("volName,volDate,volTime,stuMax,nowStuCount,description,status,"
 		+"volTimeInside,volTimeOutside,volTimeLarge,holderId",

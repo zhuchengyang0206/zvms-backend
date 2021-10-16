@@ -9,7 +9,7 @@ BAD = 3
 
 def generateStrangeString():
     md = hashlib.md5()
-    md.update(str(random.uniform()))
+    md.update(str(random.random()).encode("utf-8"))
     s = md.hexdigest()
     return s
 

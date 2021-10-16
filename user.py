@@ -15,7 +15,7 @@ def login_NoToken():
 	password = json_data().get("password")
 	version = json_data().get("version")
 	if version != res.CURRENT_VERSION:
-                return {"type": "ERROR", "message": CURRENT_VERSION_ERROR_MESSAGE}
+                return {"type": "ERROR", "message": res.CURRENT_VERSION_ERROR_MESSAGE}
 	st, val = OP.userLogin(userid, password)
 	ret={}
 	if st:
@@ -39,7 +39,7 @@ def logout_NoToken():
 	return {'type': 'SUCCESS', 'message': '登出成功！'}
 	#最好在这里做点什么吧，比如删除cookie什么的
 
-@User.route('/user/info', methods = ['GET'])
+@User.route('/user/info', methods = ['GET','POST','OPTIONS'])
 @Deco
 def info():
 	return {'type':'SUCCESS', 'message':"获取成功", 'info':tkData()}
