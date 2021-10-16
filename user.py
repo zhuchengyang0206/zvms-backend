@@ -28,7 +28,7 @@ def login_NoToken():
 			"permission": ret['permission']
 		})})
 	else:
-                ret.update({"type": "ERROR", "message": "用户名或密码错误"})
+		ret.update({"type": "ERROR", "message": "用户名或密码错误"})
 		traceback.print_exc()
 		ret.update(val)
 	return ret
