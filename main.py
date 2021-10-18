@@ -1,5 +1,6 @@
 from flask import Flask,make_response,request
 from flask_cors import CORS
+# from flask_script import Manager
 import database
 from user import User
 from _class import Class
@@ -26,5 +27,7 @@ app.register_blueprint(Report)
 def main():
    return ""
 
+# manager = Manager(app)
 if __name__ == '__main__':
+    # manager.run(host='0.0.0.0', port=5000)
     app.run(host='0.0.0.0', port=5000)
