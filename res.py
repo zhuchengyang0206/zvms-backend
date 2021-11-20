@@ -19,3 +19,6 @@ def checkPermission(cls,pms,stu): # 判断一个用户是否有权限管理该�
 	# 教师、义管会、系统能管理所有学生
 	# 班级编号为6位：202001，学号为8位：20200100~20200199
 	return pms in [PMS_CLASS,PMS_TEACHER,PMS_SYSTEM] or(pms==PMS_CLASS and stu>=cls*100 and stu<cls*100+100)
+
+CURRENT_VERSION = "7659efa34712b560a174dd090e605c1c"
+CURRENT_VERSION_ERROR_MESSAGE = "服务器维护中"

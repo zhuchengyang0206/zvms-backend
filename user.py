@@ -2,6 +2,7 @@ from flask import Blueprint, request
 from deco import *
 import tokenlib as TK
 import json
+import res
 import traceback
 import oppressor as OP
 
@@ -12,6 +13,9 @@ User = Blueprint('user', __name__)
 def login_NoToken():
 	userid = json_data().get("userid")
 	password = json_data().get("password")
+	version = json_data().get("version")
+	if version != res.CURRENT_VERSION:
+                return {"type": "ERROR", "message": res.CURRENT_VERSION_ERROR_MESSAGE}
 	st, val = OP.userLogin(userid, password)
 	ret={}
 	if st:
@@ -24,6 +28,7 @@ def login_NoToken():
 			"permission": ret['permission']
 		})})
 	else:
+		ret.update({"type": "ERROR", "message": "用户名或密码错误"})
 		traceback.print_exc()
 		ret.update(val)
 	return ret
@@ -34,7 +39,7 @@ def logout_NoToken():
 	return {'type': 'SUCCESS', 'message': '登出成功！'}
 	#最好在这里做点什么吧，比如删除cookie什么的
 
-@User.route('/user/info', methods = ['GET'])
+@User.route('/user/info', methods = ['GET','POST','OPTIONS'])
 @Deco
 def info():
 	return {'type':'SUCCESS', 'message':"获取成功", 'info':tkData()}

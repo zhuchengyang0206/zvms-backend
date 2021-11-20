@@ -1,14 +1,21 @@
 import json
 from itsdangerous import TimedJSONWebSignatureSerializer, SignatureExpired, BadSignature
+import random, hashlib
 
 ERROR = 0
 SUCCESS = 1
 EXPIRED = 2
 BAD = 3
 
-SECRET_KEY = "譋窹乆乣詈"
-SALT = "詈乆窹乣譋 "
-EXPIRES_IN = 36000
+def generateStrangeString():
+    md = hashlib.md5()
+    md.update(str(random.random()).encode("utf-8"))
+    s = md.hexdigest()
+    return s
+
+SECRET_KEY = generateStrangeString()
+SALT = generateStrangeString()
+EXPIRES_IN = 36000000
 
 def generateToken(data):
     global SECRET_KEY, SALT, EXPIRES_IN

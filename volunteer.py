@@ -13,6 +13,7 @@ def getVolunteerList(): # 可以了
 	fl,r=OP.select("volId,volName,description,volDate,volTime,status,stuMax","volunteer","true",(),
 	              ["id", "name", "description","date","time","status","stuMax"],only=False)
 	if not fl: return r # 数据库错误
+	r=sorted(r,key=lambda x: x["date"])
 	return {"type":"SUCCESS","message":"获取成功","volunteer":r[::-1]}
 
 @Volunteer.route('/volunteer/fetch/<int:volId>', methods = ['GET', 'OPTIONS'])
@@ -110,6 +111,8 @@ def createVolunteer(): # 大概可以了
 		print("count check failed.")
 		return {"type":"ERROR", "message":"最大人数不符合要求：义工人数永远无法报满"}
 	print(666)
+	if json_data()["inside"]<0 or json_data()["outside"]<0 or json_data()["large"]<0:
+		return {"type":"ERROR", "message":"义工时间不能为负数"}
 	# 创建一条总的记录
 	OP.insert("volName,volDate,volTime,stuMax,nowStuCount,description,status,"
 		+"volTimeInside,volTimeOutside,volTimeLarge,holderId",
