@@ -15,7 +15,7 @@ def generateStrangeString():
 
 SECRET_KEY = generateStrangeString()
 SALT = generateStrangeString()
-EXPIRES_IN = 36000
+EXPIRES_IN = 36000000
 
 def generateToken(data):
     global SECRET_KEY, SALT, EXPIRES_IN
