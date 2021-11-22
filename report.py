@@ -3,6 +3,7 @@ import json
 from deco import *
 from res import *
 import oppressor as OP
+import datetime
 
 Report = Blueprint('report', __name__)
 
@@ -11,6 +12,7 @@ Report = Blueprint('report', __name__)
 def submitReport_NoToken():
     report = json_data().get('report')
     f = open('./report.log', 'a+')
-    f.write(report + '\n')
+    # 2021.11.22 10.40 Modified by nekomoyi
+    f.write('[' + datetime.datetime.now() + '] ' + report + '\n')
     f.close()
     return {"type":"SUCCESS", "message":"提交成功"}
